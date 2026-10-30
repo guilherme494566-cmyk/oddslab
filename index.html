@@ -624,8 +624,8 @@ body { background: radial-gradient(120% 60% at 50% -10%, #12161c 0%, var(--bg) 5
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
 /* ===== v5: Início, Mercados, Dados, ficha com separadores ===== */
-.dock .in { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.dock .ind { width: calc(100% / 6); transition: transform .35s var(--ease), opacity .2s; }
+.dock .in { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.dock .ind { width: 20%; transition: transform .35s var(--ease), opacity .2s; }
 .dock button { font-size: 10px; letter-spacing: -.01em; }
 .dock svg { width: 20px; height: 20px; }
 .lnk { border: 0; background: none; padding: 0; font: 600 12px var(--sans); letter-spacing: 0; text-transform: none; color: var(--acc); }
@@ -1218,13 +1218,55 @@ small, .src, .desc, .lead { letter-spacing: 0; }
 .tn-more p { margin: 6px 0; font-size: 13px; color: var(--muted); }
 .tn header { position: static; top: auto; z-index: auto; background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
 .tn-hist { margin-top: 12px; padding: 12px 14px; font-size: 13.5px; color: var(--muted); } .tn-hist b { color: var(--text); }
+/* t15: modo simples */
+.howcta { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 14px; padding: 14px 16px; text-align: left; border-color: rgb(201 167 90 / .35); background: linear-gradient(120deg, var(--accbg), transparent 70%), var(--s1); }
+.howcta b { display: block; font-size: 15px; }
+.howcta small { color: var(--muted); font-size: 13px; }
+.hc-i, .hw-i { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--bg); background: var(--acc); }
+.hc-a { margin-left: auto; font-size: 20px; color: var(--acc); }
+.sports2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.sp2 { display: grid; justify-items: start; gap: 2px; padding: 16px; text-align: left; }
+.sp2-i { font-size: 26px; line-height: 1; margin-bottom: 8px; }
+.sp2 b { font-size: 16px; }
+.sp2 small { color: var(--muted); font-size: 12.5px; }
+.dk-ex { display: block; font-size: 12.5px; line-height: 1.35; color: var(--muted); margin: 2px 0 4px; }
+.winif { margin: 4px 0 0; padding: 10px 12px; border-radius: 10px; background: rgb(47 212 122 / .08); border: 1px solid rgb(47 212 122 / .25); font-size: 14px; }
+.winif b { color: var(--pos); }
+.tn-ex { display: block; font-size: 13px; color: var(--muted); margin: 2px 0 4px; }
+.how { margin-top: 12px; padding: 0; overflow: hidden; }
+.how summary { display: flex; align-items: center; gap: 10px; padding: 14px 16px; font-weight: 700; cursor: pointer; list-style: none; }
+.how summary::-webkit-details-marker { display: none; }
+.how .hw-i { width: 26px; height: 26px; font-size: 14px; }
+.how ol { margin: 0; padding: 0 16px 6px 38px; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+.how ol b { color: var(--text); }
+.how .lnk { margin: 6px 16px 14px; }
+.steps3 { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+.steps3 li { display: flex; gap: 14px; padding: 16px; align-items: flex-start; }
+.steps3 b { font-size: 16px; }
+.steps3 p { margin: 4px 0 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+.steps3 p b { font-size: inherit; color: var(--text); }
+.st-n { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font: 800 17px var(--sans); color: var(--bg); background: var(--acc); }
+#pg-ajuda .box { margin-top: 10px; }
+#pg-ajuda .box p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+#pg-ajuda .box p b { color: var(--text); }
+.tipok { border-color: rgb(47 212 122 / .3); }
+.gloss { display: grid; gap: 8px; margin-top: 10px; }
+.gloss details { padding: 0; }
+.gloss summary { padding: 13px 16px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+.gloss summary::-webkit-details-marker { display: none; }
+.gloss summary::after { content: "+"; color: var(--acc); font-weight: 700; }
+.gloss details[open] summary::after { content: "−"; }
+.gloss p { margin: 0; padding: 0 16px 14px; font-size: 14px; color: var(--muted); line-height: 1.5; }
+#pg-tenis .tns { margin-top: 12px; }
+.dk-s { height: 452px; }
+.dk-c { height: 430px; }
 </style>
 
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
     <div class="bar">
-      <div class="logo" id="logoBtn" role="button" tabindex="0" aria-label="Abrir ecrã inicial"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="#16191e" stroke="#2e333b"/><path d="M8 21 13 15l4 3.5L24.5 10" fill="none" stroke="#c9a75a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>ODDSLAB<small>PESSOAL</small></div>
+      <div class="logo" id="logoBtn" role="button" tabindex="0" aria-label="Abrir ecrã inicial"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="#16191e" stroke="#2e333b"/><path d="M8 21 13 15l4 3.5L24.5 10" fill="none" stroke="#c9a75a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>ODDSLAB</div>
       <div class="upd" id="upd"></div>
     </div>
     <button type="button" class="search" id="searchBox" aria-label="Abrir pesquisa"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="ph2" id="phRot">Procurar equipa, liga ou aposta</span><span class="kb m">⌘K</span></button><input id="q" type="hidden"><button type="button" id="qClear" hidden></button>
@@ -1237,12 +1279,12 @@ small, .src, .desc, .lead { letter-spacing: 0; }
     <div class="hello card" id="hello"></div>
     <h2><span>As apostas do dia</span><small>desliza para ver mais</small></h2>
     <div class="deck" id="deck"></div>
+    <button type="button" class="howcta card rv" data-pg="ajuda"><span class="hc-i" aria-hidden="true">?</span><span><b>Nunca apostaste?</b><small>Vê como fazer em 3 passos simples</small></span><span class="hc-a" aria-hidden="true">→</span></button>
+    <div class="sports2 rv"><button type="button" class="sp2 card" data-pg="jogos"><span class="sp2-i">⚽</span><b>Futebol</b><small id="nFut"></small></button><button type="button" class="sp2 card" data-pg="tenis"><span class="sp2-i">🎾</span><b>Ténis</b><small id="nTen"></small></button></div>
+    <h2 class="rv"><span>Mais ferramentas</span><small>para quem já aposta</small></h2>
     <div class="tiles rv" id="tiles"></div>
-    <h2 class="rv"><span>Radar de mercados</span><small>o melhor de cada tipo · 60 h</small></h2>
-    <div class="radar rv" id="radar"></div>
-    <h2 class="rv"><span>Termómetro de golos</span><small>golos esperados</small></h2>
-    <div class="thermo card rv" id="thermo"></div>
-    <h2 class="rv"><span>A seguir</span><button type="button" class="lnk" data-pg="tools">Agenda →</button></h2>
+    <div hidden><div id="radar"></div><div id="thermo"></div></div>
+    <h2 class="rv"><span>A seguir</span><button type="button" class="lnk" data-pg="jogos">Todos os jogos →</button></h2>
     <div class="nus rv" id="nextUp"></div>
     <div hidden><div id="hero"></div><div id="popMini"></div><ol id="meth"></ol></div>
     <button type="button" class="more rv" id="replay" style="margin-top:18px">Ver o ecrã de boas-vindas</button>
@@ -1250,22 +1292,52 @@ small, .src, .desc, .lead { letter-spacing: 0; }
   </section>
 
   <section id="pg-jogos" hidden>
-    <div class="sport" role="group" aria-label="Desporto"><button type="button" data-sport="futebol" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.2 2.3-1.2 3.7h-4l-1.2-3.7z"/></svg>Futebol</button><button type="button" data-sport="tenis" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.5 3.5 3.5 9.3 0 12.8M18.4 5.6c-3.5 3.5-3.5 9.3 0 12.8"/></svg>Ténis</button></div>
-    <div id="tenisView" hidden></div>
+    <div class="ph"><h1>Futebol</h1></div>
+    <p class="lead">Toca num jogo para ver a nossa aposta e como a fazer.</p>
     <div id="filters">
       <div class="seg" id="days" role="group" aria-label="Dia" style="margin-top:14px"></div>
       <div class="chips" id="leagues" role="group" aria-label="Liga" style="margin-top:10px"></div>
     </div>
     <div id="dayView">
-      <div class="kpis" id="kpis"></div>
-      <h2>Destaques</h2>
-      <div class="spots" id="spots"></div>
+      <div hidden><div class="kpis" id="kpis"></div><div class="spots" id="spots"></div></div>
       <h2><span>Jogos</span><small id="cnt"></small></h2>
       <div class="seg" id="quick" role="group" aria-label="Filtro" style="margin-bottom:8px"></div>
       <div class="rows" id="list"></div>
     </div>
     <div id="findView" hidden><h2 id="findTitle"></h2><div id="find"></div></div>
     <p class="foot">Probabilidades estimadas, não certezas. Odd mínima = odd a partir da qual a aposta compensa. 18+</p>
+  </section>
+
+  <section id="pg-tenis" hidden>
+    <div class="ph"><h1>Ténis</h1></div>
+    <div id="tenisView"></div>
+  </section>
+
+  <section id="pg-ajuda" hidden>
+    <div class="ph"><h1>Como apostar</h1></div>
+    <p class="lead">Nunca fizeste uma aposta? Não faz mal. São 3 passos.</p>
+    <ol class="steps3">
+      <li class="card"><span class="st-n">1</span><div><b>Escolhe uma aposta</b><p>No Início, em Futebol ou em Ténis, cada jogo tem <b>uma</b> aposta nossa. A percentagem é a hipótese de acertar: quanto mais alta, mais provável. Lê a frase <em>“Ganhas se…”</em> para saberes exatamente o que tem de acontecer.</p></div></li>
+      <li class="card"><span class="st-n">2</span><div><b>Toca em “Copiar aposta”</b><p>Fica guardado o jogo, a aposta e a odd mínima. Podes colar numa nota ou mensagem para não te esqueceres.</p></div></li>
+      <li class="card"><span class="st-n">3</span><div><b>Faz a aposta na tua casa de apostas</b><p>Abre a app da tua casa de apostas (tem de ser licenciada em Portugal, com o selo do SRIJ). Pesquisa o nome de uma das equipas ou jogadores, abre o jogo, procura o mercado com o mesmo nome e toca na opção. Escreve o valor e confirma.</p></div></li>
+    </ol>
+    <div class="box card tipok"><h3>Antes de confirmar, vê a odd</h3><p>A <b>odd</b> é o número que multiplica o teu dinheiro. Se apostares 5 € a odd 1,80 e ganhares, recebes 9 €. Só vale a pena se a odd da casa for <b>igual ou maior</b> do que a nossa “odd mínima”. Se for menor, não apostes nesse jogo.</p></div>
+    <div class="box card"><h3>Quanto apostar?</h3><p>Começa com pouco. Uma boa regra: nunca mais de <b>2% do dinheiro que separaste para apostas</b> numa só aposta (com 50 €, no máximo 1 €). Vais perder algumas, é normal, mesmo as mais prováveis.</p></div>
+    <h2><span>O que quer dizer…</span></h2>
+    <div class="gloss">
+      <details class="card"><summary>Odd</summary><p>O número que multiplica o valor apostado se ganhares. Odd 2,00 com 10 € = recebes 20 € (10 € de lucro).</p></details>
+      <details class="card"><summary>Odd mínima</summary><p>A odd a partir da qual a aposta compensa, segundo o nosso cálculo. Abaixo dela, a casa está a pagar pouco.</p></details>
+      <details class="card"><summary>Percentagem (ex.: 72%)</summary><p>A hipótese estimada de a aposta dar certo. 72% quer dizer que, em 100 apostas assim, contamos acertar cerca de 72. Não é uma certeza.</p></details>
+      <details class="card"><summary>“Equipa ou empate” (dupla hipótese)</summary><p>Ganhas se essa equipa ganhar ou empatar. Só perdes se ela perder.</p></details>
+      <details class="card"><summary>“Empate anula”</summary><p>Ganhas se a equipa ganhar. Se empatar, a casa devolve-te o dinheiro.</p></details>
+      <details class="card"><summary>“Equipa +1,5” (handicap)</summary><p>A equipa começa com 1,5 golos de vantagem. Ganhas se ela ganhar, empatar ou perder só por 1 golo.</p></details>
+      <details class="card"><summary>“Mais de 1,5 golos”</summary><p>Ganhas se houver 2 ou mais golos no jogo, somando as duas equipas.</p></details>
+      <details class="card"><summary>“Equipa marca”</summary><p>Ganhas se essa equipa marcar pelo menos um golo, qualquer que seja o resultado.</p></details>
+      <details class="card"><summary>Ténis: “ganha pelo menos 1 set”</summary><p>Os encontros são à melhor de 3 sets. Ganhas se o jogador ganhar pelo menos um set, mesmo que perca o encontro por 2-1.</p></details>
+      <details class="card"><summary>Múltipla</summary><p>Várias apostas juntas num só boletim. A odd sobe, mas basta uma falhar para perderes tudo. Para começar, prefere apostas simples.</p></details>
+    </div>
+    <div class="rg card" style="margin-top:22px"><b>Joga com responsabilidade.</b> As percentagens são estimativas, não certezas. Aposta só o que podes perder e nunca para recuperar perdas. Só para maiores de 18. Precisas de ajuda? Linha Jogar em Segurança: <b class="m">214 193 748</b>.</div>
+    <button type="button" class="more" id="replay2" style="margin-top:14px">Ver o ecrã de boas-vindas</button>
   </section>
 
   <section id="pg-mk" hidden>
@@ -1358,11 +1430,10 @@ small, .src, .desc, .lead { letter-spacing: 0; }
 
 <nav class="dock" aria-label="Secções"><div class="in"><span class="ind" id="ind" aria-hidden="true"></span>
   <button type="button" data-pg="inicio" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg>Início</button>
-  <button type="button" data-pg="jogos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.2 2.3-1.2 3.7h-4l-1.2-3.7z"/></svg>Jogos</button>
-  <button type="button" data-pg="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5.2 9.1A2 2 0 0 0 6.5 21h11a2 2 0 0 0 1.7-2.9L14 9V3"/><path d="M7.5 15h9"/></svg>Laboratório</button>
-  <button type="button" data-pg="mult"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="10.5" width="18" height="5" rx="1.5"/><rect x="3" y="17" width="12" height="4" rx="1.5"/></svg>Múltiplas</button>
-  <button type="button" data-pg="dados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6M5 12v6c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-6"/></svg>Dados</button>
+  <button type="button" data-pg="jogos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.2 2.3-1.2 3.7h-4l-1.2-3.7z"/></svg>Futebol</button>
+  <button type="button" data-pg="tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.2 3.2 3.2 9.6 0 12.8M18.4 5.6c-3.2 3.2-3.2 9.6 0 12.8"/></svg>Ténis</button>
   <button type="button" data-pg="res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg>Resultados</button>
+  <button type="button" data-pg="ajuda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.2-2.5 3.9"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>Ajuda</button>
 </div></nav>
 <div class="toast" id="toast" hidden role="status"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs></svg>
@@ -1555,16 +1626,20 @@ function gameHtml(g) {
     <p><b>Baixas:</b> ${esc(r.baixas)}</p>${(r.notas || []).map((n) => `<p>${esc(n)}</p>`).join('')}
     ${mk2 ? `<div class="mkt"><span>Mercado</span>${['1', 'X', '2'].map((l, i) => `<div><small>${l}</small><b>${odd(mk2.odds[i])}</b><em>${pct(mk2.prob[i])}</em></div>`).join('')}</div><span class="src">As nossas probabilidades já misturam o modelo com o mercado.</span>` : ''}
     <a class="src" href="${esc(r.fonte)}" target="_blank" rel="noopener">Ver fonte ↗</a></div>`; })() : ''}
-  <div class="gtabs" role="group" aria-label="Secções do jogo"><span class="gt-ind" id="gtInd" aria-hidden="true"></span><button type="button" data-gtab="res" aria-pressed="true">Resumo</button><button type="button" data-gtab="mk" aria-pressed="false">Mercados <b class="m">${markets(g).all.length}</b></button><button type="button" data-gtab="dd" aria-pressed="false">Dados</button></div>
+  <div class="gtabs" role="group" aria-label="Secções do jogo"><span class="gt-ind" id="gtInd" aria-hidden="true"></span><button type="button" data-gtab="res" aria-pressed="true">A aposta</button><button type="button" data-gtab="mk" aria-pressed="false">Outras apostas</button><button type="button" data-gtab="dd" aria-pressed="false">Estatísticas</button></div>
   <div data-gpanel="res" class="gpanel">
   <div class="top card">
     <div class="lab"><b>A nossa aposta${g.aviso ? ' (com aviso)' : ''}</b><span>${esc(mk(a))}</span></div>
     <div class="pick"><span><span class="b">${esc(a.aposta)}</span>${sig(a.prob)}</span><span class="odd xl"><small>odd mín.</small><b>${cu(1 / a.prob)}</b></span></div>
+    <p class="winif"><b>Ganhas se</b> ${esc(explainBet(a.aposta, g))}</p>
     ${a.desc ? `<p class="desc">${esc(a.desc)}</p>` : ''}
     <div class="acts">${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`)}</div>
   </div>
+  ${howBox(g.casa + ' – ' + g.fora, mk(a), a.aposta, a.prob)}
   ${(() => { const b = altBet(g); return b ? `<div class="box card altb"><div class="altb-h"><span>Outro tipo de aposta</span><small>${esc(b.mercado)}</small></div><div class="altb-r"><b>${esc(b.aposta)}</b><span class="m">${pct(b.prob)}<small>odd mín. ${odd(1 / b.prob)}</small></span></div><button type="button" class="btn bc" data-xbc="${g.id}|${esc(b.aposta)}">${ICO_BC}<span>Copiar aposta</span></button><span class="src">Mercado onde o modelo tem acertado bem nos testes (golos da equipa, sem empate ou handicap +1,5).</span></div>` : ''; })()}
-  ${(() => { const al = altsOf(g); return al.length ? `<div class="box card"><h3>Alternativas fortes</h3><div class="alts">${al.map((s2) => `<button type="button" class="alt" data-gtab="mk" data-ms="${esc(s2.t)}">${ring(s2.p, 40)}<span><small>${esc(MCATN[s2.cat])}</small><b>${esc(s2.t)}</b></span><span class="m">${odd(1 / s2.p)}</span></button>`).join('')}</div><span class="src">Outros mercados entre 62% e 86%, um de cada tipo.</span></div>` : ''; })()}
+  </div>
+  <div data-gpanel="mk" class="gpanel" hidden>${mkTab(g)}</div>
+  <div data-gpanel="dd" class="gpanel" hidden>  ${(() => { const al = altsOf(g); return al.length ? `<div class="box card"><h3>Alternativas fortes</h3><div class="alts">${al.map((s2) => `<button type="button" class="alt" data-gtab="mk" data-ms="${esc(s2.t)}">${ring(s2.p, 40)}<span><small>${esc(MCATN[s2.cat])}</small><b>${esc(s2.t)}</b></span><span class="m">${odd(1 / s2.p)}</span></button>`).join('')}</div><span class="src">Outros mercados entre 62% e 86%, um de cada tipo.</span></div>` : ''; })()}
   ${simBox(g)}
   <div class="box card"><h3>Mapa de resultados</h3>${heat(g)}<span class="src">Probabilidade (%) de cada resultado final. Mais claro = mais provável.</span></div>
   <div class="box card"><h3>As 12 apostas base</h3>
@@ -1577,9 +1652,7 @@ function gameHtml(g) {
     <div class="verdict" id="cV"></div>
     <div class="acts"><button type="button" class="btn bc" id="cBc">${ICO_BC}<span>Copiar esta aposta</span></button></div>
   </div>
-  </div>
-  <div data-gpanel="mk" class="gpanel" hidden>${mkTab(g)}</div>
-  <div data-gpanel="dd" class="gpanel" hidden>${dataTab(g)}</div>`;
+  ${dataTab(g)}</div>`;
 }
 function openGame(id) {
   const g = byId(id); if (!g || !g.apostas) return;
@@ -2155,8 +2228,10 @@ function renderInicio() {
   // Populares compactos
   const P2 = (D.populares && D.populares.itens) || [];
   $('popMini').innerHTML = P2.slice(0, 3).map((x, i) => `<div class="pm card" style="--i:${i}"><span class="pm-g">${esc(x.casa)} – ${esc(x.fora)}</span><span class="pm-r"><span><small>Público</small><b>${esc(x.publico ? x.publico.aposta : '')}</b><em class="m">${x.nossa != null ? pct(x.nossa) : ''}</em></span><span><small>Nós</small><b class="acc">${esc(x.alt ? x.alt.aposta : '')}</b><em class="m">${x.alt ? pct(x.alt.prob) : ''}</em></span></span></div>`).join('') + (P2.length ? `<button type="button" class="more" data-pg="pop">Ver todos os ${P2.length} populares →</button>` : '');
-  $('tiles').innerHTML = [['mk', 'Laboratório', 'as 10 melhores de hoje', 'golos'], ['mult', 'Múltiplas', 'odd à medida', 'margem'], ['tools', 'Agenda', 'hora a hora', 'ht'], ['pop', 'Populares', ((D.populares && D.populares.itens) || []).length + ' apostas do público', 'btts']]
+  $('tiles').innerHTML = [['mk', 'Laboratório', 'as 10 melhores de hoje', 'golos'], ['mult', 'Múltiplas', 'odd à medida', 'margem'], ['dados', 'Dados', 'tabelas e números', 'cantos'], ['tools', 'Agenda', 'hora a hora', 'ht']]
     .map(([pg, t, s, ic], i) => `<button type="button" class="tile card" data-pg="${pg}" style="--i:${i}"><span class="ti-i">${ico(ic, 20)}</span><b>${t}</b><small>${s}</small></button>`).join('');
+  const nTn = ((D.tenis && D.tenis.jogos) || []).filter((m) => T(m.inicio) > Date.now() - 3 * 3600e3).length;
+  $('nFut').textContent = op.length + (op.length === 1 ? ' jogo' : ' jogos'); $('nTen').textContent = nTn + (nTn === 1 ? ' encontro' : ' encontros');
   renderDeck(); reveal($('pg-inicio'));
 }
 
@@ -2314,7 +2389,7 @@ function welcomeHtml() {
       <span class="wt-m"><span class="wt-g">${flag(g.pais)}${esc(g.casa)} – ${esc(g.fora)}</span><b>${esc(a.aposta)}</b><small>${dayKey(new Date(g.inicio)) === today ? 'Hoje' : cap(dayLabel(g.inicio).split(',')[0])} às ${hm(g.inicio)}</small></span>
       <span class="wt-p"><b class="m">${pct(a.prob)}</b><small>odd mín. <span class="m">${odd(1 / a.prob)}</span></small></span>
     </button></li>`).join('')}</ol>` : ''}
-    <div class="wl-cta w5"><button type="button" class="btn acc" data-inend="@lab">Ver as 10 melhores</button><button type="button" class="btn ghost" data-inend="">Entrar na app</button></div>
+    <div class="wl-cta w5"><button type="button" class="btn acc" data-inend="">Entrar</button><button type="button" class="btn ghost" data-inend="@ajuda">Nunca apostei: mostra-me como</button></div>
     <p class="wl-f w6">Probabilidades estimadas, não certezas. 18+</p>
   </div>`;
 }
@@ -2337,9 +2412,9 @@ function deckCard(x, k) {
     <div class="dk-glow" aria-hidden="true"></div>
     <header><span>${flag(g.pais)}${esc(g.liga)}</span><span class="m" data-cd="${g.inicio}">${cdTxt(T(g.inicio) - Date.now())}</span></header>
     <div class="dk-t"><div>${mono(g.casa, 'lg')}<b>${esc(g.casa)}</b></div><em>${hm(g.inicio)}<small>${dayLabel(g.inicio).split(',')[0]}</small></em><div>${mono(g.fora, 'lg')}<b>${esc(g.fora)}</b></div></div>
-    <div class="dk-p"><div class="dk-r">${ring(a.prob, 86, 'big')}<b class="m">${pct(a.prob)}</b></div><div class="dk-pt"><small>A nossa aposta</small><strong>${esc(a.aposta)}</strong><span>odd mínima <b class="m">${odd(1 / a.prob)}</b>${BANCA > 0 ? ` · aposta ${stakeTxt(a.prob)}` : ''}</span></div></div>
+    <div class="dk-p"><div class="dk-r">${ring(a.prob, 86, 'big')}<b class="m">${pct(a.prob)}</b></div><div class="dk-pt"><small>A nossa aposta</small><strong>${esc(a.aposta)}</strong><span class="dk-ex">Ganhas se ${esc(explainBet(a.aposta, g))}</span><span>odd mínima <b class="m">${odd(1 / a.prob)}</b>${BANCA > 0 ? ` · aposta ${stakeTxt(a.prob)}` : ''}</span></div></div>
     ${(() => { const b = altBet(g); return b ? `<div class="dk-alt"><span>Outra opção</span><b>${esc(b.aposta)}</b><em class="m">${pct(b.prob)} · ${odd(1 / b.prob)}</em></div>` : '<div class="dk-alt"></div>'; })()}
-    <footer><button type="button" class="btn ghost" data-open="${g.id}">Análise</button>${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`, 'Copiar')}</footer>
+    <footer><button type="button" class="btn ghost" data-open="${g.id}">Ver mais</button>${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`, 'Copiar')}</footer>
   </article>`;
 }
 function renderDeck() {
@@ -2628,7 +2703,7 @@ function tnCard(m, i) {
     <div class="tn-p"><div class="tn-n"><b>${esc(A.nome)}</b><small>Elo ${Math.round((A.elo + A.eloS) / 2)}</small></div><b class="m tn-pc ${pa >= 0.5 ? 'fav' : ''}">${pct(pa)}</b></div>
     <div class="tn-bar"><i style="--w:${pa * 100}%"></i></div>
     <div class="tn-p"><div class="tn-n"><b>${esc(B.nome)}</b><small>Elo ${Math.round((B.elo + B.eloS) / 2)}</small></div><b class="m tn-pc ${pa < 0.5 ? 'fav' : ''}">${pct(1 - pa)}</b></div>
-    <div class="tn-pick"><small>A nossa aposta</small><b>${esc(r.pick.t)}</b><span><b class="m">${pct(r.pick.p)}</b> · odd mínima <b class="m">${odd(1 / r.pick.p)}</b></span></div>
+    <div class="tn-pick"><small>A nossa aposta</small><b>${esc(r.pick.t)}</b><span class="tn-ex">Ganhas se ${esc(explainBet(r.pick.t))}</span><span><b class="m">${pct(r.pick.p)}</b> · odd mínima <b class="m">${odd(1 / r.pick.p)}</b></span></div>
     <details class="tn-more"><summary>Todos os mercados e notas</summary>
       <ul>${r.sel.filter((x) => x.p >= 0.1).map((x) => `<li><span>${esc(x.t)}<small>${esc(x.grp)}</small></span><b class="m">${pct(x.p)}</b><em class="m">${odd(1 / x.p)}</em></li>`).join('')}</ul>
       ${(m.notas || []).map((n) => `<p>${esc(n)}</p>`).join('')}<span class="src">${esc(m.superficie)}. Fonte: ${esc(m.fonte)}</span></details>
@@ -2637,7 +2712,7 @@ function tnCard(m, i) {
 }
 function renderTenis() {
   const T0 = (D.tenis && D.tenis.jogos) || [], L = T0.filter((m) => T(m.inicio) > Date.now() - 3 * 3600e3).sort((a, b) => a.inicio.localeCompare(b.inicio));
-  $('tenisView').innerHTML = `<p class="lead" style="margin-top:12px">Probabilidades a partir do Elo de cada jogador (média do Elo geral e do Elo no piso do torneio). As apostas seguem a mesma regra do futebol: entre 58% e 80%, nunca para baixo.</p>
+  $('tenisView').innerHTML = `<p class="lead">Uma aposta por encontro. A percentagem é a hipótese de acertar, calculada pela força de cada jogador (Elo).</p>
     ${L.length ? `<div class="tns">${L.map((m) => tnCard(m, T0.indexOf(m))).join('')}</div>` : '<div class="empty card" style="margin-top:12px">Sem encontros de ténis carregados. A tarefa diária acrescenta-os todas as manhãs.</div>'}
     ${(() => { const H = (D.tenis && D.tenis.historico) || [], dec = H.filter((x) => x.resultado !== 'void'), w = dec.filter((x) => x.resultado === 'won').length; return dec.length ? `<div class="tn-hist card">Ténis até agora: <b>${w} de ${dec.length}</b> apostas certas (${pct(w / dec.length)}).</div>` : ''; })()}
     <span class="src" style="display:block;margin-top:10px">${esc((D.tenis && D.tenis.metodo) || '')}</span>`;
@@ -2655,8 +2730,54 @@ function setSport(s2) {
   if (s2 === 'tenis') renderTenis(); else refresh();
 }
 
+// ===== Simplicidade: explicar apostas =====
+function explainBet(t, g) {
+  const n = (x) => Math.floor(parseFloat(String(x).replace(',', '.'))) + 1;
+  const c = g ? g.casa : null, f = g ? g.fora : null; let m;
+  if (t === 'Empate') return 'o jogo acabar empatado.';
+  if (g && t === c + ' ou ' + f) return 'uma das equipas ganhar. Só perdes se houver empate.';
+  if (t === 'Ambas marcam: Sim') return 'as duas equipas marcarem pelo menos um golo cada.';
+  if (t === 'Ambas marcam: Não') return 'pelo menos uma das equipas não marcar.';
+  if (t === 'Mais de 2,5 sets') return 'o encontro for aos 3 sets.';
+  if ((m = t.match(/^Vitória (.+)$/))) return `${m[1]} ganhar.`;
+  if ((m = t.match(/^(.+) \(empate anula\)$/))) return `${m[1]} ganhar. Se empatar, recebes o dinheiro de volta.`;
+  if ((m = t.match(/^(.+) ou empate e \+([\d,]+) golos$/))) return `${m[1]} não perder e houver ${n(m[2])} ou mais golos.`;
+  if ((m = t.match(/^(.+) ou empate$/))) return `${m[1]} ganhar ou empatar. Só perdes se ${m[1]} perder.`;
+  if ((m = t.match(/^1\.ª parte: mais de ([\d,]+) golos?$/))) return `houver ${n(m[1])} ou mais golos até ao intervalo.`;
+  if ((m = t.match(/^Mais de ([\d,]+) golos$/))) return `houver ${n(m[1])} ou mais golos no jogo, somando as duas equipas.`;
+  if ((m = t.match(/^Mais de ([\d,]+) cantos$/))) return `houver ${n(m[1])} ou mais cantos no jogo.`;
+  if ((m = t.match(/^(.+) mais de ([\d,]+) golos$/))) return `${m[1]} marcar ${n(m[2])} ou mais golos.`;
+  if ((m = t.match(/^(.+) mais de ([\d,]+) cantos$/))) return `${m[1]} tiver ${n(m[2])} ou mais cantos.`;
+  if ((m = t.match(/^(.+) com mais cantos$/))) return `${m[1]} tiver mais cantos do que o adversário.`;
+  if ((m = t.match(/^(.+) marca$/))) return `${m[1]} marcar pelo menos um golo.`;
+  if ((m = t.match(/^(.+) sem sofrer golos$/))) return `${m[1]} não sofrer nenhum golo.`;
+  if ((m = t.match(/^(.+) vence a zero$/))) return `${m[1]} ganhar sem sofrer golos.`;
+  if ((m = t.match(/^(.+) vence e ambas marcam$/))) return `${m[1]} ganhar e as duas equipas marcarem.`;
+  if ((m = t.match(/^(.+) vence e \+([\d,]+) golos$/))) return `${m[1]} ganhar e houver ${n(m[2])} ou mais golos no jogo.`;
+  if ((m = t.match(/^(.+) vence por 3\+$/))) return `${m[1]} ganhar por 3 ou mais golos de diferença.`;
+  if ((m = t.match(/^(.+) vence por (\d)$/))) return `${m[1]} ganhar por exatamente ${m[2]} golo${m[2] === '1' ? '' : 's'} de diferença.`;
+  if ((m = t.match(/^(.+) −([\d,]+)/))) return `${m[1]} ganhar por ${n(m[2])} ou mais golos de diferença.`;
+  if ((m = t.match(/^(.+) \+([\d,]+)$/))) { const k = n(m[2]) - 1; return `${m[1]} ganhar, empatar ou perder ${k === 1 ? 'só por 1 golo' : 'por até ' + k + ' golos'}.`; }
+  if ((m = t.match(/^Resultado exato (\d+)-(\d+)$/))) return `o jogo acabar exatamente ${m[1]}-${m[2]}.`;
+  if ((m = t.match(/^Intervalo: (.+) a ganhar$/))) return `${m[1]} estiver a ganhar ao intervalo.`;
+  if ((m = t.match(/^(.+) ganha pelo menos 1 set$/))) return `${m[1]} ganhar pelo menos um set. Mesmo que perca o encontro por 2-1, ganhas.`;
+  if ((m = t.match(/^(.+) vence 2-0$/))) return `${m[1]} ganhar sem perder nenhum set.`;
+  if ((m = t.match(/^(.+) ganha o 1\.º set$/))) return `${m[1]} ganhar o primeiro set.`;
+  if ((m = t.match(/^(.+) vence$/))) return `${m[1]} ganhar.`;
+  return 'a aposta indicada se confirmar no fim do jogo.';
+}
+function howBox(jogo, mercado, aposta, p) {
+  return `<details class="how card"><summary><span class="hw-i" aria-hidden="true">?</span>Como fazer esta aposta</summary><ol>
+    <li>Toca em <b>Copiar aposta</b> (acima) para não te esqueceres.</li>
+    <li>Abre a tua casa de apostas e pesquisa <b>${esc(jogo.split(' – ')[0])}</b>. Abre o jogo <b>${esc(jogo)}</b>.</li>
+    <li>${mercado ? `Procura o mercado <b>${esc(mercado)}</b> e toca` : 'Toca'} em <b>${esc(aposta)}</b>.</li>
+    <li>Confirma que a odd é <b class="m">${odd(1 / p)}</b> ou mais. Se for menor, não apostes.</li>
+    <li>Escreve um valor pequeno e confirma.</li></ol>
+    <button type="button" class="lnk" data-pg="ajuda">Ver o guia completo →</button></details>`;
+}
+
 // ===== NAVEGAÇÃO =====
-const PAGES = ['inicio', 'jogos', 'mk', 'mult', 'dados', 'res', 'pop', 'tools'], DOCK = ['inicio', 'jogos', 'mk', 'mult', 'dados', 'res'];
+const PAGES = ['inicio', 'jogos', 'tenis', 'res', 'ajuda', 'mk', 'mult', 'dados', 'pop', 'tools'], DOCK = ['inicio', 'jogos', 'tenis', 'res', 'ajuda'];
 function go(pg) {
   ANIM = true;
   if (pg === 'res') renderRes();
@@ -2666,6 +2787,7 @@ function go(pg) {
   if (pg === 'mk') { renderLab(); renderMk(); }
   if (pg === 'dados') renderDados();
   if (pg === 'inicio') renderInicio();
+  if (pg === 'tenis') renderTenis();
   const cur0 = PAGES.findIndex((k) => !$('pg-' + k).hidden); document.querySelector('main').dataset.dir = PAGES.indexOf(pg) >= cur0 ? 'r' : 'l';
   PAGES.forEach((k) => ($('pg-' + k).hidden = k !== pg));
   document.querySelectorAll('[data-pg]').forEach((b) => (b.dataset.pg === pg ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current')));
@@ -2734,9 +2856,9 @@ $('tOdd').addEventListener('keydown', (e) => { if (e.key === 'Enter') goCustom()
 $('lkAnySave').addEventListener('click', () => { if (saveLink('', $('lkAny').value)) { $('lkAny').value = ''; renderLinks(); } });
 $('searchBox').addEventListener('click', () => openFinder());
 $('logoBtn').addEventListener('click', openSplash);
-$('replay').addEventListener('click', openSplash);
+$('replay').addEventListener('click', openSplash); $('replay2').addEventListener('click', openSplash);
 $('labCopy').addEventListener('click', () => copyText(labText(), 'Lista copiada'));
-$('intro').addEventListener('click', (e) => { const b = e.target.closest('[data-inend]'); if (b) { const v = b.dataset.inend; closeSplash(() => { if (v === '@lab') go('mk'); else if (v) openGame(v); }); } });
+$('intro').addEventListener('click', (e) => { const b = e.target.closest('[data-inend]'); if (b) { const v = b.dataset.inend; closeSplash(() => { if (v === '@lab') go('mk'); else if (v === '@ajuda') go('ajuda'); else if (v) openGame(v); }); } });
 document.addEventListener('keydown', (e) => { if (!$('intro').hidden && (e.key === 'Escape' || e.key === 'Enter')) closeSplash(); });
 $('fq').addEventListener('input', renderFinder);
 $('fqX').addEventListener('click', () => { $('fq').value = ''; renderFinder(); $('fq').focus(); });
