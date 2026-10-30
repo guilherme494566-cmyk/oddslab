@@ -1438,38 +1438,44 @@ b.ok { color: var(--pos); } b.wrn { color: var(--warn); }
   .vmap { margin-top: 0; }
 }
 .dk-c header { position: static; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; border: 0; }
-/* t20: destaque estilo transmissão */
-.sp3 { position: relative; margin-top: 14px; padding: 18px; border-radius: 20px; display: grid; gap: 16px; overflow: hidden; background: linear-gradient(180deg, #16181d, #101215); border: 1px solid #2c3038; box-shadow: 0 30px 60px -30px rgb(0 0 0 / .8); animation: spIn .7s cubic-bezier(.2,.8,.2,1) both; }
-.sp3::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 70%; aspect-ratio: 1; background: radial-gradient(closest-side, rgb(245 190 60 / .18), transparent); pointer-events: none; }
-@keyframes spIn { from { opacity: 0; transform: translateY(14px); } }
-.sp3-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.sp3-tag { font-size: 13px; font-weight: 800; color: var(--acc); }
-.sp3-w { font-size: 13px; font-weight: 600; color: var(--muted); }
-.sp3-sb { display: grid; gap: 4px; }
-.sp3-lg { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
-.sp3-t { display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 10px; background: #1d2027; border-left: 5px solid var(--c); font-size: 21px; font-weight: 800; letter-spacing: -.01em; animation: sbIn .6s cubic-bezier(.2,.8,.2,1) both; }
-.sp3-t + .sp3-t { animation-delay: .08s; }
-.sp3-t span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@keyframes sbIn { from { opacity: 0; transform: translateX(-18px); } }
-.sp3-bet { display: grid; gap: 4px; }
-.sp3-bet strong { font-size: 24px; line-height: 1.15; font-weight: 900; letter-spacing: -.015em; color: var(--acc2); }
-.sp3-bet p { margin: 0; font-size: 14px; color: var(--muted); }
-.sp3-bar { position: relative; height: 12px; border-radius: 99px; background: #23272f; overflow: hidden; }
-.sp3-bar i { position: absolute; inset: 0 auto 0 0; width: var(--p); border-radius: inherit; background: linear-gradient(90deg, #1fbf6f, var(--pos)); box-shadow: 0 0 18px rgb(34 229 132 / .5); animation: barIn 1.1s .25s cubic-bezier(.2,.8,.2,1) both; }
+/* t21: destaque com divisão 1X2 */
+.s4 { position: relative; margin-top: 14px; padding: 22px 20px 20px; border-radius: 22px; display: grid; gap: 16px; background: radial-gradient(120% 80% at 0% 0%, rgb(245 190 60 / .10), transparent 55%), var(--s1); border: 1px solid var(--bd2); animation: s4In .6s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes s4In { from { opacity: 0; transform: translateY(12px); } }
+.s4-meta { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.s4-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
+.s4 .s4-m { margin: 0; display: block; font-size: 28px; line-height: 1.12; font-weight: 800; letter-spacing: -.025em; text-wrap: balance; color: var(--text); }
+.s4-m span { font-weight: 500; color: var(--faint); font-size: .7em; margin: 0 4px; }
+.s4-split { display: flex; gap: 4px; }
+.s4-seg { min-width: 0; display: grid; gap: 8px; }
+.s4-seg i { height: 10px; border-radius: 99px; background: var(--s3); transform-origin: left; animation: segIn .8s calc(.15s + var(--i) * .12s) cubic-bezier(.2,.8,.2,1) both; }
+@keyframes segIn { from { transform: scaleX(0); } }
+.s4-seg.on i { background: var(--pos); box-shadow: 0 0 14px rgb(34 229 132 / .35); }
+.s4-seg.back i { background: repeating-linear-gradient(135deg, #5b6170 0 4px, #3a3f49 4px 8px); }
+.s4-seg span { display: grid; gap: 1px; min-width: 0; }
+.s4-seg b { font-size: 15px; } .s4-seg.on b { color: var(--pos); } .s4-seg.off b { color: var(--muted); }
+.s4-seg small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s4-key { margin: -6px 0 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--faint); }
+.s4-key span { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-left: 6px; } .s4-key span:first-child { margin-left: 0; }
+.s4-key .on { background: var(--pos); } .s4-key .off { background: var(--s3); } .s4-key .back { background: repeating-linear-gradient(135deg, #5b6170 0 3px, #3a3f49 3px 6px); }
+.s4-one { height: 10px; border-radius: 99px; background: var(--s3); overflow: hidden; }
+.s4-one i { display: block; height: 100%; width: var(--p); background: var(--pos); border-radius: inherit; animation: barIn 1s .2s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes barIn { from { width: 0; } }
-.sp3-nums { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; font-size: 13.5px; color: var(--muted); }
-.sp3-nums b { font-size: 17px; color: var(--text); }
-.sp3-nums span:first-child b { color: var(--pos); }
-.sp3-a { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; }
+.s4-pick { display: flex; justify-content: space-between; align-items: end; gap: 14px; padding-top: 16px; border-top: 1px solid var(--bd); }
+.s4-pick > div:first-child { display: grid; gap: 2px; min-width: 0; }
+.s4-pick small { font-size: 12.5px; color: var(--muted); }
+.s4-pick strong { font-size: 22px; line-height: 1.15; font-weight: 800; color: var(--acc2); letter-spacing: -.01em; }
+.s4-n { display: grid; justify-items: end; flex: none; }
+.s4-n b { font-size: 34px; line-height: 1; font-weight: 800; color: var(--pos); letter-spacing: -.02em; }
+.s4-ex { margin: -6px 0 0; font-size: 14px; color: var(--muted); }
+.s4-a { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; }
 @media (min-width: 1024px) {
-  .sp3 { padding: 26px 28px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px 28px; }
-  .sp3-h, .sp3-m, .sp3-a { grid-column: 1 / -1; }
-  .sp3-t { font-size: 26px; min-height: 54px; }
-  .sp3-bet { align-content: center; }
-  .sp3-bet strong { font-size: 30px; }
-  .sp3-a { grid-template-columns: 240px 160px; }
+  .s4 { padding: 30px 32px 28px; gap: 20px; }
+  .s4 .s4-m { font-size: 38px; }
+  .s4-seg i { height: 12px; }
+  .s4-pick strong { font-size: 28px; } .s4-n b { font-size: 44px; }
+  .s4-a { grid-template-columns: 240px 160px; }
 }
-@media (prefers-reduced-motion: reduce) { .sp3, .sp3-t, .sp3-bar i { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .s4, .s4-seg i, .s4-one i { animation: none; } }
 </style>
 
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
@@ -3027,18 +3033,29 @@ function renderStar() {
   const x = topNow(1)[0];
   if (!x) { el.innerHTML = ''; return; }
   const { g, a } = x, hoje = dayKey(new Date(g.inicio)) === today;
-  const quando = (hoje ? 'Hoje' : cap(dayLabel(g.inicio).split(',')[0])) + ', ' + hm(g.inicio);
-  const P = Math.round(a.prob * 100), c1 = (CC[g.casa] || ['#8c929b'])[0], c2 = (CC[g.fora] || ['#8c929b'])[0];
-  el.innerHTML = `<article class="sp3" aria-label="A aposta mais provável">
-    <div class="sp3-h"><span class="sp3-tag">A mais provável</span><span class="sp3-w">${esc(quando)}</span></div>
-    <div class="sp3-sb">
-      <div class="sp3-lg">${flag(g.pais)}${esc(g.liga)}</div>
-      <div class="sp3-t" style="--c:${c1}"><span>${esc(g.casa)}</span></div>
-      <div class="sp3-t" style="--c:${c2}"><span>${esc(g.fora)}</span></div>
+  const quando = (hoje ? 'Hoje' : cap(dayLabel(g.inicio).split(',')[0])) + ' às ' + hm(g.inicio);
+  const t = a.aposta, [ph, pd, pa] = g.prob1x2 || [0, 0, 0];
+  let cov = null;
+  if (t === 'Vitória ' + g.casa) cov = ['on', 'off', 'off'];
+  else if (t === 'Vitória ' + g.fora) cov = ['off', 'off', 'on'];
+  else if (t === g.casa + ' ou empate') cov = ['on', 'on', 'off'];
+  else if (t === g.fora + ' ou empate') cov = ['off', 'on', 'on'];
+  else if (t === g.casa + ' ou ' + g.fora) cov = ['on', 'off', 'on'];
+  else if (t === g.casa + ' (empate anula)') cov = ['on', 'back', 'off'];
+  else if (t === g.fora + ' (empate anula)') cov = ['off', 'back', 'on'];
+  const P = Math.round(a.prob * 100);
+  const vis = cov && ph ? `<div class="s4-split" role="img" aria-label="${esc(g.casa)} ${pct(ph)}, empate ${pct(pd)}, ${esc(g.fora)} ${pct(pa)}">
+      ${[[g.casa, ph, cov[0]], ['Empate', pd, cov[1]], [g.fora, pa, cov[2]]].map(([n, p, c], i) => `<div class="s4-seg ${c}" style="flex:${Math.max(p, 0.06)};--i:${i}"><i></i><span><b class="m">${pct(p)}</b><small>${esc(n)}</small></span></div>`).join('')}
     </div>
-    <div class="sp3-bet"><strong>${esc(a.aposta)}</strong><p>Ganhas se ${esc(explainBet(a.aposta, g))}</p></div>
-    <div class="sp3-m" style="--p:${P}%"><div class="sp3-bar"><i></i></div><div class="sp3-nums"><span><b class="m">${P}%</b> de hipótese</span><span>Odd mínima <b class="m">${odd(1 / a.prob)}</b></span></div></div>
-    <div class="sp3-a">${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`)}<button type="button" class="btn ghost" data-open="${g.id}">Ver o jogo</button></div>
+    <p class="s4-key"><span class="on"></span>Ganhas${cov.includes('back') ? '<span class="back"></span>Recebes o dinheiro de volta' : ''}<span class="off"></span>Perdes</p>`
+    : `<div class="s4-one" style="--p:${P}%"><i></i></div>`;
+  el.innerHTML = `<article class="s4" aria-label="A aposta mais provável">
+    <p class="s4-meta">${flag(g.pais)}<span>${esc(g.liga)}</span><span class="s4-dot"></span><span>${esc(quando)}</span></p>
+    <h2 class="s4-m">${esc(g.casa)} <span>vs</span> ${esc(g.fora)}</h2>
+    ${vis}
+    <div class="s4-pick"><div><small>A aposta mais provável</small><strong>${esc(t)}</strong></div><div class="s4-n"><b class="m">${P}%</b><small>odd mín. <span class="m">${odd(1 / a.prob)}</span></small></div></div>
+    <p class="s4-ex">Ganhas se ${esc(explainBet(t, g))}</p>
+    <div class="s4-a">${bcLink(`data-bc="${g.id}|${esc(t)}"`)}<button type="button" class="btn ghost" data-open="${g.id}">Ver o jogo</button></div>
   </article>`;
 }
 
