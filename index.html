@@ -1269,6 +1269,17 @@ small, .src, .desc, .lead { letter-spacing: 0; }
 .how ol { padding-bottom: 14px; }
 .how ol small { color: var(--faint); }
 .card { border-color: var(--bd); }
+.ag { margin-top: 10px; padding: 6px 0; overflow: hidden; }
+.ag-h { display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.ag-r { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 14px; border: 0; border-top: 1px solid var(--bd); background: none; color: var(--text); font: inherit; font-size: 14px; text-align: left; }
+button.ag-r { cursor: pointer; } button.ag-r:hover { background: var(--s2); }
+.ag-tm { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ag-tm span:not(.mono) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-tm.r { justify-content: flex-end; text-align: right; }
+.ag-t, .ag-s { text-align: center; font-size: 13px; color: var(--muted); }
+.ag-s { color: var(--text); font-size: 15px; } .ag-s.live { color: var(--pos); }
+.ag-p { font: 700 12px var(--mono); color: var(--bg); background: var(--pos); padding: 3px 7px; border-radius: 99px; }
+#allG .src { display: block; margin-top: 8px; }
 </style>
 
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
@@ -1310,9 +1321,10 @@ small, .src, .desc, .lead { letter-spacing: 0; }
       <h2><span>Jogos</span><small id="cnt"></small></h2>
       <div class="seg" id="quick" role="group" aria-label="Filtro" style="margin-bottom:8px"></div>
       <div class="rows" id="list"></div>
+      <div id="allG" hidden></div>
     </div>
     <div id="findView" hidden><h2 id="findTitle"></h2><div id="find"></div></div>
-    <p class="foot">Probabilidades estimadas, não certezas. Odd mínima = odd a partir da qual a aposta compensa. 18+</p>
+    <p class="foot">Estimativas, não certezas. 18+</p>
   </section>
 
   <section id="pg-tenis" hidden>
@@ -2780,6 +2792,32 @@ function howBox(jogo, mercado, aposta, p) {
     <li>Odd <b class="m">${odd(1 / p)}</b> ou mais? Confirma.</li></ol></details>`;
 }
 
+// ===== Todos os jogos (API football-data via Vercel) =====
+let ALLG = null;
+const nrm = (x) => String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\b(fc|cf|sc|cp|ac|afc|ssc|as|sv|vfb|vfl|tsg|rc|ud|cd|sd|ca|club|de|sl)\b/g, '').replace(/[^a-z0-9]/g, '');
+function findOurs(m) {
+  const a = nrm(m.casa), b = nrm(m.fora);
+  return jogos.find((g) => { const c = nrm(g.casa), f = nrm(g.fora); return c && f && (a.includes(c) || c.includes(a)) && (b.includes(f) || f.includes(b)) && Math.abs(T(g.inicio) - T(m.inicio)) < 6 * 3600e3; });
+}
+function loadAll() {
+  if (location.protocol === 'file:') return;
+  fetch('/api/jogos').then((r) => (r.ok ? r.json() : null)).then((j) => { if (j && j.jogos) { ALLG = j; renderAll(); } }).catch(() => {});
+}
+function renderAll() {
+  const el = $('allG'); if (!el) return;
+  if (!ALLG) { el.hidden = true; return; }
+  const L = ALLG.jogos.filter((m) => dayKey(new Date(m.inicio)) === day).sort((x, y) => x.inicio.localeCompare(y.inicio));
+  el.hidden = false;
+  if (!L.length) { el.innerHTML = '<h2><span>Grandes ligas</span></h2><div class="empty card">Sem jogos neste dia.</div>'; return; }
+  const by = {}; L.forEach((m) => (by[m.liga] = by[m.liga] || []).push(m));
+  el.innerHTML = '<h2><span>Grandes ligas</span><small>' + L.length + ' jogos</small></h2>' + Object.entries(by).map(([lg, ms]) => `<div class="ag card"><div class="ag-h">${flag(ms[0].pais)}${esc(lg)}</div>${ms.map((m) => {
+    const g = findOurs(m), fin = m.estado === 'FINISHED', live = /IN_PLAY|PAUSED/.test(m.estado);
+    const mid = fin || live ? `<b class="m ag-s${live ? ' live' : ''}">${m.golos ? m.golos.join('-') : '–'}</b>` : `<span class="m ag-t">${hm(m.inicio)}</span>`;
+    const end = g ? `<span class="ag-p">${pct(pickOf(g).prob)}</span>` : '';
+    return `<${g ? `button type="button" data-open="${g.id}"` : 'div'} class="ag-r"><span class="ag-tm">${mono(m.casa, 'xs')}<span>${esc(m.casa)}</span></span>${mid}<span class="ag-tm r"><span>${esc(m.fora)}</span>${mono(m.fora, 'xs')}</span>${end}</${g ? 'button' : 'div'}>`;
+  }).join('')}</div>`).join('') + '<span class="src">Fonte: football-data.org · % = jogo com aposta</span>';
+}
+
 // ===== NAVEGAÇÃO =====
 const PAGES = ['inicio', 'jogos', 'tenis', 'res', 'ajuda', 'mk', 'mult', 'dados', 'pop', 'tools'], DOCK = ['inicio', 'jogos', 'tenis', 'res', 'ajuda'];
 function go(pg) {
@@ -2799,7 +2837,7 @@ function go(pg) {
 
   window.scrollTo({ top: 0 });
 }
-function refresh() { renderDays(); renderLeagues(); renderHome(); renderFind(); }
+function refresh() { renderDays(); renderLeagues(); renderHome(); renderFind(); renderAll(); }
 document.addEventListener('click', (e) => {
   const t = e.target.closest('[data-sport],[data-tncp],[data-labchk],[data-labp],[data-labn],[data-bk],[data-xbc2],[data-mkrel],[data-rview],[data-dk],[data-dkg],[data-tn],[data-rmode],[data-xbc],[data-mkc],[data-mkb],[data-mkd],[data-mkmore],[data-dlg],[data-dsort],[data-gtab],[data-gmc],[data-ms],[data-agd],[data-rrow],[data-stake],[data-pick],[data-popf],[data-pbc],[data-lksave],[data-lkdel],[data-lkcopy],[data-lkdeli],[data-todd],[data-twin],[data-quick],[data-liga],[data-open],[data-bc],[data-bcm],[data-day],[data-pg],[data-rby],[data-rres]');
   if (!t) return;
@@ -2888,6 +2926,7 @@ $('meth').innerHTML = METHOD.map(([t, d2, ic], i) => `<li class="card" style="--
 renderTicker();
 try { if (!sessionStorage.getItem('spSeen') && !location.hash) { sessionStorage.setItem('spSeen', '1'); openSplash(); } } catch { openSplash(); }
 const m0 = location.hash.match(/^#j-([a-z0-9-]+)$/); if (m0) openGame(m0[1]);
+loadAll();
 </script>
 
 </html>
