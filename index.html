@@ -12,7 +12,7 @@
 <title>ODDSLAB Pessoal</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#0a0b0d">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:ital,wght@0,400..900;1,400..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400..900;1,400..900&display=swap">
 <style>
 :root {
   color-scheme: dark;
@@ -1437,64 +1437,39 @@ b.ok { color: var(--pos); } b.wrn { color: var(--warn); }
   .vb-g > div:first-child { position: sticky; top: 96px; }
   .vmap { margin-top: 0; }
 }
-/* t19: bilhete do dia */
-:root { --disp: 'Big Shoulders Display', 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif; --ink: #17130a; --paper: #f7c64a; --paper2: #ee9a24; }
-.tk2 { --nt: 12px; position: relative; margin-top: 14px; display: grid; grid-template-rows: auto auto; color: var(--ink); filter: drop-shadow(0 24px 40px rgb(239 143 28 / .22)) drop-shadow(0 2px 0 rgb(0 0 0 / .4)); animation: tkIn .9s cubic-bezier(.2,.9,.25,1.15) both; }
-@keyframes tkIn { from { opacity: 0; transform: translateY(26px) rotate(-2.5deg) scale(.97); } 60% { opacity: 1; } }
-.tk2-main, .tk2-stub { position: relative; }
-.tk2-main { padding: 18px 20px 22px; border-radius: 20px 20px 0 0; background:
-  radial-gradient(circle at 0 100%, transparent var(--nt), #0000 0) , 
-  linear-gradient(155deg, #ffe08a 0%, var(--paper) 38%, var(--paper2) 100%);
-  -webkit-mask: radial-gradient(circle var(--nt) at 0 100%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle var(--nt) at 100% 100%, #0000 98%, #000) right / 51% 100% no-repeat;
-          mask: radial-gradient(circle var(--nt) at 0 100%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle var(--nt) at 100% 100%, #0000 98%, #000) right / 51% 100% no-repeat; }
-.tk2-main::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: repeating-linear-gradient(115deg, rgb(255 255 255 / .07) 0 2px, transparent 2px 9px); pointer-events: none; mix-blend-mode: soft-light; }
-.tk2-stub { padding: 18px 20px 16px; border-radius: 0 0 20px 20px; background: #1b1609; color: #ffe08a; display: grid; grid-template-columns: auto 1fr; gap: 12px 18px; align-items: center;
-  -webkit-mask: radial-gradient(circle var(--nt) at 0 0, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle var(--nt) at 100% 0, #0000 98%, #000) right / 51% 100% no-repeat;
-          mask: radial-gradient(circle var(--nt) at 0 0, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle var(--nt) at 100% 0, #0000 98%, #000) right / 51% 100% no-repeat; }
-.tk2-stub::before { content: ""; position: absolute; left: calc(var(--nt) + 6px); right: calc(var(--nt) + 6px); top: -1px; border-top: 2px dashed rgb(247 198 74 / .45); }
-.tk2-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; }
-.tk2-top b { font-weight: 800; }
-.tk2-top span { display: flex; align-items: center; gap: 6px; font-weight: 600; opacity: .8; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tk2-tm { margin: 14px 0 0; display: grid; font: 900 clamp(38px, 11.5vw, 64px)/.86 var(--disp); letter-spacing: -.01em; text-transform: uppercase; text-wrap: balance; }
-.tk2-tm span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tk2-main { container-type: inline-size; }
-.tk2 .tk2-tm { color: var(--ink); font-size: min(64px, calc(100cqi * 1.35 / var(--L))); }
 .dk-c header { position: static; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; border: 0; }
-.tk2-tm em { font: italic 600 15px/1.6 var(--sans); text-transform: none; letter-spacing: 0; opacity: .65; margin: 2px 0; }
-.tk2-when { margin: 10px 0 0; font-weight: 700; font-size: 14px; }
-.tk2-bet { margin-top: 16px; padding-top: 14px; border-top: 1.5px solid rgb(23 19 10 / .2); display: grid; gap: 3px; }
-.tk2-bet small { font-size: 12.5px; font-weight: 600; opacity: .7; }
-.tk2-bet strong { font-size: 22px; line-height: 1.15; font-weight: 900; letter-spacing: -.01em; }
-.tk2-bet p { margin: 2px 0 0; font-size: 14px; font-weight: 500; opacity: .82; }
-.tk2-p { display: grid; }
-.tk2-p b { font: 900 64px/.85 var(--disp); color: var(--paper); }
-.tk2-p sup { font-size: .45em; vertical-align: top; margin-left: 2px; }
-.tk2-p small, .tk2-o small { font-size: 12.5px; color: rgb(255 224 138 / .65); }
-.tk2-o { display: grid; justify-items: end; text-align: right; }
-.tk2-o b { font: 800 34px/1 var(--disp); color: #fff3cf; }
-.tk2-stub .btn.bc { grid-column: 1 / -1; background: var(--paper); color: var(--ink); border: 0; box-shadow: none; }
-.tk2-lk { grid-column: 1 / -1; border: 0; background: none; color: #ffe08a; font: 700 14px var(--sans); padding: 2px 0; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgb(255 224 138 / .4); cursor: pointer; }
-.tk2-lk:hover { text-decoration-color: currentColor; }
-.tk2-bc { grid-column: 1 / -1; display: flex; gap: 2px; height: 22px; justify-content: center; opacity: .35; }
-.tk2-bc i { background: #ffe08a; height: 100%; }
-.tk2 :focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+/* t20: destaque estilo transmissão */
+.sp3 { position: relative; margin-top: 14px; padding: 18px; border-radius: 20px; display: grid; gap: 16px; overflow: hidden; background: linear-gradient(180deg, #16181d, #101215); border: 1px solid #2c3038; box-shadow: 0 30px 60px -30px rgb(0 0 0 / .8); animation: spIn .7s cubic-bezier(.2,.8,.2,1) both; }
+.sp3::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 70%; aspect-ratio: 1; background: radial-gradient(closest-side, rgb(245 190 60 / .18), transparent); pointer-events: none; }
+@keyframes spIn { from { opacity: 0; transform: translateY(14px); } }
+.sp3-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.sp3-tag { font-size: 13px; font-weight: 800; color: var(--acc); }
+.sp3-w { font-size: 13px; font-weight: 600; color: var(--muted); }
+.sp3-sb { display: grid; gap: 4px; }
+.sp3-lg { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
+.sp3-t { display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 10px; background: #1d2027; border-left: 5px solid var(--c); font-size: 21px; font-weight: 800; letter-spacing: -.01em; animation: sbIn .6s cubic-bezier(.2,.8,.2,1) both; }
+.sp3-t + .sp3-t { animation-delay: .08s; }
+.sp3-t span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@keyframes sbIn { from { opacity: 0; transform: translateX(-18px); } }
+.sp3-bet { display: grid; gap: 4px; }
+.sp3-bet strong { font-size: 24px; line-height: 1.15; font-weight: 900; letter-spacing: -.015em; color: var(--acc2); }
+.sp3-bet p { margin: 0; font-size: 14px; color: var(--muted); }
+.sp3-bar { position: relative; height: 12px; border-radius: 99px; background: #23272f; overflow: hidden; }
+.sp3-bar i { position: absolute; inset: 0 auto 0 0; width: var(--p); border-radius: inherit; background: linear-gradient(90deg, #1fbf6f, var(--pos)); box-shadow: 0 0 18px rgb(34 229 132 / .5); animation: barIn 1.1s .25s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes barIn { from { width: 0; } }
+.sp3-nums { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; font-size: 13.5px; color: var(--muted); }
+.sp3-nums b { font-size: 17px; color: var(--text); }
+.sp3-nums span:first-child b { color: var(--pos); }
+.sp3-a { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; }
 @media (min-width: 1024px) {
-  .tk2 { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) 230px; --nt: 14px; }
-  .tk2-main { padding: 26px 30px 28px; border-radius: 24px 0 0 24px;
-    -webkit-mask: radial-gradient(circle var(--nt) at 100% 0, #0000 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle var(--nt) at 100% 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
-            mask: radial-gradient(circle var(--nt) at 100% 0, #0000 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle var(--nt) at 100% 100%, #0000 98%, #000) bottom / 100% 51% no-repeat; }
-  .tk2-stub { border-radius: 0 24px 24px 0; padding: 26px 24px; grid-template-columns: 1fr; align-content: center; gap: 14px;
-    -webkit-mask: radial-gradient(circle var(--nt) at 0 0, #0000 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle var(--nt) at 0 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
-            mask: radial-gradient(circle var(--nt) at 0 0, #0000 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle var(--nt) at 0 100%, #0000 98%, #000) bottom / 100% 51% no-repeat; }
-  .tk2-stub::before { left: -1px; right: auto; top: calc(var(--nt) + 6px); bottom: calc(var(--nt) + 6px); border-top: 0; border-left: 2px dashed rgb(247 198 74 / .45); }
-  .tk2-o { justify-items: start; text-align: left; }
-  .tk2-p b { font-size: 96px; }
-  .tk2 .tk2-tm { font-size: min(92px, calc(100cqi * 1.35 / var(--L))); }
-  .tk2-bet strong { font-size: 28px; }
-  .tk2:hover .tk2-stub { transform: translateX(4px) rotate(.6deg); }
-  .tk2-stub { transition: transform .5s cubic-bezier(.2,.9,.3,1.3); transform-origin: left center; }
+  .sp3 { padding: 26px 28px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px 28px; }
+  .sp3-h, .sp3-m, .sp3-a { grid-column: 1 / -1; }
+  .sp3-t { font-size: 26px; min-height: 54px; }
+  .sp3-bet { align-content: center; }
+  .sp3-bet strong { font-size: 30px; }
+  .sp3-a { grid-template-columns: 240px 160px; }
 }
-@media (prefers-reduced-motion: reduce) { .tk2 { animation: none; } .tk2-stub { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .sp3, .sp3-t, .sp3-bar i { animation: none; } }
 </style>
 
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
@@ -3053,22 +3028,17 @@ function renderStar() {
   if (!x) { el.innerHTML = ''; return; }
   const { g, a } = x, hoje = dayKey(new Date(g.inicio)) === today;
   const quando = (hoje ? 'Hoje' : cap(dayLabel(g.inicio).split(',')[0])) + ', ' + hm(g.inicio);
-  const seed = [...g.id].reduce((s, c) => (s * 31 + c.charCodeAt(0)) >>> 0, 7);
-  const bars = Array.from({ length: 34 }, (_, i) => { const w = 1 + ((seed >> (i % 24)) & 3); return `<i style="width:${w}px"></i>`; }).join('');
-  el.innerHTML = `<article class="tk2" aria-label="Bilhete do dia">
-    <div class="tk2-main">
-      <div class="tk2-top"><b>Bilhete do dia</b><span>${flag(g.pais)}${esc(g.liga)}</span></div>
-      <div class="tk2-tm" role="heading" aria-level="2" style="--L:${Math.max(6, g.casa.length, g.fora.length)}"><span>${esc(g.casa)}</span><em>contra</em><span>${esc(g.fora)}</span></div>
-      <p class="tk2-when">${esc(quando)}</p>
-      <div class="tk2-bet"><small>A nossa aposta</small><strong>${esc(a.aposta)}</strong><p>Ganhas se ${esc(explainBet(a.aposta, g))}</p></div>
+  const P = Math.round(a.prob * 100), c1 = (CC[g.casa] || ['#8c929b'])[0], c2 = (CC[g.fora] || ['#8c929b'])[0];
+  el.innerHTML = `<article class="sp3" aria-label="A aposta mais provável">
+    <div class="sp3-h"><span class="sp3-tag">A mais provável</span><span class="sp3-w">${esc(quando)}</span></div>
+    <div class="sp3-sb">
+      <div class="sp3-lg">${flag(g.pais)}${esc(g.liga)}</div>
+      <div class="sp3-t" style="--c:${c1}"><span>${esc(g.casa)}</span></div>
+      <div class="sp3-t" style="--c:${c2}"><span>${esc(g.fora)}</span></div>
     </div>
-    <div class="tk2-stub">
-      <div class="tk2-p"><b>${Math.round(a.prob * 100)}<sup>%</sup></b><small>de hipótese</small></div>
-      <div class="tk2-o"><small>Odd mínima</small><b>${odd(1 / a.prob)}</b></div>
-      ${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`)}
-      <button type="button" class="tk2-lk" data-open="${g.id}">Ver o jogo</button>
-      <div class="tk2-bc" aria-hidden="true">${bars}</div>
-    </div>
+    <div class="sp3-bet"><strong>${esc(a.aposta)}</strong><p>Ganhas se ${esc(explainBet(a.aposta, g))}</p></div>
+    <div class="sp3-m" style="--p:${P}%"><div class="sp3-bar"><i></i></div><div class="sp3-nums"><span><b class="m">${P}%</b> de hipótese</span><span>Odd mínima <b class="m">${odd(1 / a.prob)}</b></span></div></div>
+    <div class="sp3-a">${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`)}<button type="button" class="btn ghost" data-open="${g.id}">Ver o jogo</button></div>
   </article>`;
 }
 
