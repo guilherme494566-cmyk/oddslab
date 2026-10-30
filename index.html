@@ -1190,6 +1190,11 @@ h2 { letter-spacing: -.01em; font-weight: 800; }
 small, .src, .desc, .lead { letter-spacing: 0; }
 /* computador: sem a faixa que passa em contínuo */
 @media (min-width: 900px) and (hover: hover) { .ticker { display: none !important; } }
+.profit small.vs { font-size: 14px; font-weight: 600; color: var(--muted); margin: 0 6px 0 2px; }
+.chart.wl .bw { fill: var(--pos); transform-origin: center bottom; transform-box: fill-box; animation: growY .7s var(--ease) both; animation-delay: var(--d); }
+.chart.wl .bl { fill: var(--neg); opacity: .85; transform-origin: center top; transform-box: fill-box; animation: growY .7s var(--ease) both; animation-delay: var(--d); }
+.chart.wl .bv { font-size: 9px; font-weight: 700; fill: var(--muted); } .chart.wl .bx { font-size: 8.5px; fill: var(--faint); }
+.chart.wl g:hover rect { filter: brightness(1.2); }
 </style>
 
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
@@ -1759,7 +1764,7 @@ let rRes = 'todas', rBy = 'tipo', STAKE = store.get('stake', 10), rOpen = -1;
 const gain = (x) => (x.resultado === 'won' ? (x.oddMinima - 1) * STAKE : x.resultado === 'lost' ? -STAKE : 0);
 function bars(groups) {
   return `<div class="bars">${groups.map(([k, g], i) => { const w = g.filter((x) => x.resultado === 'won').length, n = g.filter((x) => x.resultado !== 'void').length, u = g.reduce((t, x) => t + gain(x), 0);
-    return `<div><div class="bh"><span>${esc(k)}</span><span class="n"><b>${w}/${n}</b> · <span class="${u >= 0 ? 'ok' : 'no'}">${sEur(u)}</span></span></div><div class="bt"><i style="--w:${n ? (w / n) * 100 : 0}%;animation-delay:${i * 70}ms"></i></div></div>`; }).join('')}</div>`;
+    return `<div><div class="bh"><span>${esc(k)}</span><span class="n"><b>${w}/${n}</b> · ${pct(n ? w / n : 0)}</span></div><div class="bt"><i style="--w:${n ? (w / n) * 100 : 0}%;animation-delay:${i * 70}ms"></i></div></div>`; }).join('')}</div>`;
 }
 let rMode = 'tudo';
 function renderRes() {
@@ -1782,19 +1787,21 @@ function renderRes() {
   $('rHero').innerHTML = modeSeg + `<div class="card" style="margin-top:10px;overflow:hidden">
     <div class="rkpi" style="margin:0">
       <div class="rring"><svg viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="48" class="tr"/><circle cx="56" cy="56" r="48" class="pr" style="--c:${C};--o:${C * (1 - rate)}"/></svg><div class="rc"><b>${cu(rate * 100, 0, '', '%')}</b><span>acerto</span></div></div>
-      <div class="rinfo"><span class="k">Lucro com ${eur0(STAKE)} por aposta</span><span class="profit ${U >= 0 ? 'ok' : 'no'}">${cu(U, 2, U >= 0 ? '+' : '−', ' €')}</span><span class="m2">${E.length} apostas · ${eur0(staked)} apostados · retorno ${roi >= 0 ? '+' : '−'}${Math.round(Math.abs(roi) * 100)}%</span></div>
+      <div class="rinfo"><span class="k">Resultado das apostas</span><span class="profit ok">${W}<small class="vs">de ${W + L} certas</small></span><span class="m2">${E.length} apostas · previsto ${pct(exp)} · odd média ${odd(avgOdd)}</span></div>
     </div>
     <dl class="rstats" style="margin:0"><div><dt>Ganhas</dt><dd class="ok">${W}</dd></div><div><dt>Perdidas</dt><dd class="no">${L}</dd></div><div><dt>Previsto</dt><dd>${pct(exp)}</dd></div><div><dt>Odd média</dt><dd>${odd(avgOdd)}</dd></div></dl>
-    <div class="stake"><span>Valor por aposta</span><div class="seg">${[5, 10, 25, 50].map((v) => `<button type="button" data-stake="${v}" aria-pressed="${STAKE === v}">${v} €</button>`).join('')}</div></div>
   </div>`;
-  let acc = 0; const pts = [0, ...chrono.map((x) => (acc += gain(x)))]; window._ch = { chrono, pts };
-  const mn = Math.min(0, ...pts), mx = Math.max(STAKE * 0.5, ...pts), Wd = 320, Ht = 120, X = (i) => 8 + (i * (Wd - 16)) / Math.max(1, pts.length - 1), Y = (v) => 12 + ((mx - v) * (Ht - 24)) / (mx - mn || 1);
-  const path = pts.map((v, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join('');
-  const chart = `<svg viewBox="0 0 ${Wd} ${Ht}" class="chart" role="img" aria-label="Lucro acumulado"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fd47a" stop-opacity=".25"/><stop offset="1" stop-color="#2fd47a" stop-opacity="0"/></linearGradient></defs>
-    <line x1="8" x2="${Wd - 8}" y1="${Y(0)}" y2="${Y(0)}" class="zero"/><text x="${Wd - 8}" y="${Y(0) + 12}" text-anchor="end">0 €</text>
-    <path d="${path}L${X(pts.length - 1)},${Y(mn)}L${X(0)},${Y(mn)}Z" fill="url(#cg)" class="area"/><path d="${path}" class="line" pathLength="1"/>
-    ${pts.map((v, i) => (i ? `<circle cx="${X(i)}" cy="${Y(v)}" r="3" class="dot ${chrono[i - 1].resultado}"/>` : '')).join('')}
-    <text x="${X(pts.length - 1)}" y="${Y(pts[pts.length - 1]) - 8}" text-anchor="end" style="fill:#ecedef;font-weight:600">${sEur(pts[pts.length - 1])}</text></svg>`;
+  window._ch = null;
+  const days = []; chrono.forEach((x) => { const k = x.data; let d = days[days.length - 1]; if (!d || d.k !== k) { d = { k, w: 0, l: 0, v: 0 }; days.push(d); } d[x.resultado === 'won' ? 'w' : x.resultado === 'lost' ? 'l' : 'v']++; });
+  const Wd = 320, Ht = 150, mid = 78, mxW = Math.max(1, ...days.map((d) => d.w)), mxL = Math.max(1, ...days.map((d) => d.l)), sc = Math.min(62 / mxW, 50 / mxL, 12);
+  const bw = Math.min(22, (Wd - 24) / Math.max(1, days.length) - 4), X = (i) => 12 + i * ((Wd - 24) / Math.max(1, days.length)) + ((Wd - 24) / Math.max(1, days.length) - bw) / 2;
+  const chart = `<svg viewBox="0 0 ${Wd} ${Ht}" class="chart wl" role="img" aria-label="Apostas ganhas e perdidas por dia">
+    <line x1="8" x2="${Wd - 8}" y1="${mid}" y2="${mid}" class="zero"/>
+    ${days.map((d, i) => `<g><title>${d.k}: ${d.w} ganhas, ${d.l} perdidas${d.v ? ', ' + d.v + ' devolvidas' : ''}</title>
+      ${d.w ? `<rect x="${X(i).toFixed(1)}" y="${(mid - 2 - d.w * sc).toFixed(1)}" width="${bw.toFixed(1)}" height="${(d.w * sc).toFixed(1)}" rx="3" class="bw" style="--d:${i * 40}ms"/><text x="${(X(i) + bw / 2).toFixed(1)}" y="${(mid - 6 - d.w * sc).toFixed(1)}" text-anchor="middle" class="bv">${d.w}</text>` : ''}
+      ${d.l ? `<rect x="${X(i).toFixed(1)}" y="${mid + 2}" width="${bw.toFixed(1)}" height="${(d.l * sc).toFixed(1)}" rx="3" class="bl" style="--d:${i * 40}ms"/><text x="${(X(i) + bw / 2).toFixed(1)}" y="${(mid + 13 + d.l * sc).toFixed(1)}" text-anchor="middle" class="bv">${d.l}</text>` : ''}
+      ${days.length <= 12 || i % Math.ceil(days.length / 8) === 0 ? `<text x="${(X(i) + bw / 2).toFixed(1)}" y="${Ht - 2}" text-anchor="middle" class="bx">${d.k}</text>` : ''}</g>`).join('')}
+  </svg>`;
   const form = chrono.slice(-15).map((x) => `<span class="fm ${x.resultado}" title="${esc(x.jogo)}">${x.resultado === 'won' ? 'G' : x.resultado === 'lost' ? 'P' : 'D'}</span>`).join('');
   const grp = (f) => { const m = new Map(); E.forEach((x) => { const k = f(x); if (!m.has(k)) m.set(k, []); m.get(k).push(x); }); return [...m.entries()].sort((a, b) => b[1].length - a[1].length); };
   const byCat = grp((x) => CAT(x.aposta)), byLg = grp((x) => x.liga || 'Outras');
@@ -1804,7 +1811,7 @@ function renderRes() {
     `Acerto real <b>${pct(rate)}</b> contra <b>${pct(exp)}</b> previsto${rate >= exp ? ' — acima do esperado.' : ' — abaixo, normal com poucas apostas.'}`,
     best ? `Melhor tipo de aposta: <b>${esc(best[0])}</b> (${pct(best[1])}).` : '',
     st >= 2 ? `Sequência atual: <b>${st} ${stk === 'won' ? 'ganhas' : 'perdidas'} seguidas</b>.` : '',
-    TM.length ? `Tip Master: <b>${TM.filter((x) => x.resultado === 'won').length}/${TM.length}</b> (${sEur(TM.reduce((t, x) => t + gain(x), 0))} com ${eur0(STAKE)}).` : '',
+    TM.length ? `Tip Master: <b>${TM.filter((x) => x.resultado === 'won').length} de ${TM.length}</b> certas.` : '',
   ].filter(Boolean);
   const list = H.filter((x) => !/^(Valor|Múltipla)/.test(x.aposta) && (rRes === 'tm' ? /^Tip Master/.test(x.aposta) : rRes === 'todas' || x.resultado === rRes)).sort((a, b) => (b.inicio || '').localeCompare(a.inicio || '') || b._i - a._i);
   const RT = { won: 'GANHA', lost: 'PERDIDA', void: 'DEVOLVIDA' };
@@ -1812,11 +1819,11 @@ function renderRes() {
     const tm = /^Tip Master/.test(x.aposta), gx = gain(x);
     const all = x.placar && x.apostas && !tm ? x.apostas.map((b) => ({ ...b, r: evalBet(b.aposta, x.placar, x.jogo) })) : null;
     const hit = all ? all.filter((b) => b.r === 'won').length : 0, open = rOpen === x._i;
-    return `<tr data-rrow="${x._i}" class="${open ? 'ex' : ''}"><td class="d">${esc(x.data)}</td><td class="g"><b>${esc(x.jogo)}</b><span>${x.tipo === 'teste' ? '<i class="tt2">TESTE</i>' : ''}${tm ? '★ ' : ''}${esc(x.aposta.replace(/^Tip Master: /, ''))} · ${odd(x.oddMinima)}</span></td><td class="sc">${x.placar ? esc(x.placar) : '–'}</td><td class="pl"><span class="res ${x.resultado}">${RT[x.resultado] || ''}</span><br><span class="${gx >= 0 ? 'ok' : 'no'}">${sEur(gx)}</span></td></tr>
+    return `<tr data-rrow="${x._i}" class="${open ? 'ex' : ''}"><td class="d">${esc(x.data)}</td><td class="g"><b>${esc(x.jogo)}</b><span>${x.tipo === 'teste' ? '<i class="tt2">TESTE</i>' : ''}${tm ? '★ ' : ''}${esc(x.aposta.replace(/^Tip Master: /, ''))} · ${odd(x.oddMinima)}</span></td><td class="sc">${x.placar ? esc(x.placar) : '–'}</td><td class="pl"><span class="res ${x.resultado}">${RT[x.resultado] || ''}</span><br><span class="m" style="color:var(--muted)">odd ${odd(x.oddMinima)}</span></td></tr>
       ${open ? `<tr class="det"><td colspan="4">${all ? `<div class="src" style="margin-bottom:6px">${hit} de ${all.length} apostas deste jogo entraram</div><ul class="all">${all.map((b) => `<li class="${b.r}"><span>${b.r === 'won' ? '✓' : b.r === 'void' ? '↺' : '✗'}</span><span>${b.escolha ? '<b>' : ''}${esc(b.aposta)}${b.escolha ? '</b>' : ''}</span><span class="n">${pct(b.prob)}</span></li>`).join('')}</ul>` : '<span class="src">Sem detalhe das 12 apostas para este jogo.</span>'}</td></tr>` : ''}`;
   };
   $('rBody').innerHTML = `
-    <h2><span>Lucro acumulado</span><small>${eur0(STAKE)} por aposta</small></h2>
+    <h2><span>Ganhas e perdidas por dia</span><small>por cima ganhas, por baixo perdidas</small></h2>
     <div class="box card">${chart}<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span class="src">Últimos resultados</span><div class="form">${form}</div></div></div>
     <div class="box card ins" style="margin-top:8px">${ins.map((t) => `<p>${t}</p>`).join('')}</div>
     <h2>Desempenho</h2>
@@ -1825,7 +1832,7 @@ function renderRes() {
     <h2><span>Histórico</span><small>toca num jogo para ver a ficha</small></h2>
     <div class="seg" style="margin-bottom:8px">${[['todas', 'Todas'], ['won', 'Ganhas'], ['lost', 'Perdidas'], ['tm', 'Tip Master']].map(([k, l]) => `<button type="button" data-rres="${k}" aria-pressed="${rRes === k}">${l}</button>`).join('')}</div>
     <div class="card" style="padding:4px 10px">${list.length ? `<table class="led"><tbody>${list.map(rowR).join('')}</tbody></table>` : '<div class="empty">Nada com este filtro.</div>'}</div>
-    <p class="foot">Lucro calculado à odd mínima de cada aposta; nas casas de apostas a odd costuma ser um pouco maior. Resultados passados não garantem os futuros. 18+</p>`;
+    <p class="foot">Resultados passados não garantem os futuros. 18+</p>`;
   countUp($('rHero')); bindChart();
 }
 
@@ -2264,7 +2271,7 @@ function statStrip() {
   const hs = histStats(), nx = openList().find((g) => !g.aviso);
   return `<div class="ss">
     <div><small>Acerto real</small><b class="m">${hs.n ? cu(hs.rate * 100, 0, '', '%') : '–'}</b><em>${hs.n ? hs.W + ' de ' + hs.n + ' apostas' : 'sem apostas'}</em></div>
-    <div><small>Saldo real</small><b class="m ${hs.U >= 0 ? 'ok' : 'no'}">${cu(hs.U, 0, hs.U >= 0 ? '+' : '−', ' €')}</b><em>10 € por aposta</em></div>
+    <div><small>Ganhas / perdidas</small><b class="m"><span class="ok">${hs.W}</span> / <span class="no">${hs.n - hs.W}</span></b><em>apostas reais</em></div>
     <div><small>Próximo jogo</small><b class="m"${nx ? ` data-cd="${nx.inicio}"` : ''}>${nx ? cdTxt(T(nx.inicio) - Date.now()) : '–'}</b><em>${nx ? esc(nx.casa) + ' – ' + esc(nx.fora) : ''}</em></div>
   </div>`;
 }
@@ -2423,7 +2430,7 @@ function openRes(i) {
     ${x.teste ? `<span class="tt2 big">TESTE RETROATIVO</span>` : `<span class="tt2 big real">APOSTA REAL</span>`}
   </div>
   <div class="rsh-pick card ${x.resultado}"><span class="k">${tm ? 'Tip Master' : 'A nossa aposta'}</span><div class="pk"><span><b>${esc(ap)}</b><small>${pct(x.prob)} · odd mínima <b class="m">${odd(x.oddMinima)}</b></small></span><span class="res ${x.resultado}">${RTX[x.resultado] || ''}</span></div>
-    <div class="rsh-g"><span>Com ${eur0(STAKE)}</span><b class="m ${gain(x) >= 0 ? 'ok' : 'no'}">${sEur(gain(x))}</b></div></div>
+</div>
   ${all ? `<div class="box card"><h3>${hit} de ${all.length} apostas do jogo entraram</h3><div class="rsh-bars">${all.map((b) => `<div class="rb2 ${b.r}"><span>${b.r === 'won' ? '✓' : b.r === 'void' ? '↺' : '✗'}</span><b${b.escolha ? ' class="our"' : ''}>${b.escolha ? '<span class="star">NOSSA</span>' : ''}${esc(b.aposta)}</b><em class="m">${pct(b.prob)}</em></div>`).join('')}</div></div>` : ''}
   ${g ? `<div class="box card"><h3>O que o modelo esperava</h3>${hm2}<span class="src">Contorno branco = o resultado que aconteceu${pr != null ? ` (o modelo dava-lhe ${pct(pr)})` : ''}. Golos esperados: ${n1(g.golosEsperados[0])} – ${n1(g.golosEsperados[1])}.</span></div>` : ''}
   ${x.estatisticas ? `<div class="box card"><h3>Antes do jogo</h3><table class="cmp"><thead><tr><th></th><th>${esc(casa)}</th><th>${esc(fora)}</th></tr></thead><tbody><tr><td>Jogos</td><td>${x.estatisticas.casa.j}</td><td>${x.estatisticas.fora.j}</td></tr><tr><td>Marcados / jogo</td><td>${n1(x.estatisticas.casa.gf / x.estatisticas.casa.j)}</td><td>${n1(x.estatisticas.fora.gf / x.estatisticas.fora.j)}</td></tr><tr><td>Sofridos / jogo</td><td>${n1(x.estatisticas.casa.ga / x.estatisticas.casa.j)}</td><td>${n1(x.estatisticas.fora.ga / x.estatisticas.fora.j)}</td></tr></tbody></table></div>` : ''}
@@ -2438,7 +2445,6 @@ function openMultRes(i) {
     <div class="mres-h"><div><small>Probabilidade</small><b class="m">${pct(m.prob)}</b></div><div><small>Odd mínima</small><b class="m">${odd(m.oddMinima)}</b></div><div><small>Jogos certos</small><b class="m">${ok}/${m.pernas.length}</b></div></div>
     <span class="res ${m.resultado}" style="justify-self:center">${RTX[m.resultado]}</span>${m.teste ? '<span class="tt2 big">TESTE RETROATIVO</span>' : ''}</div>
     <div class="box card"><h3>Jogos desta múltipla</h3>${m.pernas.map((p) => { const j = D.historico.findIndex((x) => x.id === p.id && x.tipo !== 'multipla'); return `<button type="button" class="mleg ${p.resultado}"${j >= 0 ? ` data-rrow="${j}"` : ''}><span class="ic">${p.resultado === 'won' ? '✓' : p.resultado === 'void' ? '↺' : '✗'}</span><span class="tx"><small>${p.pais ? flag(p.pais) : ''}${esc(p.liga)} · ${esc(p.data)}</small><b>${esc(p.jogo)}</b><em>${esc(p.aposta)} · ${pct(p.prob)}</em></span><span class="sc m">${esc(p.placar)}</span></button>`; }).join('')}</div>
-    <div class="rsh-pick card ${m.resultado}"><div class="rsh-g"><span>Com ${eur0(STAKE)}</span><b class="m ${m.resultado === 'won' ? 'ok' : 'no'}">${sEur(m.resultado === 'won' ? ((m.oddPaga || m.oddMinima) - 1) * STAKE : -STAKE)}</b></div></div>
     <p class="src" style="text-align:center">Montada com as regras fixas da app (uma aposta por jogo e limites de probabilidade por nível de risco), com os dados de antes dos jogos.</p>`;
   showSheet(); countUp($('sBody'));
 }
@@ -2454,16 +2460,16 @@ function renderResMult() {
   $('rHero').innerHTML = viewSeg() + `<div class="seg" style="margin-top:10px">${[['tudo', 'Tudo ' + nA], ['reais', 'Reais ' + (nA - nT)], ['teste', 'Teste retroativo ' + nT]].map(([k, l]) => `<button type="button" data-rmode="${k}" aria-pressed="${rMode === k}">${l}</button>`).join('')}</div>` + (all.length ? `
     <div class="card" style="margin-top:10px;overflow:hidden"><div class="rkpi" style="margin:0">
       <div class="rring"><svg viewBox="0 0 112 112" aria-hidden="true"><circle cx="56" cy="56" r="48" class="tr"/><circle cx="56" cy="56" r="48" class="pr" style="--c:${C};--o:${C * (1 - rate)}"/></svg><div class="rc"><b>${cu(rate * 100, 0, '', '%')}</b><span>acerto</span></div></div>
-      <div class="rinfo"><span class="k">Lucro com ${eur0(STAKE)} por múltipla</span><span class="profit ${U >= 0 ? 'ok' : 'no'}">${cu(U, 2, U >= 0 ? '+' : '−', ' €')}</span><span class="m2">${W} ganhas · ${all.length - W} perdidas · previsto ${pct(exp)}</span></div></div>
+      <div class="rinfo"><span class="k">Resultado das múltiplas</span><span class="profit ok">${W}<small class="vs">de ${all.length} certas</small></span><span class="m2">${all.length} múltiplas · previsto ${pct(exp)}</span></div></div>
       <dl class="rstats" style="margin:0"><div><dt>Jogos certos</dt><dd class="ok">${pct(ld ? lw / ld : 0)}</dd></div><div><dt>Jogos apostados</dt><dd>${legs.length}</dd></div><div><dt>Previsto</dt><dd>${pct(exp)}</dd></div><div><dt>Odd média</dt><dd>${odd(all.reduce((t, m) => t + m.oddMinima, 0) / all.length)}</dd></div></dl></div>` : `<div class="empty card" style="margin-top:10px">Ainda não há múltiplas liquidadas neste filtro. As múltiplas reais da app entram aqui a partir de amanhã.</div>`);
   if (!all.length) { $('rBody').innerHTML = ''; return; }
-  const lvRows = MLV.map((n) => { const x = all.filter((m) => m.nivel === n); if (!x.length) return ''; const w = x.filter((m) => m.resultado === 'won').length, e = x.reduce((t, m) => t + m.prob, 0) / x.length, u = x.reduce((t, m) => t + gainM(m), 0); return `<div class="lvr"><span class="lvn"><b>${esc(n.replace('Risco ', ''))}</b><small>${x.length} bilhetes · odd ~${odd(x.reduce((t, m) => t + m.oddMinima, 0) / x.length)}</small></span><div class="cal-b"><i class="pr" style="--w:${e * 100}%"></i><i class="re ${w / x.length >= e - 0.05 ? 'ok' : 'lo'}" style="--w:${(w / x.length) * 100}%"></i></div><span class="lvv"><b class="m">${w}/${x.length}</b><small class="${u >= 0 ? 'ok' : 'no'}">${sEur(u)}</small></span></div>`; }).join('');
+  const lvRows = MLV.map((n) => { const x = all.filter((m) => m.nivel === n); if (!x.length) return ''; const w = x.filter((m) => m.resultado === 'won').length, e = x.reduce((t, m) => t + m.prob, 0) / x.length, u = x.reduce((t, m) => t + gainM(m), 0); return `<div class="lvr"><span class="lvn"><b>${esc(n.replace('Risco ', ''))}</b><small>${x.length} bilhetes · odd ~${odd(x.reduce((t, m) => t + m.oddMinima, 0) / x.length)}</small></span><div class="cal-b"><i class="pr" style="--w:${e * 100}%"></i><i class="re ${w / x.length >= e - 0.05 ? 'ok' : 'lo'}" style="--w:${(w / x.length) * 100}%"></i></div><span class="lvv"><b class="m">${w}/${x.length}</b><small>${pct(w / x.length)}</small></span></div>`; }).join('');
   const per = [...new Set(all.map((m) => m.periodo))];
   $('rBody').innerHTML = `<h2><span>Por nível de risco</span><small>previsto vs real</small></h2>
     <div class="box card cal">${lvRows}<div class="cal-lg"><span><i class="pr"></i>Previsto</span><span><i class="re ok"></i>Ganhas de facto</span></div><span class="src">Uma múltipla só é ganha se todos os jogos dela entrarem. As regras foram revistas a 30/10 (menos golos totais e ambas marcam, mais dupla hipótese, golos da equipa e handicap +1,5) depois de vermos estes mesmos jogos, por isso o teste é otimista; as múltiplas reais a partir de agora é que confirmam.</span></div>
     <h2><span>Bilhetes</span><small>toca para ver os jogos</small></h2>
     ${per.slice().reverse().map((p) => `<div class="mper"><span class="mper-h">${esc(p)}</span>${all.filter((m) => m.periodo === p).map((m, k) => `<button type="button" class="mrow2 card ${m.resultado}" data-rrow="${m._i}" style="--i:${k}"><span class="mr2-l"><b>${esc(m.nivel)}</b><span class="dots">${m.pernas.map((q) => `<i class="${q.resultado}"></i>`).join('')}</span></span><span class="mr2-o m">${odd(m.oddMinima)}</span><span class="res ${m.resultado}">${RTX[m.resultado]}</span></button>`).join('')}</div>`).join('')}
-    <p class="foot">Lucro à odd mínima de cada bilhete. Resultados passados não garantem os futuros. 18+</p>`;
+    <p class="foot">Resultados passados não garantem os futuros. 18+</p>`;
   countUp($('rHero'));
 }
 
