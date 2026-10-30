@@ -1476,6 +1476,56 @@ b.ok { color: var(--pos); } b.wrn { color: var(--warn); }
   .s4-a { grid-template-columns: 240px 160px; }
 }
 @media (prefers-reduced-motion: reduce) { .s4, .s4-seg i, .s4-one i { animation: none; } }
+/* t22: camada moderna (plana, calma, consistente) */
+:root { --r: 16px; --draw: #6fb3ff; }
+.mesh { opacity: .22; } .grain { display: none; }
+.card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); box-shadow: none; }
+main h2 { font-size: 17px; font-weight: 750; letter-spacing: -.015em; margin-top: 28px; }
+main h2 small { font-weight: 500; }
+/* Olá */
+#pg-inicio .hello { margin-top: 18px; padding: 0; background: none; border: 0; overflow: visible; }
+#pg-inicio .hello::before, #pg-inicio .hello::after { display: none; }
+.hl2-t { font-size: 24px; font-stretch: 100%; letter-spacing: -.025em; }
+.ss { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); }
+.ss > div + div { border-left-color: var(--bd); }
+.ss b { font-size: 21px; font-weight: 750; }
+/* Destaque: empate com cor própria */
+.s4-seg.on.dr i { background: var(--draw); box-shadow: 0 0 14px rgb(111 179 255 / .35); }
+.s4-seg.on.dr b { color: var(--draw); }
+.s4-key .dr { background: var(--draw); margin-left: 2px !important; }
+/* Deck */
+.dk-c { background: var(--s1) !important; border: 1px solid var(--bd2) !important; box-shadow: 0 20px 40px -28px rgb(0 0 0 / .9); }
+.dk-c.top { border-color: var(--bd2) !important; }
+.dk-glow { display: none; }
+.dk-p { background: var(--s2); border: 0; }
+.dk-t b { font-weight: 750; }
+.dk-c header { font-family: var(--sans); }
+/* Futebol / Ténis */
+.sports2 { gap: 8px; }
+.sp2 { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; gap: 0 12px; padding: 14px; }
+.sp2-i { grid-row: span 2; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; margin: 0; background: var(--s2); color: var(--acc); font-size: 0; }
+.sp2-i svg { width: 22px; height: 22px; }
+.sp2 b { font-size: 16px; }
+/* Ferramentas como lista */
+.tiles { grid-template-columns: 1fr !important; gap: 0; border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; background: var(--s1); }
+.tile { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto; align-items: center; gap: 0 12px; padding: 12px 14px; border: 0; border-radius: 0; background: none; }
+.tile + .tile { border-top: 1px solid var(--bd); }
+.tile::after { content: "›"; grid-row: 1 / span 2; grid-column: 3; font-size: 22px; color: var(--faint); }
+.tile .ti-i { grid-row: span 2; margin: 0; background: var(--s2); box-shadow: none; border-radius: 10px; color: var(--acc); }
+.tile b { font-size: 14.5px; } .tile small { font-size: 12.5px; color: var(--muted); }
+.tile:hover { transform: none !important; background: var(--s2); box-shadow: none !important; }
+/* A seguir */
+.nu { border-radius: 14px; }
+.nu-t { border-right-color: var(--bd); }
+/* Rodapé */
+.rg { background: none; border: 0; padding: 0; text-align: center; font-size: 12.5px; color: var(--faint); }
+#replay { border-style: solid; border-color: var(--bd); }
+@media (min-width: 1024px) {
+  body::after { display: none; }
+  .tiles { grid-template-columns: 1fr 1fr !important; }
+  .tile:nth-child(2) { border-top: 0; } .tile:nth-child(even) { border-left: 1px solid var(--bd); }
+  .hl2-t { font-size: 30px; }
+}
 </style>
 
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
@@ -1498,7 +1548,7 @@ b.ok { color: var(--pos); } b.wrn { color: var(--warn); }
     <h2><span>Apostas do dia</span></h2>
     <div class="deck" id="deck"></div>
     </div><div class="hm-r">
-    <div class="sports2 rv"><button type="button" class="sp2 card" data-pg="jogos"><span class="sp2-i">⚽</span><b>Futebol</b><small id="nFut"></small></button><button type="button" class="sp2 card" data-pg="tenis"><span class="sp2-i">🎾</span><b>Ténis</b><small id="nTen"></small></button></div>
+    <div class="sports2 rv"><button type="button" class="sp2 card" data-pg="jogos"><span class="sp2-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.2 2.3-1.2 3.7h-4l-1.2-3.7z"/></svg>⚽</span><b>Futebol</b><small id="nFut"></small></button><button type="button" class="sp2 card" data-pg="tenis"><span class="sp2-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.2 3.2 3.2 9.6 0 12.8M18.4 5.6c-3.2 3.2-3.2 9.6 0 12.8"/></svg>🎾</span><b>Ténis</b><small id="nTen"></small></button></div>
     <h2 class="rv"><span>Ferramentas</span></h2>
     <div class="tiles rv" id="tiles"></div>
     <div hidden><div id="radar"></div><div id="thermo"></div></div>
@@ -3045,9 +3095,9 @@ function renderStar() {
   else if (t === g.fora + ' (empate anula)') cov = ['off', 'back', 'on'];
   const P = Math.round(a.prob * 100);
   const vis = cov && ph ? `<div class="s4-split" role="img" aria-label="${esc(g.casa)} ${pct(ph)}, empate ${pct(pd)}, ${esc(g.fora)} ${pct(pa)}">
-      ${[[g.casa, ph, cov[0]], ['Empate', pd, cov[1]], [g.fora, pa, cov[2]]].map(([n, p, c], i) => `<div class="s4-seg ${c}" style="flex:${Math.max(p, 0.06)};--i:${i}"><i></i><span><b class="m">${pct(p)}</b><small>${esc(n)}</small></span></div>`).join('')}
+      ${[[g.casa, ph, cov[0]], ['Empate', pd, cov[1]], [g.fora, pa, cov[2]]].map(([n, p, c], i) => `<div class="s4-seg ${c}${i === 1 ? ' dr' : ''}" style="flex:${Math.max(p, 0.06)};--i:${i}"><i></i><span><b class="m">${pct(p)}</b><small>${esc(n)}</small></span></div>`).join('')}
     </div>
-    <p class="s4-key"><span class="on"></span>Ganhas${cov.includes('back') ? '<span class="back"></span>Recebes o dinheiro de volta' : ''}<span class="off"></span>Perdes</p>`
+    <p class="s4-key"><span class="on"></span>${cov[1] === 'on' ? '<span class="on dr"></span>' : ''}Ganhas${cov.includes('back') ? '<span class="back"></span>Recebes o dinheiro de volta' : ''}<span class="off"></span>Perdes</p>`
     : `<div class="s4-one" style="--p:${P}%"><i></i></div>`;
   el.innerHTML = `<article class="s4" aria-label="A aposta mais provável">
     <p class="s4-meta">${flag(g.pais)}<span>${esc(g.liga)}</span><span class="s4-dot"></span><span>${esc(quando)}</span></p>
