@@ -2292,6 +2292,16 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 .q1-lo { border: 0; background: none; padding: 0; color: var(--faint); text-decoration: underline; font-size: 12.5px; }
 .q1-bl .lg-h { color: var(--acc2); } .q1-bl .lg-h svg { color: var(--acc); }
 </style>
+<style id="r1css">
+/* Botões de desbloquear maiores */
+.p9-hc { height: 38px; padding: 0 15px; font-size: 14px; gap: 6px; }
+.p9-hc svg { width: 16px; height: 16px; }
+.p9-hc.free { background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #15110a; border: 0; box-shadow: 0 6px 18px -6px rgb(245 190 60 / .8); }
+.p9-cta .btn, .p9-up .btn { padding: 15px; font-size: 16px; font-weight: 800; border-radius: 14px; }
+.p9-tb .btn { padding: 13px 8px; font-size: 14.5px; }
+.p9-lr .pk.p9-pk b { font-size: 14px; }
+@media (max-width: 360px) { .p9-hc { padding: 0 12px; font-size: 13px; } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4881,6 +4891,17 @@ renderInicio = function () { _q1ri(); if (D.tenisN != null && $('nTen')) { const
   if (!used) q1Fetch(a.c, true);
   p9Chip();
 })();
+
+// Início: contar também os jogos bloqueados no resumo
+var _r1ri = renderInicio;
+renderInicio = function () {
+  _r1ri();
+  const B = (D.bloqueados || []).filter((s) => T(s.inicio) > Date.now()); if (!B.length) return;
+  const op = openList(), nT = op.filter((g) => dayKey(new Date(g.inicio)) === today).length + B.filter((s) => dayKey(new Date(s.inicio)) === today).length, nA = op.length + B.length;
+  const sp = document.querySelector('#hello .hl2-t span'); if (sp) sp.textContent = `${nT ? nT + (nT > 1 ? ' jogos hoje' : ' jogo hoje') : 'Sem jogos hoje'}, ${nA} nos próximos dias.`;
+  const f = $('nFut'); if (f) f.textContent = nA + ' jogos';
+};
+try { if (!$('pg-inicio').hidden) renderInicio(); } catch {}
 </script>
 
 </body></html>
