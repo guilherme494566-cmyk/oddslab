@@ -2170,6 +2170,23 @@ table { font-variant-numeric: tabular-nums; }
 @media (min-width: 700px) { .i5 { align-items: center; } .i5-pn { border-radius: 22px; border-bottom: 1px solid var(--bd2); max-height: 88vh; } @keyframes i5Up { from { transform: translateY(30px) scale(.97); opacity: 0; } } @keyframes i5Dn { to { transform: translateY(30px) scale(.97); opacity: 0; } } .i5-st li { grid-template-columns: 150px minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .i5 *, .i5 *::after { animation: none !important; } }
 </style>
+<style id="i6css">
+.i6-hc { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 99px; border: 0; background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #15110a; font-size: 13px; font-weight: 800; white-space: nowrap; box-shadow: 0 6px 18px -6px rgb(245 190 60 / .8); animation: i6Glow 2.4s ease-in-out infinite; }
+.i6-hc::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / .65) 50%, transparent 70%); transform: translateX(-120%); animation: x3Btn 3s 1s ease-in-out infinite; }
+.i6-hc svg, .i6-hc span { position: relative; z-index: 1; }
+@keyframes i6Glow { 50% { box-shadow: 0 6px 24px -2px rgb(245 190 60 / 1); } }
+@media (max-width: 520px) { header .hd-r .upd { display: none; } }
+@media (max-width: 340px) { .i6-hc span { display: none; } .i6-hc { padding: 0 10px; } }
+.x3-ins { margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; max-width: 320px; padding: 13px 20px; border-radius: 16px; border: 1px solid rgb(245 190 60 / .55); background: rgb(245 190 60 / .1); color: var(--acc2); font-size: 15px; font-weight: 750; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: x3In .7s 2.95s cubic-bezier(.2,.9,.3,1.3) both; }
+.x3-ins:active { background: rgb(245 190 60 / .2); }
+.i6-nv { grid-column: 1 / -1; border: 0; background: none; padding: 2px 0 0; font-size: 12px; color: var(--faint); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-height: 680px) { .x3-ins { padding: 10px; margin-top: 8px; } }
+@media (prefers-reduced-motion: reduce) { .i6-hc, .i6-hc::after { animation: none !important; } }
+.i6-nx { cursor: pointer; position: relative; transition: background .15s; border-radius: 0 inherit inherit 0; }
+.i6-nx:hover, .i6-nx:active { background: rgb(245 190 60 / .08); }
+.i6-nx small span { color: var(--acc); font-weight: 800; margin-left: 2px; }
+.i6-nx em { color: var(--acc2) !important; text-decoration: underline; text-decoration-color: rgb(245 190 60 / .4); text-underline-offset: 2px; }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4408,6 +4425,59 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInsta
   let want = false; try { want = new URLSearchParams(location.search).has('instalar'); } catch {}
   if (want) { const it = document.getElementById('intro'); if (it && !it.hidden) { it.hidden = true; document.body.style.overflow = ''; try { renderInicio(); } catch {} } openInstall(); }
 })();
+
+// ===== Instalar a app: destaque (cabeçalho, ecrã de entrada e abertura automática) =====
+function i6Can() { return !!i5Url() && !i5Std(); }
+function i6Should() { if (!i6Can()) return false; try { return localStorage.getItem('i5Done') !== '1' && localStorage.getItem('i6Never') !== '1' && sessionStorage.getItem('i6Shown') !== '1'; } catch { return true; } }
+function i6Auto(delay) { if (!i6Should()) return; try { sessionStorage.setItem('i6Shown', '1'); } catch {} setTimeout(() => { if (document.getElementById('sheet') && !document.getElementById('sheet').hidden) return; openInstall(); }, delay); }
+var _i6wh = welcomeHtml;
+welcomeHtml = function () {
+  const h = _i6wh();
+  if (!i6Can()) return h;
+  return h.replace('<div class="x3-ld"', `<button type="button" class="x3-ins" data-i6sp="1"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7m0 0-3-3m3 3 3-3"/></svg>Instalar a app no telemóvel</button><div class="x3-ld"`);
+};
+var _i6cs = closeSplash;
+closeSplash = function (then) { _i6cs(then); if (!then) i6Auto(800); };
+function i6Head() {
+  const r = document.querySelector('header .hd-r'); if (!r) return;
+  let b = document.getElementById('i6Hc');
+  if (!i6Can()) { if (b) b.remove(); return; }
+  if (b) return;
+  b = document.createElement('button'); b.type = 'button'; b.id = 'i6Hc'; b.className = 'i6-hc'; b.dataset.i5open = '1'; b.setAttribute('aria-label', 'Instalar a app');
+  b.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg><span>Instalar app</span>';
+  r.insertBefore(b, r.querySelector('.hlp'));
+}
+document.addEventListener('click', (e) => {
+  const sp = e.target.closest('[data-i6sp]'); if (sp) { try { sessionStorage.setItem('i6Shown', '1'); } catch {} closeSplash(() => openInstall()); return; }
+  const nv = e.target.closest('[data-i6never]'); if (nv) { try { localStorage.setItem('i6Never', '1'); } catch {} closeInstall(); }
+});
+var _i6oi = openInstall;
+openInstall = function (tab) {
+  _i6oi(tab);
+  const ft = document.querySelector('#i5 .i5-ft');
+  if (ft && !ft.querySelector('.i6-nv')) { const n = document.createElement('button'); n.type = 'button'; n.className = 'i6-nv'; n.dataset.i6never = '1'; n.textContent = 'Não voltar a mostrar automaticamente'; ft.appendChild(n); }
+  const ft2 = document.querySelector('#i5 .i5-ft .btn.acc'); if (ft2) ft2.textContent = 'Agora não';
+};
+window.addEventListener('appinstalled', () => { const b = document.getElementById('i6Hc'); if (b) b.remove(); });
+(function i6Init() {
+  i6Head();
+  const ld = document.querySelector('#intro:not([hidden]) .x3-ld');
+  if (ld && i6Can() && !document.querySelector('.x3-ins')) { const tmp = document.createElement('div'); tmp.innerHTML = welcomeHtml(); const b = tmp.querySelector('.x3-ins'); if (b) ld.before(b); }
+  const it = document.getElementById('intro');
+  if (!it || it.hidden) { let want = false; try { want = new URLSearchParams(location.search).has('instalar'); } catch {} if (!want) i6Auto(1200); else try { sessionStorage.setItem('i6Shown', '1'); } catch {} }
+})();
+
+// Próximo jogo: tocar abre o jogo
+var _i6ss = statStrip;
+statStrip = function () {
+  const h = _i6ss(), nx = openList().find((g) => !g.aviso);
+  if (!nx) return h;
+  const i = h.lastIndexOf('<div><small>Próximo jogo</small>');
+  if (i < 0) return h;
+  return h.slice(0, i) + `<div class="i6-nx" data-open="${nx.id}" role="button" tabindex="0" aria-label="Abrir o próximo jogo: ${esc(nx.casa)} contra ${esc(nx.fora)}"><small>Próximo jogo <span aria-hidden="true">›</span></small>` + h.slice(i + '<div><small>Próximo jogo</small>'.length);
+};
+document.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('i6-nx')) { e.preventDefault(); e.target.click(); } });
+try { if (!$('pg-inicio').hidden) renderInicio(); } catch {}
 </script>
 
 </body></html>
