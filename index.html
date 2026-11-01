@@ -1840,6 +1840,96 @@ table { font-variant-numeric: tabular-nums; }
 }
 @media (min-width: 1500px) { #deck .h3r { grid-auto-columns: calc((100% - 48px) / 4); } }
 </style>
+<style id="x3css">
+/* ===== Ecrã de entrada v3: animação futurista ===== */
+.intro.x3on { background: #060708; overflow-x: hidden; overflow-y: auto; }
+.intro.x3on.out { animation: x3Out .7s cubic-bezier(.6,0,.3,1) forwards; }
+@keyframes x3Out { 0% { opacity: 1; } 35% { filter: brightness(1.5); } 100% { opacity: 0; transform: scale(1.12); filter: blur(10px) brightness(1.2); } }
+.x3 { position: relative; min-height: 100vh; min-height: 100dvh; display: grid; grid-template-rows: 1fr auto; justify-items: center; padding: max(28px, env(safe-area-inset-top, 0px)) 20px max(18px, env(safe-area-inset-bottom, 0px)); overflow: hidden; isolation: isolate; }
+.x3-cv { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; opacity: 0; animation: x3Fade 1.2s .1s ease-out forwards; }
+.x3-aur { position: absolute; inset: -20% -30% auto; height: 80%; z-index: -3; background:
+  radial-gradient(40% 50% at 30% 40%, rgb(245 190 60 / .20), transparent 70%),
+  radial-gradient(35% 45% at 72% 30%, rgb(239 143 28 / .16), transparent 70%),
+  radial-gradient(30% 40% at 50% 70%, rgb(34 229 132 / .07), transparent 70%);
+  filter: blur(30px); animation: x3Aur 9s ease-in-out infinite alternate, x3Fade 1.4s ease-out both; }
+@keyframes x3Aur { to { transform: translate3d(4%, 6%, 0) rotate(8deg) scale(1.08); } }
+.x3-grid { position: absolute; left: -50%; right: -50%; bottom: -8%; height: 46%; z-index: -2; transform: perspective(380px) rotateX(62deg); transform-origin: 50% 100%;
+  background-image: linear-gradient(rgb(245 190 60 / .42) 1px, transparent 1px), linear-gradient(90deg, rgb(245 190 60 / .34) 1px, transparent 1px); background-size: 46px 46px;
+  -webkit-mask: linear-gradient(to top, #000 10%, transparent 92%); mask: linear-gradient(to top, #000 10%, transparent 92%);
+  animation: x3Grid 2.4s linear infinite, x3Fade 1.6s .2s ease-out both; }
+@keyframes x3Grid { to { background-position: 0 46px, 0 0; } }
+.x3-scan { position: absolute; left: 0; right: 0; top: -10%; height: 120px; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, transparent, rgb(245 190 60 / .10) 70%, rgb(255 224 138 / .55) 99%, transparent); animation: x3Scan 1.8s .25s cubic-bezier(.5,0,.3,1) both; }
+@keyframes x3Scan { from { transform: translateY(0); opacity: 1; } 85% { opacity: 1; } to { transform: translateY(115vh); opacity: 0; } }
+@keyframes x3Fade { from { opacity: 0; } to { opacity: 1; } }
+
+.x3-c { align-self: center; display: grid; justify-items: center; text-align: center; width: 100%; max-width: 460px; gap: 0; }
+/* logótipo com anéis */
+.x3-lg { position: relative; width: 150px; height: 150px; display: grid; place-items: center; margin-bottom: 6px; }
+.x3-lg svg.x3-or { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.x3-or circle { fill: none; transform-origin: 75px 75px; }
+.x3-r1 { stroke: rgb(245 190 60 / .35); stroke-width: 1; stroke-dasharray: 2 6; animation: x3Spin 18s linear infinite, x3Draw 1s .2s ease-out both; }
+.x3-r2 { stroke: url(#x3g); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 60 300; animation: x3Spin 3.2s cubic-bezier(.6,.1,.4,.9) infinite, x3Fade .6s .35s both; }
+.x3-r3 { stroke: rgb(255 255 255 / .07); stroke-width: 5; }
+.x3-r4 { stroke: var(--pos); stroke-width: 5; stroke-linecap: round; transform: rotate(-90deg); filter: drop-shadow(0 0 6px rgb(34 229 132 / .7)); transition: stroke-dashoffset 1.8s cubic-bezier(.2,.8,.2,1); }
+.x3-dot { fill: var(--acc2); transform-origin: 75px 75px; animation: x3Spin 6s linear infinite reverse, x3Fade .5s .6s both; filter: drop-shadow(0 0 6px var(--acc)); }
+@keyframes x3Spin { to { transform: rotate(360deg); } }
+@keyframes x3Draw { from { opacity: 0; transform: scale(.6) rotate(-40deg); } }
+.x3-lg .lgm { width: 76px; height: 76px; filter: drop-shadow(0 16px 40px rgb(245 190 60 / .55)); animation: x3Pop .9s .45s cubic-bezier(.2,1.1,.3,1.25) both; }
+.x3-lg .lgm path { stroke-dasharray: 26; stroke-dashoffset: 26; animation: lgArr .9s 1s cubic-bezier(.2,.8,.2,1) forwards; }
+.x3-lg::after { content: ""; position: absolute; width: 76px; height: 76px; border-radius: 22px; background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / .55) 50%, transparent 65%); background-size: 250% 100%; background-position: 130% 0; -webkit-mask: radial-gradient(#000 70%, transparent 71%); animation: x3Shine 2.8s 1.3s ease-in-out infinite; mix-blend-mode: overlay; pointer-events: none; }
+@keyframes x3Shine { 0% { background-position: 130% 0; } 40%, 100% { background-position: -30% 0; } }
+@keyframes x3Pop { from { opacity: 0; transform: scale(.3) rotate(-25deg); filter: blur(8px); } }
+.x3-pct { position: absolute; right: -6px; top: 10px; padding: 3px 8px; border-radius: 99px; font: 700 12px var(--mono); color: var(--pos); background: rgb(34 229 132 / .12); border: 1px solid rgb(34 229 132 / .35); backdrop-filter: blur(6px); animation: x3In .5s 1.4s cubic-bezier(.2,.9,.3,1.3) both; }
+/* marca */
+.x3-wm { margin: 4px 0 0; font: 900 24px/1 var(--sans); letter-spacing: .14em; display: flex; justify-content: center; }
+.x3-wm span { display: inline-block; animation: x3Ltr .6s calc(.8s + var(--i) * .05s) cubic-bezier(.2,.9,.3,1.2) both; }
+.x3-wm span.g { color: var(--acc); text-shadow: 0 0 18px rgb(245 190 60 / .6); }
+@keyframes x3Ltr { from { opacity: 0; transform: translateY(16px) rotateX(80deg); filter: blur(4px); } }
+.x3-tag { margin: 10px 0 0; font: 600 11px var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--acc2); opacity: .85; display: flex; align-items: center; gap: 8px; animation: x3In .6s 1.2s both; }
+.x3-tag i { width: 6px; height: 6px; border-radius: 50%; background: var(--pos); box-shadow: 0 0 10px var(--pos); animation: x3Blink 1.4s infinite; }
+@keyframes x3Blink { 50% { opacity: .25; } }
+/* título */
+.x3-h { margin: 18px 0 0; font-size: clamp(30px, 8.6vw, 46px); line-height: 1.04; font-weight: 850; letter-spacing: -.035em; text-wrap: balance; }
+.x3-h span { display: inline-block; animation: x3Word .7s calc(1.25s + var(--i) * .09s) cubic-bezier(.2,.8,.2,1) both; }
+.x3-h .gd { background: linear-gradient(100deg, #ffe08a, #f5be3c 40%, #fff3c4 50%, #f5be3c 60%, #ef8f1c); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: x3Word .7s calc(1.25s + var(--i) * .09s) cubic-bezier(.2,.8,.2,1) both, x3Grad 3.5s 2s linear infinite; }
+@keyframes x3Word { from { opacity: 0; transform: translateY(22px); filter: blur(8px); } }
+@keyframes x3Grad { to { background-position: -250% 0; } }
+.x3-s { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: var(--muted); max-width: 36ch; text-wrap: pretty; animation: x3In .7s 1.75s both; }
+@keyframes x3In { from { opacity: 0; transform: translateY(12px); } }
+/* cartões de apostas */
+.x3-bets { width: 100%; display: grid; gap: 8px; margin-top: 20px; perspective: 900px; }
+.x3-b { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; text-align: left; background: linear-gradient(135deg, rgb(255 255 255 / .07), rgb(255 255 255 / .02)); border: 1px solid rgb(255 255 255 / .1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 10px 30px -18px #000; position: relative; overflow: hidden;
+  animation: x3Card .8s calc(2s + var(--i) * .16s) cubic-bezier(.2,.9,.25,1.1) both; }
+.x3-b::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgb(245 190 60 / .18) 50%, transparent 70%); transform: translateX(-100%); animation: x3Sweep 1.2s calc(2.5s + var(--i) * .16s) ease-out both; }
+@keyframes x3Card { from { opacity: 0; transform: translateX(60px) rotateY(-28deg) scale(.95); } }
+@keyframes x3Sweep { to { transform: translateX(100%); } }
+.x3-b-i { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: rgb(245 190 60 / .12); color: var(--acc); font: 700 11px var(--mono); }
+.x3-b-t { min-width: 0; display: grid; gap: 1px; }
+.x3-b-t small { font-size: 11.5px; color: var(--faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.x3-b-t b { font-size: 14px; font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.x3-b-t em { display: block; height: 3px; border-radius: 3px; background: rgb(255 255 255 / .08); margin-top: 5px; overflow: hidden; }
+.x3-b-t em i { display: block; height: 100%; width: var(--p); background: linear-gradient(90deg, var(--acc), var(--pos)); border-radius: inherit; transform-origin: left; animation: x3Bar 1.2s calc(2.3s + var(--i) * .16s) cubic-bezier(.2,.8,.2,1) both; }
+@keyframes x3Bar { from { transform: scaleX(0); } }
+.x3-b-p { font: 800 19px var(--mono); color: var(--pos); text-shadow: 0 0 14px rgb(34 229 132 / .35); }
+/* números e botão */
+.x3-st { display: flex; justify-content: center; gap: 22px; margin-top: 18px; animation: x3In .6s 2.6s both; }
+.x3-st div { display: grid; gap: 1px; }
+.x3-st b { font: 800 22px var(--mono); }
+.x3-st div:first-child b { color: var(--pos); }
+.x3-st small { font-size: 11.5px; color: var(--faint); }
+.x3-go { position: relative; overflow: hidden; margin-top: 20px; width: 100%; max-width: 320px; padding: 16px 28px; font-size: 16.5px; font-weight: 800; border-radius: 16px; box-shadow: 0 0 0 1px rgb(255 224 138 / .5) inset, 0 18px 50px -14px rgb(245 190 60 / .9); animation: x3In .7s 2.8s cubic-bezier(.2,.9,.3,1.3) both, x3Pulse 2.4s 3.6s ease-in-out infinite; }
+.x3-go::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / .6) 50%, transparent 70%); transform: translateX(-120%); animation: x3Btn 2.6s 3.2s ease-in-out infinite; }
+@keyframes x3Btn { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
+@keyframes x3Pulse { 50% { box-shadow: 0 0 0 1px rgb(255 224 138 / .5) inset, 0 18px 60px -8px rgb(245 190 60 / 1); } }
+.x3-go span { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; }
+.x3-ld { width: 140px; height: 3px; border-radius: 3px; background: rgb(255 255 255 / .08); overflow: hidden; margin-top: 14px; animation: x3Fade .4s 3s both; }
+.x3-ld i { display: block; height: 100%; background: linear-gradient(90deg, var(--acc), var(--acc2)); transform-origin: left; animation: slLd 5s 3s linear both; }
+.x3-18 { margin: 0; font-size: 11.5px; color: var(--faint); text-align: center; animation: x3Fade .6s 2.9s both; }
+@media (max-height: 720px) { .x3-lg { width: 120px; height: 120px; } .x3-h { margin-top: 12px; font-size: 28px; } .x3-bets { margin-top: 14px; } .x3-b:nth-child(3) { display: none; } .x3-st { margin-top: 12px; } .x3-go { margin-top: 14px; } }
+@media (max-height: 680px) { .x3-lg { width: 104px; height: 104px; } .x3-lg .lgm, .x3-lg::after { width: 58px; height: 58px; } .x3-s { display: none; } .x3-pct { right: -22px; top: 0; } .x3-tag { margin-top: 6px; } .x3-st b { font-size: 19px; } .x3-go { padding: 14px; } }
+@media (min-width: 900px) { .x3-c { max-width: 560px; } .x3-bets { grid-template-columns: repeat(3, minmax(0, 1fr)); } .x3-b { grid-template-columns: minmax(0, 1fr) auto; } .x3-b-i { display: none; } }
+@media (prefers-reduced-motion: reduce) { .x3 *, .x3 *::before, .x3 *::after { animation-duration: .01s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -3735,6 +3825,85 @@ document.addEventListener('click', (e) => {
   if (t.dataset.h3more) { h3XbN += 10; renderXB(); }
 });
 window.addEventListener('resize', () => { const S = $('dkS'); if (S) { S.style.scrollSnapType = ''; layoutDeck(); } });
+
+// ===== Ecrã de entrada v3: animação futurista =====
+var x3Raf = 0, x3T = 0;
+function welcomeHtml() {
+  const hs = histStats(), nT = openList().filter((g) => !g.aviso && dayKey(new Date(g.inicio)) === today).length, nAll = openList().length;
+  const LOGO = document.querySelector('#logoBtn .lgm').outerHTML;
+  const P = (typeof h3Picks === 'function' ? h3Picks('tudo') : []).slice(0, 3);
+  const rate = hs.n ? hs.rate : 0, C = 2 * Math.PI * 62;
+  const W = (t, k0) => t.split(' ').map((w, i) => `<span style="--i:${k0 + i}">${w}</span>`).join(' ');
+  const wm = 'ODDSLAB'.split('').map((c, i) => `<span style="--i:${i}"${i >= 4 ? ' class="g"' : ''}>${c}</span>`).join('');
+  return `<div class="x3">
+    <div class="x3-aur" aria-hidden="true"></div><canvas class="x3-cv" id="x3cv" aria-hidden="true"></canvas><div class="x3-grid" aria-hidden="true"></div><div class="x3-scan" aria-hidden="true"></div>
+    <div class="x3-c">
+      <div class="x3-lg">
+        <svg class="x3-or" viewBox="0 0 150 150" aria-hidden="true"><defs><linearGradient id="x3g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset="1" stop-color="#ef8f1c" stop-opacity="0"/></linearGradient></defs>
+          <circle class="x3-r1" cx="75" cy="75" r="73"/><circle class="x3-r3" cx="75" cy="75" r="62"/>
+          <circle class="x3-r4" id="x3arc" cx="75" cy="75" r="62" stroke-dasharray="${C}" stroke-dashoffset="${C}"/>
+          <circle class="x3-r2" cx="75" cy="75" r="54"/><circle class="x3-dot" cx="75" cy="2" r="3"/></svg>
+        ${LOGO}
+        ${hs.n ? `<span class="x3-pct" id="x3pct">0%</span>` : ''}
+      </div>
+      <p class="x3-wm" aria-label="ODDSLAB">${wm}</p>
+      <p class="x3-tag"><i></i>Futebol e ténis · ao vivo</p>
+      <h1 class="x3-h">${W('Sabe a', 0)} <span class="gd" style="--i:2">probabilidade</span> ${W('antes de apostar.', 3)}</h1>
+      <p class="x3-s">Cada jogo calculado e comparado com o mercado. Cada aposta explicada numa frase.</p>
+      ${P.length ? `<div class="x3-bets">${P.map((x, i) => `<div class="x3-b" style="--i:${i}"><span class="x3-b-i">${esc(x.g.casa.slice(0, 3).toUpperCase())}</span><span class="x3-b-t"><small>${esc(x.g.casa)} – ${esc(x.g.fora)}</small><b>${esc(x.a.aposta)}</b><em><i style="--p:${Math.round(x.a.prob * 100)}%"></i></em></span><span class="x3-b-p" data-x3n="${Math.round(x.a.prob * 100)}" data-x3d="${2300 + i * 160}">0%</span></div>`).join('')}</div>` : ''}
+      <div class="x3-st">
+        ${hs.n ? `<div><b data-x3n="${Math.round(rate * 100)}" data-x3d="2600">0%</b><small>acerto real</small></div>` : ''}
+        <div><b data-x3n="${nT || nAll}" data-x3d="2600" data-x3s="">0</b><small>${nT ? 'jogos hoje' : 'jogos em 3 dias'}</small></div>
+        <div><b data-x3n="${new Set(openList().map((g) => g.liga)).size}" data-x3d="2600" data-x3s="">0</b><small>ligas</small></div>
+      </div>
+      <button type="button" class="btn acc x3-go" data-inend=""><span>Entrar na app <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+      <div class="x3-ld" aria-hidden="true"><i></i></div>
+    </div>
+    <p class="x3-18">Estimativas, não certezas. Só para maiores de 18 · Joga com responsabilidade.</p>
+  </div>`;
+}
+function x3Count(el) {
+  const to = Number(el.dataset.x3n), suf = el.dataset.x3s !== undefined ? '' : '%', d0 = Number(el.dataset.x3d || 0), dur = 1100;
+  setTimeout(() => { const t0 = performance.now(); const st = (t) => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(to * e) + suf; if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); }, RM ? 0 : d0);
+}
+function x3Canvas() {
+  const cv = $('x3cv'); if (!cv || RM) return;
+  const ctx = cv.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  let w = 0, h = 0; const N = innerWidth < 700 ? 46 : 80, pts = [];
+  const size = () => { w = cv.clientWidth; h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+  size();
+  for (let i = 0; i < N; i++) pts.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .25, vy: -(.15 + Math.random() * .45), r: .6 + Math.random() * 1.6, a: .25 + Math.random() * .6 });
+  const cx = () => w / 2, cy = () => h * .26;
+  const draw = () => {
+    ctx.clearRect(0, 0, w, h);
+    for (const p of pts) {
+      p.x += p.vx; p.y += p.vy; if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; } if (p.x < -10) p.x = w + 10; if (p.x > w + 10) p.x = -10;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fillStyle = `rgba(255,214,110,${p.a})`; ctx.fill();
+    }
+    for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const a = pts[i], b = pts[j], dx = a.x - b.x, dy = a.y - b.y, d = dx * dx + dy * dy;
+      if (d < 6400) { ctx.strokeStyle = `rgba(245,190,60,${(1 - d / 6400) * .18})`; ctx.lineWidth = .6; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+    }
+    const g = ctx.createRadialGradient(cx(), cy(), 0, cx(), cy(), 160); g.addColorStop(0, 'rgba(245,190,60,.10)'); g.addColorStop(1, 'rgba(245,190,60,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    x3Raf = requestAnimationFrame(draw);
+  };
+  cancelAnimationFrame(x3Raf); draw();
+  window.addEventListener('resize', size);
+}
+function openSplash() {
+  $('wl').innerHTML = welcomeHtml();
+  const el = $('intro'); el.classList.add('x3on'); el.hidden = false; document.body.style.overflow = 'hidden'; el.scrollTop = 0;
+  x3Canvas();
+  el.querySelectorAll('[data-x3n]').forEach(x3Count);
+  const arc = $('x3arc'), pc = $('x3pct'), hs = histStats();
+  if (arc && hs.n) setTimeout(() => { const C = 2 * Math.PI * 62; arc.style.strokeDashoffset = C * (1 - hs.rate); if (pc) { pc.dataset.x3n = Math.round(hs.rate * 100); pc.dataset.x3d = 0; x3Count(pc); } }, RM ? 0 : 1400);
+  clearTimeout(slT); clearTimeout(x3T);
+  x3T = setTimeout(() => { if (!el.hidden) closeSplash(); }, RM ? 4000 : 8200);
+}
+function closeSplash(then) {
+  const el = $('intro'); clearTimeout(x3T); el.classList.add('out');
+  setTimeout(() => { cancelAnimationFrame(x3Raf); el.hidden = true; el.classList.remove('out', 'x3on'); document.body.style.overflow = ''; renderInicio(); if (then) then(); }, 650);
+}
 </script>
 
 </body></html>
