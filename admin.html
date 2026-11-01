@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ODDSLAB · Códigos de acesso</title>
+<link rel="icon" type="image/png" href="/favicon-32.png">
+<style>
+:root { color-scheme: dark; --bg:#0a0b0d; --s1:#111317; --s2:#16191e; --bd:#2a2f37; --text:#f7f8fa; --muted:#c3c8cf; --faint:#8c929b; --acc:#f5be3c; --acc2:#ffd977; --pos:#22e584; --neg:#ff5d5d; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; }
+main { max-width: 520px; margin: 0 auto; padding: 28px 18px 60px; }
+h1 { display: flex; align-items: center; gap: 10px; font-size: 22px; margin: 0 0 4px; } h1 img { width: 36px; height: 36px; border-radius: 10px; }
+p.sub { margin: 0 0 22px; color: var(--muted); font-size: 14px; }
+.card { background: var(--s1); border: 1px solid var(--bd); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+label { display: block; font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--bd); background: var(--bg); color: var(--text); font: inherit; margin-bottom: 12px; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+.seg button, .dur button { padding: 11px 6px; border-radius: 12px; border: 1px solid var(--bd); background: none; color: var(--muted); font: 700 14px inherit; cursor: pointer; }
+.seg button[aria-pressed="true"], .dur button[aria-pressed="true"] { border-color: var(--acc); color: var(--acc2); background: rgb(245 190 60 / .1); }
+.dur { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+.go { width: 100%; padding: 14px; border: 0; border-radius: 14px; background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #15110a; font: 800 16px inherit; cursor: pointer; }
+.go:disabled { opacity: .6; }
+.res { display: none; } .res.on { display: block; }
+.code { font: 800 20px ui-monospace, Menlo, monospace; letter-spacing: .04em; color: var(--acc2); word-break: break-all; margin: 6px 0 10px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row button { padding: 11px; border-radius: 12px; border: 1px solid var(--bd); background: var(--s2); color: var(--text); font: 700 14px inherit; cursor: pointer; }
+textarea { width: 100%; min-height: 110px; padding: 12px; border-radius: 12px; border: 1px solid var(--bd); background: var(--bg); color: var(--muted); font: 13px/1.45 inherit; margin-top: 10px; resize: vertical; }
+.err { color: var(--neg); font-size: 13.5px; min-height: 1em; margin: 8px 0 0; }
+.hist li { font: 13px ui-monospace, Menlo, monospace; color: var(--muted); padding: 4px 0; border-top: 1px solid var(--bd); list-style: none; }
+.hist { padding: 0; margin: 8px 0 0; }
+small { color: var(--faint); }
+</style>
+</head>
+<body>
+<main>
+  <h1><img src="/apple-touch-icon.png" alt="">Códigos de acesso</h1>
+  <p class="sub">Só para o dono. Cria um código depois de receberes o pagamento e envia-o ao cliente. O cliente escreve-o em Planos → "Já tens um código de acesso?".</p>
+  <div class="card">
+    <label for="pw">Palavra-passe de administrador</label>
+    <input id="pw" type="password" autocomplete="current-password" placeholder="ODDSLAB_ADMIN">
+    <label>Plano</label>
+    <div class="seg" id="pl"><button type="button" data-v="pro" aria-pressed="true">PRO</button><button type="button" data-v="elite" aria-pressed="false">ELITE</button><button type="button" data-v="tm" aria-pressed="false">Tip Master</button></div>
+    <div id="durBox"><label>Duração</label>
+    <div class="dur" id="du"><button type="button" data-v="7" aria-pressed="false">7 dias</button><button type="button" data-v="31" aria-pressed="true">1 mês</button><button type="button" data-v="366" aria-pressed="false">1 ano</button><button type="button" data-v="3650" aria-pressed="false">Dono</button></div></div>
+    <button type="button" class="go" id="go">Criar código</button>
+    <p class="err" id="err"></p>
+  </div>
+  <div class="card res" id="res">
+    <small id="what"></small>
+    <div class="code" id="code"></div>
+    <div class="row"><button type="button" id="cp">Copiar código</button><button type="button" id="cpm">Copiar mensagem</button></div>
+    <textarea id="msg" readonly></textarea>
+  </div>
+  <div class="card"><b>Últimos códigos neste aparelho</b><ul class="hist" id="hist"></ul><small>Guardados só neste browser.</small></div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+let plano = 'pro', dias = 31;
+try { $('pw').value = sessionStorage.getItem('olAdm') || ''; } catch {}
+function seg(id, cb) { $(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); cb(b.dataset.v); }); }
+seg('pl', (v) => { plano = v; $('durBox').style.display = v === 'tm' ? 'none' : ''; });
+seg('du', (v) => { dias = Number(v); });
+function hist() { let H = []; try { H = JSON.parse(localStorage.getItem('olAdmHist') || '[]'); } catch {} $('hist').innerHTML = H.slice(0, 15).map((h) => `<li>${h.d} · ${h.p} · ${h.c}</li>`).join('') || '<li>Nenhum ainda.</li>'; return H; }
+hist();
+$('go').addEventListener('click', async () => {
+  $('err').textContent = ''; const senha = $('pw').value; if (!senha) { $('err').textContent = 'Escreve a palavra-passe.'; return; }
+  $('go').disabled = true;
+  try {
+    const r = await fetch('/api/acesso?acao=codigo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha, plano, dias }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { $('err').textContent = j.erro || 'Erro ' + r.status; return; }
+    try { sessionStorage.setItem('olAdm', senha); } catch {}
+    const nome = plano === 'tm' ? 'Tip Master de hoje' : plano.toUpperCase() + (dias >= 3650 ? ' (dono)' : dias >= 366 ? ' · 1 ano' : dias >= 31 ? ' · 1 mês' : ' · ' + dias + ' dias');
+    $('what').textContent = nome; $('code').textContent = j.codigo; $('res').classList.add('on');
+    const site = location.origin + '/';
+    $('msg').value = `Obrigado! O teu acesso ${nome} ao ODDSLAB está pronto.\n\nCódigo: ${j.codigo}\n\n1. Abre ${site}\n2. No Início, toca em "Ver planos" (ou no botão ? → "Planos e preços")\n3. Em "Já tens um código de acesso?", cola o código e toca em Ativar.\n\n18+ · Joga com responsabilidade.`;
+    const H = hist(); H.unshift({ d: new Date().toLocaleString('pt-PT'), p: nome, c: j.codigo }); localStorage.setItem('olAdmHist', JSON.stringify(H.slice(0, 50))); hist();
+  } catch { $('err').textContent = 'Sem ligação.'; } finally { $('go').disabled = false; }
+});
+const cp = async (t, b) => { try { await navigator.clipboard.writeText(t); const o = b.textContent; b.textContent = 'Copiado ✓'; setTimeout(() => (b.textContent = o), 1400); } catch { prompt('Copia:', t); } };
+$('cp').addEventListener('click', (e) => cp($('code').textContent, e.target));
+$('cpm').addEventListener('click', (e) => cp($('msg').value, e.target));
+</script>
+</body>
+</html>

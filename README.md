@@ -12,3 +12,11 @@ App pessoal de prognósticos de futebol (página estática, um só ficheiro).
 4. Deploy. Cada novo envio para o GitHub atualiza o site automaticamente.
 
 Probabilidades estimadas, não certezas. 18+
+
+## Acesso pago (desde 01/11/2026)
+- `index.html` tem só os dados grátis. Os dados completos ficam cifrados em `data/pago.enc`.
+- Todos os dias: `node tools/publicar.js <json-completo>` atualiza o `index.html` (parte grátis) e o `data/pago.enc`.
+- `api/acesso.js` confirma o código do cliente e devolve os dados do plano (PRO, ELITE ou Tip Master).
+- `/admin` cria códigos de acesso (precisa da palavra-passe de administrador).
+- Variáveis na Vercel: `ODDSLAB_PRIVATE_KEY` (chave privada PEM) e `ODDSLAB_ADMIN` (palavra-passe do dono).
+- `data/chave-publica.pem` é pública e só serve para cifrar.
