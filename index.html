@@ -2205,6 +2205,13 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 @media (max-width: 360px) { .i7 small { display: none; } .i7 .btn { padding: 9px 10px; } }
 @media (prefers-reduced-motion: reduce) { .i7, .i7 .btn, .i7 .btn::after { animation: none !important; } }
 </style>
+<style id="i8css">
+/* Apostas do dia: cartão centrado no telemóvel */
+@media (max-width: 699px) {
+  #deck .h3r { margin: 0 -16px; padding: 2px 24px 4px; scroll-padding-inline: 24px; grid-auto-columns: 100%; column-gap: 10px; }
+  #deck .h3r > .h3k { scroll-snap-align: center; }
+}
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
