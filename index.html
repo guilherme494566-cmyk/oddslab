@@ -2060,6 +2060,116 @@ table { font-variant-numeric: tabular-nums; }
   .r4-days { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); grid-auto-columns: auto; overflow: visible; }
 }
 </style>
+<style id="i5css">
+/* ===== Instalar a app ===== */
+.i5 { position: fixed; inset: 0; z-index: 95; display: grid; align-items: end; justify-items: center; }
+.i5[hidden] { display: none !important; }
+.i5-bk { position: absolute; inset: 0; background: rgb(0 0 0 / .66); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); animation: x3Fade .25s both; }
+.i5-pn { position: relative; width: 100%; max-width: 640px; max-height: 92dvh; max-height: 92vh; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; background: #0e1013; border: 1px solid var(--bd2); border-bottom: 0; border-radius: 22px 22px 0 0; box-shadow: 0 -20px 60px -20px #000; animation: i5Up .35s cubic-bezier(.2,.9,.25,1) both; overflow: hidden; }
+.i5.out .i5-pn { animation: i5Dn .22s ease-in forwards; } .i5.out .i5-bk { animation: x3Fade .22s reverse forwards; }
+@keyframes i5Up { from { transform: translateY(100%); } } @keyframes i5Dn { to { transform: translateY(100%); } }
+.i5-hd { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 14px 16px 10px; position: static; background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.i5-ti { display: flex; gap: 12px; align-items: center; min-width: 0; }
+.i5-ti .i5-ic { width: 46px; height: 46px; flex: none; filter: drop-shadow(0 8px 20px rgb(245 190 60 / .4)); }
+.i5-ti b { display: block; font-size: 18px; font-weight: 800; letter-spacing: -.02em; }
+.i5-ti small { display: block; font-size: 12.5px; line-height: 1.35; color: var(--muted); margin-top: 2px; }
+.i5-x { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--bd2); background: var(--s1); font-size: 20px; line-height: 1; color: var(--muted); }
+.i5-tabs { display: flex; gap: 4px; margin: 0 16px; padding: 4px; border-radius: 14px; background: var(--s1); border: 1px solid var(--bd); }
+.i5-tabs button { flex: 1; border: 0; background: none; padding: 9px 6px; border-radius: 10px; font-size: 13.5px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.i5-tabs button[aria-selected="true"] { background: var(--acc); color: #111; }
+.i5-bd { overflow-y: auto; overscroll-behavior: contain; padding: 12px 16px 8px; }
+.i5-sub { display: flex; gap: 6px; margin-bottom: 12px; }
+.i5-sub button { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--bd2); background: none; font-size: 12.5px; font-weight: 650; color: var(--muted); }
+.i5-sub button[aria-pressed="true"] { border-color: rgb(245 190 60 / .5); color: var(--acc2); background: var(--accbg); }
+.i5-ok, .i5-warn { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
+.i5-ok { color: var(--pos); background: rgb(34 229 132 / .1); border: 1px solid rgb(34 229 132 / .3); }
+.i5-warn { color: var(--acc2); background: var(--accbg); border: 1px solid rgb(245 190 60 / .3); }
+.i5-now { width: 100%; padding: 14px; font-size: 15.5px; margin-bottom: 14px; box-shadow: 0 12px 30px -12px rgb(245 190 60 / .8); }
+.i5-st { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.i5-st li { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 14px; align-items: center; padding: 10px; border-radius: 16px; background: var(--s1); border: 1px solid var(--bd); animation: x3In .4s calc(var(--i) * .07s) both; }
+.i5-mk { display: grid; place-items: center; }
+.i5-tx { display: grid; gap: 4px; align-content: center; }
+.i5-n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--acc); color: #111; font: 800 12px var(--mono); }
+.i5-st li:last-child .i5-n { background: var(--pos); }
+.i5-tx b { font-size: 15px; font-weight: 750; }
+.i5-tx p { margin: 0; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.i5-tx p b { font-size: inherit; color: var(--text); font-weight: 700; }
+.i5-ft { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; padding: 10px 16px max(14px, env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--bd); background: #0e1013; position: static; }
+.i5-ft .btn { padding: 11px 8px; white-space: nowrap; }
+/* desenhos */
+.i5-ph { position: relative; width: 108px; height: 190px; border-radius: 18px; border: 3px solid #2b2f36; background: #f4f5f7; overflow: hidden; box-shadow: 0 10px 24px -12px #000; font-family: var(--sans); color: #111; }
+.i5-pc { position: relative; width: 128px; height: 92px; border-radius: 8px; border: 2px solid #2b2f36; background: #f4f5f7; overflow: hidden; box-shadow: 0 10px 24px -12px #000; color: #111; }
+.i5-pg { position: absolute; inset: 14px 8px auto; display: grid; gap: 6px; }
+.i5-pc .i5-pg { inset: 22px 10px auto; gap: 5px; }
+.i5-pg i { height: 7px; border-radius: 3px; background: #d9dce1; } .i5-pg i.s { width: 60%; } .i5-pg i:first-child { height: 26px; background: linear-gradient(135deg, #ffe08a, #f5be3c); }
+.i5-pc .i5-pg i:first-child { height: 16px; }
+.i5-sb { position: absolute; left: 6px; right: 6px; bottom: 8px; display: flex; gap: 4px; align-items: center; }
+.i5-tb { position: absolute; left: 0; right: 0; top: 0; padding: 5px; display: flex; gap: 4px; align-items: center; background: #fff; border-bottom: 1px solid #e3e5e8; z-index: 1; }
+.i5-tb + .i5-pg { top: 30px; }
+.i5-url { flex: 1; height: 18px; border-radius: 9px; background: #fff; border: 1px solid #e0e2e6; font-size: 7.5px; color: #777; display: flex; align-items: center; padding: 0 6px; overflow: hidden; white-space: nowrap; position: relative; }
+.i5-url.w { height: 13px; border-radius: 4px; background: #eceef1; font-size: 6.5px; }
+.i5-dot { width: 20px; height: 18px; border-radius: 9px; background: #fff; border: 1px solid #e0e2e6; display: grid; place-items: center; font-size: 9px; font-weight: 900; color: #333; flex: none; }
+.i5-pc .i5-dot { width: 13px; height: 13px; font-size: 8px; border: 0; background: none; }
+.i5-pulse, .i5-on { position: relative; outline: 2px solid var(--acc); outline-offset: 1px; background: #fff3cf !important; }
+.i5-pulse::after { content: ""; position: absolute; inset: -5px; border-radius: inherit; border: 2px solid var(--acc); animation: i5P 1.4s ease-out infinite; }
+@keyframes i5P { from { opacity: .9; transform: scale(.85); } to { opacity: 0; transform: scale(1.35); } }
+.i5-pop { position: absolute; right: 6px; bottom: 32px; width: 80px; padding: 4px; border-radius: 10px; background: #fff; box-shadow: 0 8px 20px -6px rgb(0 0 0 / .35); display: grid; gap: 2px; font-size: 7.5px; z-index: 2; }
+.i5-pop.i5-pr { top: 26px; bottom: auto; }
+.i5-pc .i5-pop { width: 84px; font-size: 6.5px; top: 18px; right: 4px; bottom: auto; }
+.i5-pop.i5-pl { left: 18px; right: auto; top: 14px; }
+.i5-pop > span { padding: 4px 5px; border-radius: 6px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.i5-hl { display: flex; align-items: center; gap: 4px; padding: 4px 5px; border-radius: 6px; background: #fff3cf; color: #111; font-weight: 800; outline: 2px solid var(--acc); position: relative; }
+.i5-hl svg { width: 10px; height: 10px; flex: none; fill: none; stroke: #111; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.i5-hl::after { content: ""; position: absolute; right: -6px; top: 50%; width: 14px; height: 14px; translate: 0 -10%; border-radius: 50%; background: rgb(17 17 17 / .25); box-shadow: 0 0 0 3px rgb(255 255 255 / .8); animation: i5Tap 1.6s ease-in-out infinite; }
+@keyframes i5Tap { 0%, 100% { transform: scale(1); opacity: .9; } 50% { transform: scale(.7); opacity: .5; } }
+.i5-sh { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 6px 10px; border-radius: 12px 12px 0 0; background: #fff; box-shadow: 0 -8px 20px -8px rgb(0 0 0 / .3); display: grid; gap: 3px; font-size: 7.5px; }
+.i5-sh b { font-size: 8.5px; padding: 0 4px 4px; border-bottom: 1px solid #eee; }
+.i5-sh > span { padding: 4px 5px; color: #444; }
+.i5-dl { position: absolute; inset: 0; background: #f2f2f6; display: grid; align-content: start; gap: 8px; padding: 8px 6px; font-size: 7.5px; }
+.i5-dl.i5-dlc { inset: auto 6px 30px; border-radius: 10px; background: #fff; box-shadow: 0 10px 24px -8px rgb(0 0 0 / .4); padding: 8px; }
+.i5-dh { display: flex; justify-content: space-between; align-items: center; gap: 2px; color: #2b6fd6; }
+.i5-dh b { color: #111; font-size: 7.5px; }
+.i5-dh .i5-hl { padding: 3px 4px; color: #2b6fd6; }
+.i5-dr { display: flex; gap: 6px; align-items: center; padding: 6px; border-radius: 8px; background: #fff; }
+.i5-dl.i5-dlc .i5-dr { padding: 0; }
+.i5-dr .i5-ic { width: 26px; height: 26px; flex: none; }
+.i5-dr b { display: block; font-size: 8.5px; } .i5-dr small { font-size: 6.5px; color: #888; }
+.i5-tg { display: flex; justify-content: space-between; align-items: center; padding: 6px; border-radius: 8px; background: #fff; }
+.i5-tg i { width: 20px; height: 12px; border-radius: 99px; background: #34c759; position: relative; } .i5-tg i::after { content: ""; position: absolute; right: 1px; top: 1px; width: 10px; height: 10px; border-radius: 50%; background: #fff; }
+.i5-db { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; color: #1a73e8; font-weight: 700; } .i5-db .i5-hl { color: #1a73e8; }
+.i5-home { background: linear-gradient(160deg, #2a2340, #11131a 60%, #3a2a12); }
+.i5-grid { position: absolute; inset: 16px 8px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 6px; align-content: start; }
+.i5-grid > i { aspect-ratio: 1; border-radius: 6px; background: hsl(var(--h) 25% 55% / .55); }
+.i5-new { min-width: 0; display: grid; justify-items: center; gap: 2px; animation: i5Pop 2.4s cubic-bezier(.2,1.2,.3,1) infinite; }
+.i5-new .i5-ic { width: 100%; height: auto; aspect-ratio: 1; filter: drop-shadow(0 0 8px rgb(245 190 60 / .8)); }
+.i5-new small { font-size: 5.5px; color: #fff; font-weight: 700; }
+@keyframes i5Pop { 0% { transform: scale(0); } 18%, 85% { transform: scale(1); } 100% { transform: scale(1); } }
+.i5-bb { position: absolute; left: 0; right: 0; top: 0; height: 18px; display: flex; gap: 4px; align-items: center; padding: 0 4px; background: #fff; border-bottom: 1px solid #e3e5e8; z-index: 1; }
+.i5-dots { display: flex; gap: 2px; } .i5-dots i { width: 4px; height: 4px; border-radius: 50%; background: #ff5f57; } .i5-dots i:nth-child(2) { background: #febc2e; } .i5-dots i:nth-child(3) { background: #28c840; }
+.i5-ins { position: absolute; right: 2px; top: 1px; width: 10px; height: 10px; border-radius: 3px; display: grid; place-items: center; }
+.i5-ins svg { width: 8px; height: 8px; fill: none; stroke: #111; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.i5-win { position: absolute; inset: 6px 10px 22px; border-radius: 5px; background: #f4f5f7; border: 1px solid #cfd2d8; overflow: hidden; }
+.i5-win .i5-pg { inset: 16px 6px auto; gap: 4px; } .i5-win .i5-pg i { height: 5px; } .i5-win .i5-pg i:first-child { height: 12px; }
+.i5-bb2 { height: 12px; display: flex; align-items: center; gap: 3px; padding: 0 4px; background: #0e1013; color: #fff; font-size: 6px; } .i5-bb2 .i5-ic { width: 8px; height: 8px; }
+.i5-task, .i5-dock { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: flex; justify-content: center; align-items: center; gap: 5px; background: #20232a; }
+.i5-dock { left: 18px; right: 18px; bottom: 3px; height: 16px; border-radius: 6px; background: rgb(255 255 255 / .55); border: 1px solid rgb(255 255 255 / .7); }
+.i5-task > i, .i5-dock > i { width: 11px; height: 11px; border-radius: 3px; background: #6a7180; }
+.i5-task .i5-new, .i5-dock .i5-new { width: 13px; } .i5-task .i5-new .i5-ic, .i5-dock .i5-new .i5-ic { width: 13px; }
+.i5-mb { position: absolute; left: 0; right: 0; top: 0; height: 12px; display: flex; gap: 6px; align-items: center; padding: 0 5px; background: rgb(255 255 255 / .9); font-size: 6.5px; border-bottom: 1px solid #e3e5e8; z-index: 1; }
+.i5-mb b { width: 6px; height: 7px; border-radius: 2px; background: #111; } .i5-mb .i5-on { padding: 0 3px; border-radius: 3px; outline-width: 1.5px; }
+/* banner e atalho */
+#i5Ban:empty { display: none; }
+.i5-ban { margin-top: 14px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 10px 8px 10px 12px; border-color: rgb(245 190 60 / .35); background: linear-gradient(120deg, rgb(245 190 60 / .12), var(--s1) 60%); animation: x3In .5s .2s both; }
+.i5-ban .i5-ic { width: 38px; height: 38px; }
+.i5-ban b { display: block; font-size: 14px; font-weight: 750; } .i5-ban small { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+.i5-ban .btn { padding: 9px 12px; font-size: 13px; white-space: nowrap; }
+.i5-bx { width: 28px; height: 28px; border: 0; background: none; color: var(--faint); font-size: 18px; }
+.i5-aj { width: 100%; margin-top: 14px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; text-align: left; border-color: rgb(245 190 60 / .35); }
+.i5-aj .i5-ic { width: 40px; height: 40px; } .i5-aj b { display: block; font-size: 15px; } .i5-aj small { display: block; font-size: 12.5px; color: var(--muted); } .i5-aj em { font-style: normal; font-size: 22px; color: var(--acc); }
+@media (max-width: 380px) { .i5-st li { grid-template-columns: 104px minmax(0, 1fr); gap: 10px; } .i5-ph { width: 96px; height: 170px; } .i5-pc { width: 104px; height: 76px; } .i5-ban small { display: none; } }
+@media (min-width: 700px) { .i5 { align-items: center; } .i5-pn { border-radius: 22px; border-bottom: 1px solid var(--bd2); max-height: 88vh; } @keyframes i5Up { from { transform: translateY(30px) scale(.97); opacity: 0; } } @keyframes i5Dn { to { transform: translateY(30px) scale(.97); opacity: 0; } } .i5-st li { grid-template-columns: 150px minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .i5 *, .i5 *::after { animation: none !important; } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4178,6 +4288,126 @@ function r4Anim() {
   });
   if (!ANIM || RM) root.classList.add('r4-still'); else root.classList.remove('r4-still');
 }
+
+// ===== Instalar a app: tutorial iPhone / Android / computador =====
+var i5Evt = null, i5Tab = null;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); i5Evt = e; const b = document.getElementById('i5Now'); if (b) b.hidden = false; });
+window.addEventListener('appinstalled', () => { i5Evt = null; try { localStorage.setItem('i5Done', '1'); } catch {} i5Banner(); toast && toast('App instalada'); });
+function i5Std() { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }
+function i5Plat() {
+  const u = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1);
+  if (ios) return 'ios'; if (/Android/i.test(u)) return 'android';
+  return 'pc';
+}
+function i5Pc() { const u = navigator.userAgent; return /Macintosh/.test(u) && /Safari/.test(u) && !/Chrome|Chromium|Edg|OPR|Firefox/.test(u) ? 'mac' : /Edg\//.test(u) ? 'edge' : /Firefox/.test(u) ? 'ff' : 'chrome'; }
+function i5Url() { const real = document.querySelector('link[rel="manifest"]') && /^https?:$/.test(location.protocol); return real ? location.origin + '/' : ''; }
+const I5L = () => document.querySelector('#logoBtn .lgm').outerHTML.replace('class="lgm"', 'class="lgm i5-ic"');
+// desenhos dos ecrãs
+function i5Mock(k) {
+  const hi = (t, ic = '') => `<span class="i5-hl">${ic}${t}</span>`;
+  const page = '<div class="i5-pg"><i></i><i></i><i class="s"></i><i></i><i class="s"></i></div>';
+  const M = {
+    ios1: `<div class="i5-ph">${page}<div class="i5-sb"><span class="i5-url">oddslab…</span><span class="i5-dot i5-pulse">•••</span></div></div>`,
+    ios2: `<div class="i5-ph">${page}<div class="i5-pop"><span>Favoritos</span>${hi('Partilhar', '<svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>')}<span>Separadores</span></div><div class="i5-sb"><span class="i5-url">oddslab…</span><span class="i5-dot">•••</span></div></div>`,
+    ios3: `<div class="i5-ph">${page}<div class="i5-sh"><b>ODDSLAB</b><span>Copiar</span><span>Adicionar aos favoritos</span>${hi('Adicionar ao ecrã principal', '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>')}</div></div>`,
+    ios4: `<div class="i5-ph"><div class="i5-dl"><div class="i5-dh"><span>Cancelar</span><b>Ecrã principal</b><span class="i5-hl i5-pulse">Adicionar</span></div><div class="i5-dr">${I5L()}<div><b>ODDSLAB</b><small>oddslab…</small></div></div><div class="i5-tg"><span>Abrir como app web</span><i></i></div></div></div>`,
+    and1: `<div class="i5-ph"><div class="i5-tb"><span class="i5-url">oddslab…</span><span class="i5-dot i5-pulse">⋮</span></div>${page}</div>`,
+    and2: `<div class="i5-ph"><div class="i5-tb"><span class="i5-url">oddslab…</span><span class="i5-dot">⋮</span></div>${page}<div class="i5-pop i5-pr"><span>Novo separador</span><span>Histórico</span>${hi('Instalar app', '<svg viewBox="0 0 24 24"><path d="M12 4v10m0 0-4-4m4 4 4-4M5 19h14"/></svg>')}<span>Definições</span></div></div>`,
+    and3: `<div class="i5-ph">${page}<div class="i5-dl i5-dlc"><div class="i5-dr">${I5L()}<div><b>Instalar app</b><small>ODDSLAB</small></div></div><div class="i5-db"><span>Cancelar</span><span class="i5-hl i5-pulse">Instalar</span></div></div></div>`,
+    home: `<div class="i5-ph i5-home"><div class="i5-grid">${Array.from({ length: 11 }, (_, i) => `<i style="--h:${(i * 37) % 360}"></i>`).join('')}<span class="i5-new">${I5L()}<small>ODDSLAB</small></span></div></div>`,
+    pc1: `<div class="i5-pc"><div class="i5-bb"><span class="i5-dots"><i></i><i></i><i></i></span><span class="i5-url w">oddslab.vercel.app<span class="i5-ins i5-pulse"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 8v6m0 0-3-3m3 3 3-3M8 21h8"/></svg></span></span><span class="i5-dot">⋮</span></div>${page}</div>`,
+    pc2: `<div class="i5-pc"><div class="i5-bb"><span class="i5-dots"><i></i><i></i><i></i></span><span class="i5-url w">oddslab.vercel.app</span><span class="i5-dot i5-on">⋮</span></div>${page}<div class="i5-pop i5-pr"><span>Novo separador</span><span>Transmitir, guardar e partilhar ›</span>${hi('Instalar página como app…')}</div></div>`,
+    pc3: `<div class="i5-pc"><div class="i5-win"><div class="i5-bb2">${I5L()}<b>ODDSLAB</b></div>${page}</div><div class="i5-task"><i></i><i></i><span class="i5-new">${I5L()}</span><i></i></div></div>`,
+    mac1: `<div class="i5-pc"><div class="i5-mb"><b></b><span class="i5-on">Ficheiro</span><span>Editar</span><span>Ver</span></div><div class="i5-pop i5-pl"><span>Nova janela</span><span>Partilhar</span>${hi('Adicionar ao Dock…')}</div>${page}</div>`,
+    mac2: `<div class="i5-pc">${page}<div class="i5-dock"><i></i><i></i><i></i><span class="i5-new">${I5L()}</span><i></i></div></div>`,
+  };
+  return M[k] || '';
+}
+const I5S = {
+  ios: [['ios1', 'Abre o site no Safari', 'Toca nos <b>3 pontos (•••)</b> ao lado da barra do endereço. Em versões antigas do iPhone, toca logo no botão Partilhar (quadrado com seta).'],
+    ['ios2', 'Toca em Partilhar', 'No menu que aparece, escolhe <b>Partilhar</b>.'],
+    ['ios3', 'Adicionar ao ecrã principal', 'Desliza a lista para baixo e toca em <b>Adicionar ao ecrã principal</b>. Se não aparecer, toca em "Editar ações" no fim da lista e ativa-a.'],
+    ['ios4', 'Confirma em Adicionar', 'Deixa ligado <b>Abrir como app web</b> e toca em <b>Adicionar</b>, no canto de cima.'],
+    ['home', 'Pronto!', 'O ícone dourado do <b>ODDSLAB</b> aparece no ecrã principal. Abre em ecrã inteiro, como uma app.']],
+  android: [['and1', 'Abre o site no Chrome', 'Toca nos <b>3 pontos (⋮)</b> no canto de cima à direita.'],
+    ['and2', 'Instalar app', 'Toca em <b>Instalar app</b>. Nalguns telemóveis aparece como <b>Adicionar ao ecrã principal</b>. No Samsung Internet: menu ≡ → Adicionar página a → Ecrã principal.'],
+    ['and3', 'Confirma em Instalar', 'Toca em <b>Instalar</b> (ou Adicionar).'],
+    ['home', 'Pronto!', 'O ícone do <b>ODDSLAB</b> fica no ecrã principal e na lista de apps.']],
+  chrome: [['pc1', 'Abre o site no Chrome ou no Edge', 'Na barra do endereço, clica no ícone <b>Instalar</b> (um ecrã com uma seta), à direita.'],
+    ['pc2', 'Ou pelo menu', 'Chrome: <b>⋮ → Transmitir, guardar e partilhar → Instalar página como app</b>. Edge: <b>⋯ → Aplicações → Instalar este site como aplicação</b>.'],
+    ['pc3', 'Pronto!', 'O ODDSLAB abre numa janela própria. No Windows, clica com o botão direito no ícone da barra de tarefas e escolhe <b>Afixar na barra de tarefas</b>.']],
+  mac: [['mac1', 'Abre o site no Safari do Mac', 'Na barra de menus, clica em <b>Ficheiro → Adicionar ao Dock…</b> e depois em Adicionar. Precisa do macOS Sonoma ou mais recente.'],
+    ['mac2', 'Pronto!', 'O ícone do ODDSLAB fica no Dock e no Launchpad, e abre como uma app.']],
+};
+function i5Steps(k) { return `<ol class="i5-st">${I5S[k].map(([m, t, d], i) => `<li style="--i:${i}"><div class="i5-mk">${i5Mock(m)}</div><div class="i5-tx"><span class="i5-n">${i === I5S[k].length - 1 ? '✓' : i + 1}</span><b>${t}</b><p>${d}</p></div></li>`).join('')}</ol>`; }
+function i5Body() {
+  const t = i5Tab, url = i5Url(), std = i5Std();
+  const pc = i5Pc();
+  let body = '';
+  if (t === 'ios') body = i5Steps('ios');
+  else if (t === 'android') body = i5Steps('android');
+  else body = `<div class="i5-sub">${[['chrome', 'Windows · Chrome · Edge'], ['mac', 'Mac · Safari']].map(([k, l]) => `<button type="button" data-i5pc="${k}" aria-pressed="${(i5Tab === 'mac' ? 'mac' : 'chrome') === k}">${l}</button>`).join('')}</div>` + i5Steps(i5Tab === 'mac' ? 'mac' : 'chrome') + (pc === 'ff' ? '<p class="i5-warn">O Firefox no computador não instala apps. Usa o Chrome, o Edge ou o Safari.</p>' : '');
+  const warn = t === 'ios' && /CriOS|FxiOS|EdgiOS/.test(navigator.userAgent) ? '<p class="i5-warn">Estás num browser que não é o Safari. Abre o link no <b>Safari</b> para teres a app com ecrã inteiro.</p>' : '';
+  return `${std ? '<p class="i5-ok">✓ Já estás a usar a app instalada.</p>' : ''}
+    ${!url ? '<p class="i5-warn">Estás a ver a app dentro do Claude. Para a instalares, abre o site da app no browser do telemóvel ou do computador e segue estes passos.</p>' : ''}
+    <button type="button" class="btn acc i5-now" id="i5Now" ${i5Evt && t !== 'ios' ? '' : 'hidden'}>Instalar agora com 1 toque</button>
+    ${warn}${body}`;
+}
+function i5Render() {
+  const el = document.getElementById('i5'); if (!el) return;
+  const T = i5Tab === 'mac' || i5Tab === 'chrome' ? 'pc' : i5Tab;
+  el.querySelector('.i5-tabs').innerHTML = [['ios', 'iPhone / iPad', ''], ['android', 'Android', ''], ['pc', 'Computador', '']].map(([k, l]) => `<button type="button" role="tab" data-i5tab="${k}" aria-selected="${T === k}">${l}</button>`).join('');
+  el.querySelector('.i5-bd').innerHTML = i5Body();
+  el.querySelector('.i5-bd').scrollTop = 0;
+}
+function openInstall(tab) {
+  let el = document.getElementById('i5');
+  if (!el) {
+    el = document.createElement('div'); el.id = 'i5'; el.className = 'i5'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Instalar a app');
+    el.innerHTML = `<div class="i5-bk" data-i5x="1"></div><div class="i5-pn">
+      <header class="i5-hd"><div class="i5-ti">${I5L()}<div><b>Instala o ODDSLAB</b><small>Como uma app, sem loja de apps. 30 segundos.</small></div></div><button type="button" class="i5-x" data-i5x="1" aria-label="Fechar">×</button></header>
+      <div class="i5-tabs" role="tablist"></div>
+      <div class="i5-bd"></div>
+      <footer class="i5-ft"><button type="button" class="btn ghost" data-i5share="1">Enviar a um amigo</button><button type="button" class="btn acc" data-i5x="1">Feito</button></footer>
+    </div>`;
+    document.body.appendChild(el);
+  }
+  const p = i5Plat(); i5Tab = tab || (p === 'pc' ? (i5Pc() === 'mac' ? 'mac' : 'chrome') : p);
+  i5Render(); el.hidden = false; el.classList.remove('out'); document.body.style.overflow = 'hidden';
+}
+function closeInstall() { const el = document.getElementById('i5'); if (!el || el.hidden) return; el.classList.add('out'); setTimeout(() => { el.hidden = true; el.classList.remove('out'); document.body.style.overflow = ''; }, 220); }
+function i5Banner() {
+  const host = document.getElementById('i5Ban'); if (!host) return;
+  let off = false; try { off = localStorage.getItem('i5Off') === '1' || localStorage.getItem('i5Done') === '1'; } catch {}
+  if (i5Std() || off) { host.innerHTML = ''; return; }
+  const p = i5Plat();
+  host.innerHTML = `<div class="i5-ban card">${I5L()}<div><b>Instala a app no ecrã principal</b><small>Abre como uma app · 30 segundos</small></div><button type="button" class="btn acc" data-i5open="1">Instalar</button><button type="button" class="i5-bx" data-i5off="1" aria-label="Esconder">×</button></div>`;
+}
+document.addEventListener('click', async (e) => {
+  const t = e.target.closest('[data-i5x],[data-i5tab],[data-i5pc],[data-i5open],[data-i5off],[data-i5share],#i5Now'); if (!t) return;
+  if (t.id === 'i5Now') { if (!i5Evt) return; i5Evt.prompt(); const r = await i5Evt.userChoice.catch(() => null); i5Evt = null; t.hidden = true; if (r && r.outcome === 'accepted') closeInstall(); return; }
+  if (t.dataset.i5x) return closeInstall();
+  if (t.dataset.i5tab) { const k = t.dataset.i5tab; i5Tab = k === 'pc' ? (i5Pc() === 'mac' ? 'mac' : 'chrome') : k; buzz(); return i5Render(); }
+  if (t.dataset.i5pc) { i5Tab = t.dataset.i5pc; return i5Render(); }
+  if (t.dataset.i5open) return openInstall();
+  if (t.dataset.i5off) { try { localStorage.setItem('i5Off', '1'); } catch {} return i5Banner(); }
+  if (t.dataset.i5share) {
+    const url = (i5Url() || '') + (i5Url() ? '?instalar=1' : ''), txt = 'Instala o ODDSLAB no teu telemóvel: prognósticos de futebol e ténis com a probabilidade de cada aposta. 18+';
+    if (!url) { toast && toast('Abre o site da app para partilhares o link'); return; }
+    try { if (navigator.share) { await navigator.share({ title: 'ODDSLAB', text: txt, url }); return; } } catch { return; }
+    copyText(txt + ' ' + url, 'Link copiado');
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInstall(); });
+(function i5Init() {
+  const sec = document.getElementById('pg-inicio');
+  if (sec && !document.getElementById('i5Ban')) { const d = document.createElement('div'); d.id = 'i5Ban'; const top = sec.querySelector('.h3-top'); if (top) top.after(d); else sec.prepend(d); }
+  const aj = document.getElementById('pg-ajuda');
+  if (aj && !document.getElementById('i5Aj')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'i5Aj'; b.className = 'i5-aj card'; b.dataset.i5open = '1'; b.innerHTML = `${I5L()}<span><b>Instalar a app no ecrã principal</b><small>iPhone, Android e computador, passo a passo</small></span><em>›</em>`; const h = aj.querySelector('.ph'); if (h) h.after(b); else aj.prepend(b); }
+  i5Banner();
+  let want = false; try { want = new URLSearchParams(location.search).has('instalar'); } catch {}
+  if (want) { const it = document.getElementById('intro'); if (it && !it.hidden) { it.hidden = true; document.body.style.overflow = ''; try { renderInicio(); } catch {} } openInstall(); }
+})();
 </script>
 
 </body></html>
