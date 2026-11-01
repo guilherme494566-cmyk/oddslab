@@ -2302,6 +2302,18 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 .p9-lr .pk.p9-pk b { font-size: 14px; }
 @media (max-width: 360px) { .p9-hc { padding: 0 12px; font-size: 13px; } }
 </style>
+<style id="r2css">
+.h3k.r2 .r2-tip { background: linear-gradient(160deg, rgb(245 190 60 / .14), var(--s2) 60%); border: 1px solid rgb(245 190 60 / .3); padding: 14px; }
+.h3k.r2 .r2-tip strong { font-size: 20px; }
+.h3k.r2 .r2-tip > b { font-size: 30px; }
+.r2-gm { grid-column: 1 / -1; margin-top: 8px; font-size: 12.5px; color: var(--muted); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r2-gm i { font-style: normal; color: var(--faint); font-weight: 500; }
+.r2-dt { display: flex; align-items: center; gap: 10px; font: 600 10.5px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-top: 2px; }
+.r2-dt::before, .r2-dt::after { content: ""; flex: 1; height: 1px; background: var(--bd); }
+.h3k.r2 .h3k-m { font-size: 16px; }
+.h3k.r2 .h3k-a { margin-top: 0; }
+@media (min-width: 1024px) { .h3k.r2 .h3k-m { font-size: 18px; } .h3k.r2 .r2-tip strong { font-size: 22px; } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4902,6 +4914,45 @@ renderInicio = function () {
   const f = $('nFut'); if (f) f.textContent = nA + ' jogos';
 };
 try { if (!$('pg-inicio').hidden) renderInicio(); } catch {}
+
+// Apostas do dia: primeiro a aposta, depois os detalhes e as estatísticas
+function r2Tip(g, a, P, lock) {
+  return `<div class="h3k-p r2-tip"><small>A nossa aposta</small>${lock ? `<strong class="p9-blur" aria-hidden="true">Vitória ${esc(g.casa)}</strong>` : `<strong>${esc(a.aposta)}</strong>`}<b class="m">${P}%<small>odd mín. ${lock ? '••••' : odd(1 / a.prob)}</small></b><div class="h3k-bar" style="--p:${P}%"><i></i></div>
+    <span class="r2-gm">${esc(g.casa)} <i>vs</i> ${esc(g.fora)} · ${h3When(g)}</span></div>`;
+}
+_p9card = function (x, k) {
+  const { g, a } = x, P = Math.round(a.prob * 100);
+  const [lc, lf] = g.golosEsperados || [0, 0], [ph, pd, pa] = g.prob1x2 || [0, 0, 0], pl = (g.placares || [])[0], why = (g.contexto || [])[0], alts = altsOf(g, 3), r = (v) => Math.round(v * 100);
+  return `<article class="h3k r2" data-k="${k}" aria-label="${k + 1}: ${esc(a.aposta)}, ${esc(g.casa)} contra ${esc(g.fora)}">
+    ${r2Tip(g, a, P)}
+    <p class="h3k-ex">Ganhas se ${esc(explainBet(a.aposta, g))}</p>
+    <footer class="h3k-a">${bcLink(`data-bc="${g.id}|${esc(a.aposta)}"`)}<button type="button" class="btn ghost" data-open="${g.id}">Ver o jogo</button></footer>
+    <div class="r2-dt"><span>Detalhes do jogo</span></div>
+    <header class="h3k-h"><span>${flag(g.pais)}${esc(g.liga)}</span><span>${h3When(g)}<em data-cd="${g.inicio}">${cdTxt(T(g.inicio) - Date.now())}</em></span></header>
+    <h3 class="h3k-m">${esc(g.casa)}<span>vs</span>${esc(g.fora)}</h3>
+    <dl class="h3k-st">
+      <div><dt>Golos esp.</dt><dd class="m">${n1(lc + lf)} <small>${n1(lc)}–${n1(lf)}</small></dd></div>
+      <div><dt>Casa · X · Fora</dt><dd class="m">${ph ? `${r(ph)}·${r(pd)}·${r(pa)}` : '–'}</dd></div>
+      <div><dt>Mais provável</dt><dd class="m">${pl ? `${esc(pl.r)} <small>${pct(pl.p)}</small>` : '–'}</dd></div>
+    </dl>
+    ${why ? `<p class="h3k-why"><span><b>Porquê:</b> ${esc(why)}</span></p>` : ''}
+    ${alts.length ? `<div class="h3k-mo"><small>Outras apostas · toca para copiar</small>${alts.map((s) => `<button type="button" data-bc="${g.id}|${esc(s.t)}"><span>${esc(s.t)}</span><b class="m">${pct(s.p)}</b></button>`).join('')}</div>` : ''}
+  </article>`;
+};
+var _r2card = h3Card;
+h3Card = function (x, k) {
+  if (p9Can(x.g)) return _r2card(x, k);
+  const { g, a } = x, P = Math.round(a.prob * 100), need = p9Need(g);
+  return `<article class="h3k p9-lk r2" data-k="${k}">
+    ${r2Tip(g, a, P, true)}
+    <div class="p9-cta"><span class="p9-ci">${P9LK}</span><b>Aposta ${P9[need].n}</b><p>${need === 'elite' ? 'Este jogo está no plano ELITE, com a Tip Master de todos os dias.' : 'Desbloqueia esta e todas as apostas do dia com o PRO.'}</p>
+      <button type="button" class="btn acc" data-p9open="${need}">${need === 'pro' && !p9ls('p9TrialUsed') ? 'Experimentar 7 dias grátis' : 'Ver planos'}</button></div>
+    <div class="r2-dt"><span>Detalhes do jogo</span></div>
+    <header class="h3k-h"><span>${flag(g.pais)}${esc(g.liga)}</span><span>${h3When(g)}</span></header>
+    <h3 class="h3k-m">${esc(g.casa)}<span>vs</span>${esc(g.fora)}</h3>
+  </article>`;
+};
+try { renderDeck(); } catch {}
 </script>
 
 </body></html>
