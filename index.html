@@ -1930,6 +1930,136 @@ table { font-variant-numeric: tabular-nums; }
 @media (min-width: 900px) { .x3-c { max-width: 560px; } .x3-bets { grid-template-columns: repeat(3, minmax(0, 1fr)); } .x3-b { grid-template-columns: minmax(0, 1fr) auto; } .x3-b-i { display: none; } }
 @media (prefers-reduced-motion: reduce) { .x3 *, .x3 *::before, .x3 *::after { animation-duration: .01s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; } }
 </style>
+<style id="r4css">
+/* ===== Resultados v4 ===== */
+#pg-res h2 { margin: 0; font-size: 17px; font-weight: 800; letter-spacing: -.015em; }
+.r4-mode { margin-top: 10px; }
+.r4-mode small, .r4-hf small { color: var(--faint); font-size: 11.5px; margin-left: 2px; }
+.r4-note { margin: 8px 2px 0; font-size: 12.5px; color: var(--muted); }
+.r4-hero { position: relative; overflow: hidden; margin-top: 12px; padding: 18px; display: grid; gap: 16px; background: linear-gradient(160deg, #13161a, #0d0f12); border-color: var(--bd2); }
+.r4-glow { position: absolute; inset: -60% -30% auto auto; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(closest-side, rgb(34 229 132 / .16), transparent); pointer-events: none; animation: r4Gl 6s ease-in-out infinite alternate; }
+@keyframes r4Gl { to { transform: translate(-40px, 30px) scale(1.15); } }
+.r4-top { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; position: relative; }
+.r4-rw { position: relative; width: 132px; height: 132px; display: grid; place-items: center; }
+.r4-ring { position: absolute; inset: 0; }
+.r4-ring .t { fill: none; stroke: rgb(255 255 255 / .06); stroke-width: 10; }
+.r4-ring .tk { stroke: rgb(255 255 255 / .14); stroke-width: 1; }
+.r4-ring .p { fill: none; stroke: url(#r4g); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1); }
+.r4-ring { filter: drop-shadow(0 0 10px rgb(34 229 132 / .28)); overflow: visible; }
+.r4-still .r4-ring .p { transition: none; }
+.r4-rc { position: relative; display: grid; justify-items: center; }
+.r4-rc b { font-size: 27px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.r4-rc span { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+.r4-main { display: grid; gap: 6px; min-width: 0; }
+.r4-k { font: 600 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--acc2); }
+.r4-big { margin: 0; display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
+.r4-big b { font-size: 34px; font-weight: 800; line-height: 1; letter-spacing: -.03em; }
+.r4-big b.ok { color: var(--pos); }
+.r4-big span { font-size: 14px; color: var(--muted); }
+.r4-vs { margin: 0; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.r4-vs b { color: var(--text); }
+.r4-pp { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 99px; font: 700 11px var(--mono); white-space: nowrap; }
+.r4-pp.up { color: var(--pos); background: rgb(34 229 132 / .12); }
+.r4-pp.dn { color: var(--orange); background: rgb(255 154 77 / .12); }
+.r4-wl { display: flex; gap: 3px; height: 10px; position: relative; }
+.r4-wl i { flex: var(--f) 1 0; border-radius: 3px; transform-origin: left; animation: r4Gr .9s .2s cubic-bezier(.2,.8,.2,1) both; }
+.r4-wl i.w, .r4-wll i.w { background: var(--pos); } .r4-wl i.l, .r4-wll i.l { background: var(--neg); } .r4-wl i.v, .r4-wll i.v { background: var(--info); }
+@keyframes r4Gr { from { transform: scaleX(0); } }
+.r4-wll { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: -8px; flex-wrap: wrap; }
+.r4-wll span { display: inline-flex; align-items: center; gap: 6px; } .r4-wll i { width: 8px; height: 8px; border-radius: 2px; }
+.r4-k6 { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; position: relative; }
+.r4-k6 div { padding: 10px 12px; border-radius: 12px; background: rgb(255 255 255 / .03); border: 1px solid rgb(255 255 255 / .06); min-width: 0; }
+.r4-k6 dt { font-size: 11.5px; color: var(--faint); }
+.r4-k6 dd { margin: 2px 0 0; font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
+.r4-k6 dd small { font: 500 12px var(--sans); color: var(--muted); letter-spacing: 0; }
+.r4-k6 dd.ok { color: var(--pos); } .r4-k6 dd.no { color: var(--neg); }
+.r4-form { display: grid; gap: 7px; position: relative; }
+.r4-form > span { font-size: 11.5px; color: var(--faint); }
+.r4-form > div { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 3px; }
+.r4-form i { height: 22px; border-radius: 4px; animation: r4Pop .4s calc(.3s + var(--i) * .03s) cubic-bezier(.2,.9,.3,1.4) both; }
+.r4-form i.won, .r4-days em i.won, .r4-ot em i.won { background: var(--pos); } .r4-form i.lost, .r4-days em i.lost, .r4-ot em i.lost { background: var(--neg); } .r4-days em i.void, .r4-ot em i.void { background: var(--info); }
+@keyframes r4Pop { from { opacity: 0; transform: scaleY(.2); } }
+.r4-still * { animation: none !important; }
+.r4-per { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.r4-pc { padding: 12px 14px; display: grid; gap: 2px; min-width: 0; animation: x3In .5s calc(.1s + var(--i) * .06s) both; }
+.r4-pc span { font-size: 12px; color: var(--muted); }
+.r4-pc b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+.r4-pc small { font-size: 12px; color: var(--faint); }
+.r4-pc em, .r4-days em { display: block; height: 4px; border-radius: 4px; background: var(--s3); overflow: hidden; margin-top: 6px; }
+.r4-pc em i { display: block; height: 100%; width: var(--w); background: var(--c); border-radius: inherit; }
+.r4-g { display: grid; gap: 10px; margin-top: 10px; }
+.r4-box { padding: 16px; min-width: 0; }
+.r4-sh { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.r4-sh small { font-size: 12px; color: var(--faint); }
+.r4-sh2 { margin: 24px 0 10px; }
+.r4-lg { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.r4-lg i { width: 14px; height: 3px; border-radius: 2px; margin-left: 6px; } .r4-lg i.a { background: var(--pos); } .r4-lg i.b { background: repeating-linear-gradient(90deg, var(--acc) 0 4px, transparent 4px 7px); }
+.r4-line { display: block; width: 100%; height: auto; overflow: hidden; }
+.r4-line .g { stroke: rgb(255 255 255 / .06); }
+.r4-line .ax { fill: var(--faint); font: 10px var(--mono); }
+.r4-line .ar { fill: url(#r4a); animation: x3Fade 1s .6s both; }
+.r4-line .ex { fill: none; stroke: var(--acc); stroke-width: 1.6; stroke-dasharray: 5 4; opacity: .85; }
+.r4-line .rl { fill: none; stroke: var(--pos); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: r4Draw 1.6s .2s cubic-bezier(.4,0,.2,1) forwards; }
+.r4-still .r4-line .rl { stroke-dashoffset: 0; }
+@keyframes r4Draw { to { stroke-dashoffset: 0; } }
+.r4-line .dt { fill: var(--pos); } .r4-line .dt2 { fill: rgb(34 229 132 / .2); animation: r4Pulse 1.8s infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes r4Pulse { 50% { transform: scale(1.6); opacity: 0; } }
+.r4-cap { margin: 10px 0 0; font-size: 12px; line-height: 1.45; color: var(--faint); }
+.r4-days { display: grid; grid-auto-flow: column; grid-auto-columns: 74px; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.r4-days::-webkit-scrollbar { display: none; }
+.r4-dc { padding: 10px; border-radius: 12px; background: var(--s2); border: 1px solid var(--bd); border-top: 3px solid var(--c); display: grid; gap: 1px; animation: x3In .4s calc(var(--i) * .04s) both; }
+.r4-dc span { font-size: 11px; color: var(--faint); } .r4-dc b { font-size: 12px; color: var(--muted); font-weight: 600; }
+.r4-dc strong { font-size: 18px; font-weight: 800; color: var(--c); margin-top: 4px; } .r4-dc small { font-size: 11.5px; color: var(--muted); }
+.r4-days em { display: flex; gap: 2px; height: auto; background: none; flex-wrap: wrap; } .r4-days em i { width: 6px; height: 6px; border-radius: 2px; }
+.r4-oth { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.r4-ot { padding: 12px; display: grid; gap: 2px; text-align: left; min-width: 0; }
+.r4-ot > span { font-size: 12px; color: var(--muted); }
+.r4-ot b { font-size: 22px; font-weight: 800; } .r4-ot b small { font-size: 13px; color: var(--faint); }
+.r4-ot > small { font-size: 11.5px; color: var(--faint); }
+.r4-ot em { display: flex; gap: 2px; margin-top: 6px; } .r4-ot em i { flex: 1; height: 5px; border-radius: 2px; }
+.r4-sg { padding: 3px; } .r4-sg button { padding: 5px 12px; font-size: 12.5px; }
+.r4-bars { display: grid; gap: 12px; }
+.r4-br { animation: x3In .45s calc(var(--i) * .05s) both; }
+.r4-bh { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13.5px; margin-bottom: 6px; }
+.r4-bh b { font-weight: 650; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r4-bh > span { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); flex: none; }
+.r4-bt { position: relative; height: 22px; border-radius: 7px; background: var(--s3); overflow: hidden; }
+.r4-bt i { position: absolute; inset: 0 auto 0 0; width: var(--w); background: linear-gradient(90deg, color-mix(in srgb, var(--c) 55%, transparent), var(--c)); border-radius: inherit; transform-origin: left; animation: r4Gr .9s calc(.15s + var(--i) * .05s) cubic-bezier(.2,.8,.2,1) both; }
+.r4-bt u { position: absolute; top: 3px; bottom: 3px; left: var(--x); width: 2px; border-radius: 2px; background: #fff; box-shadow: 0 0 0 2px rgb(0 0 0 / .35); }
+.r4-bt em { position: absolute; right: 8px; top: 50%; translate: 0 -50%; font-style: normal; font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px #000; }
+.r4-cal { margin-top: 6px; }
+.r4-hf { margin-bottom: 8px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; } .r4-hf::-webkit-scrollbar { display: none; } .r4-hf button { flex: none; }
+.r4-hist { padding: 4px 0; overflow: hidden; }
+.r4-hd { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px 6px; font-size: 12.5px; color: var(--muted); position: sticky; top: 0; }
+.r4-hd b { color: var(--text); font-weight: 700; }
+.r4-row { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 11px 16px 11px 19px; border: 0; border-top: 1px solid var(--bd); background: none; text-align: left; }
+.r4-row::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--faint); }
+.r4-row.won::before { background: var(--pos); } .r4-row.lost::before { background: var(--neg); } .r4-row.void::before { background: var(--info); }
+.r4-row:active, .r4-row:hover { background: rgb(255 255 255 / .025); }
+.r4-rg { min-width: 0; display: grid; gap: 2px; }
+.r4-rg b { font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r4-rg small { font-size: 12.5px; line-height: 1.3; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.r4-rg small .flag { display: inline-block; vertical-align: -1px; margin-right: 5px; }
+.r4-rs { min-width: 44px; padding: 5px 8px; border-radius: 8px; background: var(--s2); border: 1px solid var(--bd); text-align: center; font-size: 14px; font-weight: 800; }
+.r4-rr { display: grid; justify-items: end; gap: 3px; min-width: 76px; }
+.r4-rr em { font-style: normal; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+.r4-row.won em { color: var(--pos); background: rgb(34 229 132 / .12); } .r4-row.lost em { color: var(--neg); background: rgb(255 93 93 / .12); } .r4-row.void em { color: var(--info); background: rgb(111 179 255 / .12); }
+.r4-rr small { font-size: 11px; color: var(--faint); white-space: nowrap; }
+@media (max-width: 380px) { .r4-rw { width: 112px; height: 112px; } .r4-ring { width: 112px; height: 112px; } .r4-rc b { font-size: 25px; } .r4-big b { font-size: 28px; } .r4-rr small { display: none; } .r4-rr { min-width: 0; } }
+@media (min-width: 700px) { .r4-per { grid-template-columns: repeat(4, minmax(0, 1fr)); } .r4-k6 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .r4-hero { padding: 24px 28px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; column-gap: 28px; }
+  .r4-top { grid-column: 1; grid-row: 1; }
+  .r4-hero .r4-k6 { grid-column: 2; grid-row: 1; grid-template-columns: 1fr 1fr; }
+  .r4-wl, .r4-wll, .r4-form { grid-column: 1 / -1; }
+  .r4-top { gap: 28px; }
+  .r4-rw, .r4-ring { width: 160px; height: 160px; }
+  .r4-form i { height: 28px; }
+  .r4-rc b { font-size: 36px; } .r4-big b { font-size: 42px; }
+  .r4-g { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; }
+  .r4-days { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); grid-auto-columns: auto; overflow: visible; }
+}
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -3903,6 +4033,150 @@ function openSplash() {
 function closeSplash(then) {
   const el = $('intro'); clearTimeout(x3T); el.classList.add('out');
   setTimeout(() => { cancelAnimationFrame(x3Raf); el.hidden = true; el.classList.remove('out', 'x3on'); document.body.style.overflow = ''; renderInicio(); if (then) then(); }, 650);
+}
+
+// ===== Resultados v4: painel moderno com números completos =====
+rMode = 'reais';
+function r4Day(x) { return x.inicio ? dayKey(new Date(x.inicio)) : null; }
+function r4Stat(L) { const d = L.filter((x) => x.resultado !== 'void'), w = d.filter((x) => x.resultado === 'won').length; return { n: L.length, d: d.length, w, l: d.length - w, v: L.length - d.length, r: d.length ? w / d.length : 0, e: d.length ? d.reduce((t, x) => t + x.prob, 0) / d.length : 0 }; }
+function r4Col(r) { return r >= 0.7 ? 'var(--pos)' : r >= 0.55 ? 'var(--lime)' : r >= 0.4 ? 'var(--orange)' : 'var(--neg)'; }
+function r4Pp(a, b) { const v = Math.round((a - b) * 100); return `<span class="r4-pp ${v >= 0 ? 'up' : 'dn'}">${v >= 0 ? '▲' : '▼'} ${Math.abs(v)} pp</span>`; }
+function r4Ring(r, size = 132) {
+  const s = size, rr = s / 2 - 9, C = 2 * Math.PI * rr;
+  return `<svg class="r4-ring" viewBox="0 0 ${s} ${s}" width="${s}" height="${s}" aria-hidden="true"><defs><linearGradient id="r4g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22e584"/><stop offset="1" stop-color="#9fdc5f"/></linearGradient></defs>
+    <circle cx="${s / 2}" cy="${s / 2}" r="${rr}" class="t"/>${Array.from({ length: 40 }, (_, i) => `<line x1="${s / 2}" y1="4" x2="${s / 2}" y2="${i % 5 ? 7 : 9}" transform="rotate(${i * 9} ${s / 2} ${s / 2})" class="tk"/>`).join('')}
+    <circle cx="${s / 2}" cy="${s / 2}" r="${rr}" class="p" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-r4o="${C * (1 - r)}" transform="rotate(-90 ${s / 2} ${s / 2})"/></svg>`;
+}
+function r4Line(E) {
+  const ch = E.filter((x) => x.resultado !== 'void'); if (ch.length < 3) return '';
+  let w = 0, e = 0; const P = ch.map((x, i) => { w += x.resultado === 'won' ? 1 : 0; e += x.prob; return { r: w / (i + 1), e: e / (i + 1), x }; });
+  const Wd = Math.min(820, Math.max(300, (($('rBody') && $('rBody').clientWidth) || innerWidth) * (innerWidth >= 1024 ? 0.58 : 1) - 34)), Ht = 170, pl = 30, pr = 10, pt = 12, pb = 22;
+  const lo = Math.max(0, Math.floor((Math.min(...P.slice(2).map((p) => Math.min(p.r, p.e))) - 0.05) * 10) / 10), hi = 1;
+  const X = (i) => pl + (i / (P.length - 1)) * (Wd - pl - pr), Y = (v) => pt + (1 - (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo)) * (Ht - pt - pb);
+  const path = (k) => P.map((p, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(p[k]).toFixed(1)}`).join('');
+  const grid = []; for (let v = lo; v <= hi + 1e-9; v += 0.1) grid.push(v);
+  const last = P[P.length - 1];
+  return `<svg class="r4-line" viewBox="0 0 ${Wd} ${Ht}" role="img" aria-label="Evolução do acerto: ${pct(last.r)} real contra ${pct(last.e)} previsto">
+    <defs><linearGradient id="r4a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22e584" stop-opacity=".32"/><stop offset="1" stop-color="#22e584" stop-opacity="0"/></linearGradient></defs>
+    ${grid.map((v) => `<line x1="${pl}" x2="${Wd - pr}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="g"/><text x="${pl - 6}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end" class="ax">${Math.round(v * 100)}</text>`).join('')}
+    <path d="${path('r')}L${X(P.length - 1).toFixed(1)} ${Ht - pb}L${pl} ${Ht - pb}Z" class="ar"/>
+    <path d="${path('e')}" class="ex"/>
+    <path d="${path('r')}" class="rl" pathLength="1"/>
+    <circle cx="${X(P.length - 1).toFixed(1)}" cy="${Y(last.r).toFixed(1)}" r="4.5" class="dt"/><circle cx="${X(P.length - 1).toFixed(1)}" cy="${Y(last.r).toFixed(1)}" r="10" class="dt2"/>
+    <text x="${pl}" y="${Ht - 6}" class="ax">1.ª aposta</text><text x="${Wd - pr}" y="${Ht - 6}" text-anchor="end" class="ax">${P.length}.ª</text>
+  </svg>`;
+}
+function r4Groups(E, f) {
+  const m = new Map(); E.forEach((x) => { const k = f(x); if (!m.has(k)) m.set(k, []); m.get(k).push(x); });
+  return [...m.entries()].map(([k, g]) => [k, r4Stat(g)]).filter(([, s]) => s.d).sort((a, b) => b[1].d - a[1].d || b[1].r - a[1].r);
+}
+function r4Bars(G, lim = 8) {
+  return `<div class="r4-bars">${G.slice(0, lim).map(([k, s], i) => `<div class="r4-br" style="--i:${i}">
+    <div class="r4-bh"><b>${esc(k)}</b><span><span class="m">${s.w}/${s.d}</span>${r4Pp(s.r, s.e)}</span></div>
+    <div class="r4-bt"><i style="--w:${(s.r * 100).toFixed(1)}%;--c:${r4Col(s.r)}"></i><u style="--x:${(s.e * 100).toFixed(1)}%" title="Previsto ${pct(s.e)}"></u><em class="m">${pct(s.r)}</em></div>
+  </div>`).join('')}</div>`;
+}
+function renderRes() {
+  if (rView === 'mult') return renderResMult();
+  const H0 = (D.historico || []).map((x, i) => ({ ...x, _i: i, prob: x.prob || 1 / x.oddMinima })).filter((x) => x.tipo !== 'multipla');
+  const nT = H0.filter((x) => x.tipo === 'teste').length, nR = H0.length - nT;
+  if (rMode === 'reais' && !nR) rMode = 'tudo';
+  const H = H0.filter((x) => rMode === 'tudo' || (rMode === 'teste' ? x.tipo === 'teste' : x.tipo !== 'teste'));
+  const E = H.filter((x) => !/^(Tip Master|Valor|Múltipla)/.test(x.aposta) && !['tipmaster', 'valor', 'multipla'].includes(x.tipo));
+  const chrono = E.slice().sort((a, b) => (a.inicio || '').localeCompare(b.inicio || '') || a._i - b._i);
+  const S = r4Stat(E);
+  $('resCnt').textContent = E.length + ' apostas liquidadas';
+  const modeSeg = viewSeg() + `<div class="seg r4-mode">${[['reais', 'Reais', nR], ['teste', 'Teste', nT], ['tudo', 'Tudo', H0.length]].map(([k, l, n]) => `<button type="button" data-rmode="${k}" aria-pressed="${rMode === k}">${l} <small class="m">${n}</small></button>`).join('')}</div>`
+    + (rMode !== 'reais' && nT ? `<p class="r4-note">O teste retroativo usa tabelas de antes de jornadas já jogadas: o modelo escolheu sem saber o resultado.</p>` : '');
+  if (!E.length) { $('rHero').innerHTML = modeSeg + '<div class="empty card" style="margin-top:14px">Ainda sem resultados. Aparecem aqui assim que os jogos acabam.</div>'; $('rBody').innerHTML = ''; return; }
+  // sequências
+  let cur = 0, curK = '', best = 0, run = 0; chrono.forEach((x) => { if (x.resultado === 'void') return; if (x.resultado === 'won') { run++; best = Math.max(best, run); } else run = 0; });
+  for (let i = chrono.length - 1; i >= 0; i--) { const r = chrono[i].resultado; if (r === 'void') continue; if (!curK) curK = r; if (r === curK) cur++; else break; }
+  const dWon = E.filter((x) => x.resultado === 'won'), avgOdd = E.length ? E.reduce((t, x) => t + x.oddMinima, 0) / E.length : 0, avgOddW = dWon.length ? dWon.reduce((t, x) => t + x.oddMinima, 0) / dWon.length : 0;
+  // períodos
+  const yest = dayKey(new Date(Date.now() - 864e5)), d7 = dayKey(new Date(Date.now() - 7 * 864e5));
+  const lastDay = chrono.length ? r4Day(chrono[chrono.length - 1]) : null;
+  const PER = [
+    [lastDay === today ? 'Hoje' : lastDay === yest ? 'Ontem' : 'Último dia', E.filter((x) => r4Day(x) === lastDay)],
+    ['Últimos 7 dias', E.filter((x) => r4Day(x) && r4Day(x) > d7)],
+    ['Últimas 20', chrono.filter((x) => x.resultado !== 'void').slice(-20)],
+    ['Desde o início', E],
+  ];
+  const form = chrono.filter((x) => x.resultado !== 'void').slice(-20);
+  $('rHero').innerHTML = modeSeg + `<section class="r4-hero card">
+    <div class="r4-glow" aria-hidden="true"></div>
+    <div class="r4-top">
+      <div class="r4-rw">${r4Ring(S.r)}<div class="r4-rc"><b class="m" data-r4n="${Math.round(S.r * 1000) / 10}" data-r4dec="1">0%</b><span>de acerto</span></div></div>
+      <div class="r4-main">
+        <span class="r4-k">${rMode === 'teste' ? 'Teste retroativo' : rMode === 'tudo' ? 'Reais + teste' : 'Apostas reais'}</span>
+        <p class="r4-big"><b class="m ok" data-r4n="${S.w}">0</b><span>certas em</span><b class="m">${S.d}</b></p>
+        <p class="r4-vs">Previsto pelo modelo <b class="m">${pct(S.e)}</b> ${r4Pp(S.r, S.e)}</p>
+      </div>
+    </div>
+    <div class="r4-wl" aria-label="${S.w} ganhas, ${S.l} perdidas, ${S.v} devolvidas"><i class="w" style="--f:${S.w}"></i><i class="l" style="--f:${S.l}"></i>${S.v ? `<i class="v" style="--f:${S.v}"></i>` : ''}</div>
+    <div class="r4-wll"><span><i class="w"></i>${S.w} ganhas</span><span><i class="l"></i>${S.l} perdidas</span>${S.v ? `<span><i class="v"></i>${S.v} devolvidas</span>` : ''}</div>
+    <dl class="r4-k6">
+      <div><dt>Sequência atual</dt><dd class="m ${curK === 'won' ? 'ok' : 'no'}">${cur}<small>${curK === 'won' ? ' ganhas' : ' perdidas'}</small></dd></div>
+      <div><dt>Melhor sequência</dt><dd class="m">${best}<small> ganhas</small></dd></div>
+      <div><dt>Odd média</dt><dd class="m">${odd(avgOdd)}</dd></div>
+      <div><dt>Odd média ganhas</dt><dd class="m">${odd(avgOddW)}</dd></div>
+    </dl>
+    <div class="r4-form"><span>Últimas ${form.length}</span><div>${form.map((x, i) => `<i class="${x.resultado}" style="--i:${i}" title="${esc(x.jogo)}: ${esc(x.aposta)}"></i>`).join('')}</div></div>
+  </section>
+  <div class="r4-per">${PER.map(([k, L], i) => { const s = r4Stat(L); return `<div class="r4-pc card" style="--i:${i}"><span>${k}</span><b class="m" style="color:${s.d ? r4Col(s.r) : 'var(--faint)'}">${s.d ? pct(s.r) : '–'}</b><small class="m">${s.w}–${s.l}${s.v ? ' · ' + s.v + ' dev.' : ''}</small><em><i style="--w:${(s.r * 100).toFixed(0)}%;--c:${r4Col(s.r)}"></i></em></div>`; }).join('')}</div>`;
+  // por dia (últimos 14)
+  const days = []; chrono.forEach((x) => { const k = r4Day(x) || x.data; let d = days[days.length - 1]; if (!d || d.k !== k) { d = { k, lab: x.data, L: [] }; days.push(d); } d.L.push(x); });
+  const D14 = days.slice(-14);
+  const wk = (k) => { try { return cap(new Date(k + 'T12:00:00Z').toLocaleDateString('pt-PT', { weekday: 'short' }).replace('.', '')); } catch { return ''; } };
+  const odds = [['Até 1,40', 0, 1.4], ['1,40–1,60', 1.4, 1.6], ['1,60–1,80', 1.6, 1.8], ['1,80 ou mais', 1.8, 99]].map(([k, a, b]) => [k, r4Stat(E.filter((x) => x.oddMinima >= a && x.oddMinima < b))]).filter(([, s]) => s.d);
+  const Mu = (D.historico || []).filter((x) => x.tipo === 'multipla' && x.resultado !== 'void'), Tn = ((D.tenis && D.tenis.historico) || []).filter((x) => x.resultado !== 'void'), TM = H.filter((x) => (x.tipo === 'tipmaster' || /^Tip Master/.test(x.aposta)) && x.resultado !== 'void');
+  const oth = [['Múltiplas', Mu, 'mult'], ['Ténis', Tn, 'tenis'], ['Tip Master', TM, 'tm']].filter(([, L]) => L.length).map(([k, L, a]) => { const w = L.filter((x) => x.resultado === 'won').length; return `<button type="button" class="r4-ot card" ${a === 'mult' ? 'data-rview="mult"' : a === 'tenis' ? 'data-pg="tenis"' : 'data-rres="tm"'}><span>${k}</span><b class="m">${w}<small>/${L.length}</small></b><small>${pct(w / L.length)} certas</small><em>${L.slice(-8).map((x) => `<i class="${x.resultado}"></i>`).join('')}</em></button>`; }).join('');
+  const byCat = r4Groups(E, (x) => CAT(x.aposta)), byLg = r4Groups(E, (x) => x.liga || 'Outras');
+  // histórico agrupado por dia
+  const HL = H.filter((x) => !/^(Valor|Múltipla)/.test(x.aposta));
+  const list = HL.filter((x) => (rRes === 'tm' ? /^Tip Master/.test(x.aposta) : rRes === 'todas' || x.resultado === rRes)).sort((a, b) => (b.inicio || '').localeCompare(a.inicio || '') || b._i - a._i);
+  const V = list.slice(0, rMore), RT = { won: 'Ganha', lost: 'Perdida', void: 'Devolvida' };
+  let lastK = '', hist = '';
+  V.forEach((x) => {
+    const k = r4Day(x) || x.data;
+    if (k !== lastK) { lastK = k; const s = r4Stat(list.filter((y) => (r4Day(y) || y.data) === k)); hist += `<div class="r4-hd"><b>${wk(k)} ${esc(x.data)}</b><span class="m">${s.w} de ${s.d} certas</span></div>`; }
+    const tm = /^Tip Master/.test(x.aposta);
+    hist += `<button type="button" class="r4-row ${x.resultado}" data-rrow="${x._i}">
+      <span class="r4-rg"><b>${esc(x.jogo)}</b><small>${x.pais ? flag(x.pais) : ''}${x.tipo === 'teste' ? '<i class="tt2">TESTE</i> ' : ''}${tm ? '★ ' : ''}${esc(x.aposta.replace(/^Tip Master: /, ''))}</small></span>
+      <span class="r4-rs m">${x.placar ? esc(x.placar) : '–'}</span>
+      <span class="r4-rr"><em>${RT[x.resultado] || ''}</em><small class="m">odd ${odd(x.oddMinima)} · ${pct(x.prob)}</small></span>
+    </button>`;
+  });
+  $('rBody').innerHTML = `
+    <div class="r4-g">
+      <section class="r4-box card r4-ev"><div class="r4-sh"><h2>Evolução do acerto</h2><span class="r4-lg"><i class="a"></i>Real<i class="b"></i>Previsto</span></div>${r4Line(E)}<p class="r4-cap">A linha verde é o acerto acumulado depois de cada aposta. A tracejada é o que o modelo previa. Verde acima da tracejada quer dizer que acertámos mais do que o previsto.</p></section>
+      <section class="r4-box card"><div class="r4-sh"><h2>Dia a dia</h2><small>${D14.length} dias</small></div>
+        <div class="r4-days">${D14.slice().reverse().map((d, i) => { const s = r4Stat(d.L); return `<div class="r4-dc" style="--i:${i};--c:${s.d ? r4Col(s.r) : 'var(--bd2)'}"><span>${wk(d.k)}</span><b class="m">${esc(d.lab)}</b><strong class="m">${s.d ? pct(s.r) : '–'}</strong><small class="m">${s.w}–${s.l}</small><em>${d.L.map((x) => `<i class="${x.resultado}"></i>`).join('')}</em></div>`; }).join('')}</div>
+      </section>
+    </div>
+    ${oth ? `<div class="r4-sh r4-sh2"><h2>Outros produtos</h2></div><div class="r4-oth">${oth}</div>` : ''}
+    <div class="r4-g">
+      <section class="r4-box card"><div class="r4-sh"><h2>Por tipo de aposta</h2><div class="seg r4-sg">${[['tipo', 'Tipo'], ['liga', 'Liga']].map(([k, l]) => `<button type="button" data-rby="${k}" aria-pressed="${rBy === k}">${l}</button>`).join('')}</div></div>${r4Bars(rBy === 'tipo' ? byCat : byLg, rBy === 'tipo' ? 8 : 12)}<p class="r4-cap">A marca branca é o acerto previsto. ▲/▼ é a diferença entre o real e o previsto, em pontos percentuais.</p></section>
+      <section class="r4-box card"><div class="r4-sh"><h2>Por odd</h2><small>quanto mais alta a odd, menos se acerta</small></div>${r4Bars(odds)}</section>
+    </div>
+    <div class="r4-cal">${calibBox(E)}</div>
+    <div class="r4-sh r4-sh2"><h2>Histórico</h2><small>toca para ver a ficha do jogo</small></div>
+    <div class="seg r4-hf">${[['todas', 'Todas', HL.length], ['won', 'Ganhas', HL.filter((x) => x.resultado === 'won').length], ['lost', 'Perdidas', HL.filter((x) => x.resultado === 'lost').length], ['tm', 'Tip Master', TM.length]].map(([k, l, n]) => `<button type="button" data-rres="${k}" aria-pressed="${rRes === k}">${l}${n ? ` <small class="m">${n}</small>` : ''}</button>`).join('')}</div>
+    <div class="r4-hist card">${hist || '<div class="empty">Nada com este filtro.</div>'}</div>
+    ${list.length > rMore ? `<button type="button" class="more" data-rmore="1">Mostrar mais ${Math.min(25, list.length - rMore)} <span class="m">(${rMore} de ${list.length})</span></button>` : ''}
+    <p class="foot">Resultados passados não garantem os futuros. 18+</p>`;
+  r4Anim();
+}
+function r4Anim() {
+  const root = $('pg-res'); if (!root) return;
+  requestAnimationFrame(() => requestAnimationFrame(() => root.querySelectorAll('[data-r4o]').forEach((c) => (c.style.strokeDashoffset = c.dataset.r4o))));
+  root.querySelectorAll('[data-r4n]').forEach((el) => {
+    const to = Number(el.dataset.r4n), dec = el.dataset.r4dec ? 1 : 0, suf = el.dataset.r4dec ? '%' : '';
+    const fmt = (v) => (dec ? v.toFixed(1).replace('.', ',') : Math.round(v)) + suf;
+    if (RM || !ANIM) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), st = (t) => { const k = Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(to * e); if (k < 1) requestAnimationFrame(st); }; requestAnimationFrame(st);
+  });
+  if (!ANIM || RM) root.classList.add('r4-still'); else root.classList.remove('r4-still');
 }
 </script>
 
