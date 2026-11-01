@@ -34,7 +34,7 @@ function publico(full, now) {
   };
 }
 function paraPlano(full, plano, now) {
-  if (plano === 'elite') return { ...full, acesso: 'elite', bloqueados: [] };
+  if (plano === 'elite' || plano === 'dono') return { ...full, acesso: plano, bloqueados: [] };
   if (plano === 'tm') return { ...publico(full, now), acesso: 'tm', tipMaster: full.tipMaster || null };
   // PRO: tudo menos os jogos ELITE, a Tip Master e a comparação de odds
   const { jogos, bloqueados } = base(full, now, (g) => g.plano !== 'elite');

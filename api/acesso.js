@@ -7,7 +7,8 @@
 // POST /api/acesso?acao=codigo       -> {senha, plano: pro|elite|tm, dias} cria um código (só o dono)
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const { paraPlano } = require('../tools/subconjunto.js');
-const B32 = '0123456789ABCDEFGHJKMNPQRSTVWXYZ', PLANS = { 1: 'pro', 2: 'elite', 3: 'tm' }, PN = { pro: 1, elite: 2, tm: 3 };
+const R = require('../tools/redis.js');
+const B32 = '0123456789ABCDEFGHJKMNPQRSTVWXYZ', PLANS = { 1: 'pro', 2: 'elite', 3: 'tm', 4: 'dono' }, PN = { pro: 1, elite: 2, tm: 3, dono: 4 };
 const pk = () => (process.env.ODDSLAB_PRIVATE_KEY || '').replace(/\\n/g, '\n').trim();
 const hkey = () => crypto.createHash('sha256').update('oddslab-codigos|' + pk()).digest();
 function b32(buf) { let bits = 0, v = 0, o = ''; for (const x of buf) { v = (v << 8) | x; bits += 8; while (bits >= 5) { o += B32[(v >>> (bits - 5)) & 31]; bits -= 5; } } if (bits) o += B32[(v << (5 - bits)) & 31]; return o; }
@@ -49,10 +50,18 @@ module.exports = async (req, res) => {
       const ok = adm && b.senha && crypto.timingSafeEqual(crypto.createHash('sha256').update(String(b.senha)).digest(), crypto.createHash('sha256').update(adm).digest());
       if (!ok) { await new Promise((r) => setTimeout(r, 800)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
       const plano = PN[b.plano] ? b.plano : 'pro', dias = Math.max(0, Math.min(3650, Number(b.dias) || 30));
-      return send(res, 200, { codigo: make(plano, plano === 'tm' ? 0 : dias), plano, dias });
+      const codigo = make(plano, plano === 'tm' ? 0 : dias), v = check(codigo);
+      if (R.ok()) { try { await R.pipe([['HSET', 'code:' + codigo, 'plano', plano, 'dias', String(dias), 'nome', String(b.nome || '').slice(0, 60), 'contacto', String(b.contacto || '').slice(0, 80), 'valor', String(Number(String(b.valor || '0').replace(',', '.')) || 0), 'nota', String(b.nota || '').slice(0, 120), 'criado', String(Date.now()), 'expira', String(v.expira), 'tipo', plano === 'dono' ? 'dono' : 'venda'], ['ZADD', 'codes', String(Date.now()), codigo]]); } catch {} }
+      return send(res, 200, { codigo, plano, dias });
     }
-    if (q.acao === 'teste') { const c = make('pro', 7); return send(res, 200, { codigo: c, ...check(c), teste: true }); }
+    if (q.acao === 'teste') {
+      const c = make('pro', 7), v = check(c), uid = /^u_[a-z0-9]{8,16}$/.test(q.u || '') ? q.u : '';
+      if (R.ok()) { try { await R.pipe([['HSET', 'code:' + c, 'plano', 'pro', 'dias', '7', 'nome', '', 'valor', '0', 'criado', String(Date.now()), 'expira', String(v.expira), 'tipo', 'teste'], ['ZADD', 'codes', String(Date.now()), c]]); } catch {} }
+      return send(res, 200, { codigo: c, ...v, teste: true });
+    }
     const v = check(q.c); if (v.erro) return send(res, 401, v);
+    const uid = /^u_[a-z0-9]{8,16}$/.test(q.u || '') ? q.u : '';
+    if (uid && R.ok()) { try { const code = 'OL-' + String(q.c).toUpperCase().replace(/^OL-?/, '').replace(/[^0-9A-Z]/g, '').match(/.{1,4}/g).join('-'); const r = await R.pipe([['HGET', 'code:' + code, 'nome'], ['SADD', 'cdev:' + code, uid], ['HSET', 'code:' + code, 'ultimo', String(Date.now())], ['HSET', 'u:' + uid, 'codigo', code, 'planoPago', v.plano, 'expira', String(v.expira), 'dono', v.plano === 'dono' ? '1' : '0']]); if (r[0]) await R.pipe([['HSETNX', 'u:' + uid, 'nome', r[0]]]); } catch {} }
     return send(res, 200, { ...v, dados: paraPlano(dados(), v.plano, Date.now()) });
   } catch (e) { return send(res, 500, { erro: 'Erro no servidor.' }); }
 };

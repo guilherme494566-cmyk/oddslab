@@ -2314,6 +2314,12 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 .h3k.r2 .h3k-a { margin-top: 0; }
 @media (min-width: 1024px) { .h3k.r2 .h3k-m { font-size: 18px; } .h3k.r2 .r2-tip strong { font-size: 22px; } }
 </style>
+<style id="q2css">
+.p9-hc.q2-dono { background: linear-gradient(180deg, #fff1b8, var(--acc)); color: #15110a; border: 0; text-decoration: none; box-shadow: 0 6px 18px -6px rgb(245 190 60 / .8); }
+.q2-own { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; text-decoration: none; color: inherit; border-color: rgb(245 190 60 / .5); background: linear-gradient(120deg, rgb(245 190 60 / .16), var(--s1) 65%); }
+.q2-own > span:first-child { font-size: 24px; } .q2-own b { display: block; font-size: 15px; } .q2-own small { display: block; font-size: 12px; color: var(--muted); } .q2-own em { font-style: normal; font-weight: 800; color: var(--acc2); white-space: nowrap; }
+.q2-priv { margin: 18px 2px 0; font-size: 11.5px; line-height: 1.45; color: var(--faint); }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4826,7 +4832,7 @@ renderHome = function () {
   const B = Q1.bl().filter((s) => dayKey(new Date(s.inicio)) === day && T(s.inicio) > Date.now()).sort((a, b) => a.inicio.localeCompare(b.inicio));
   if (!B.length) return;
   const emp = el.querySelector('.empty'); if (emp) emp.remove();
-  el.insertAdjacentHTML('beforeend', `<section class="lgrp q1-bl"><h3 class="lg-h">${P9LK}<span>Bloqueados</span><small>${B.length} ${B.length === 1 ? 'jogo' : 'jogos'}</small></h3><div class="rows">${B.map((s, i) => `<button type="button" class="row card p9-lr" data-p9open="${p9Need(s)}" style="--i:${i}">
+  el.insertAdjacentHTML('beforeend', `<section class="lgrp q1-bl"><h3 class="lg-h">${P9LK}<span>Bloqueados</span><small>${B.length} ${B.length === 1 ? 'jogo' : 'jogos'}</small></h3><div class="rows">${B.map((s, i) => `<button type="button" class="row card p9-lr" data-open="${s.id}" style="--i:${i}">
     <span class="meta"><b>${hm(s.inicio)}</b><span class="lg">${flag(s.pais)}${esc(s.liga)}</span></span>
     <span class="l"><span class="tt"><span>${mono(s.casa, 'xs')}<em>${esc(s.casa)}</em></span><span>${mono(s.fora, 'xs')}<em>${esc(s.fora)}</em></span></span><span class="pk p9-pk">${P9LK}<b>Aposta ${P9[p9Need(s)].n}</b><small>${pct(s.p)}</small></span></span>
     <span class="o p9-o">${P9LK}</span></button>`).join('')}</div></section>`);
@@ -4871,7 +4877,7 @@ document.addEventListener('click', async (e) => {
     go2.disabled = true; const out = $('q1Out'); if (out) { out.className = 'q1-out'; out.textContent = 'A confirmar…'; }
     const j = await q1Fetch(v, true); go2.disabled = false;
     if (j.erro) { if (out) { out.className = 'q1-out no'; out.textContent = j.erro; } return; }
-    const lab = j.plano === 'tm' ? 'Tip Master de hoje desbloqueada' : `${j.plano === 'elite' ? 'ELITE' : 'PRO'} ativo até ${new Date(j.expira).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}`;
+    const lab = j.plano === 'dono' ? '👑 Modo Dono ativo' : j.plano === 'tm' ? 'Tip Master de hoje desbloqueada' : `${j.plano === 'elite' ? 'ELITE' : 'PRO'} ativo até ${new Date(j.expira).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}`;
     closePlans(); buzz(20); toast(lab); return;
   }
   if (e.target.closest('[data-q1out]')) { localStorage.removeItem(Q1.key); sessionStorage.removeItem(Q1.cache); location.reload(); }
@@ -4953,6 +4959,58 @@ h3Card = function (x, k) {
   </article>`;
 };
 try { renderDeck(); } catch {}
+
+// ===== Registo de atividade (anónimo) e modo Dono =====
+var Q2 = { q: [], t: 0, on: !q1Inside() && /^https?:$/.test(location.protocol) };
+function q2Uid() { let u = null; try { u = localStorage.getItem('olUid'); if (!u || !/^u_[a-z0-9]{8,16}$/.test(u)) { u = 'u_' + Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => (b % 36).toString(36)).join('') + Date.now().toString(36).slice(-4); localStorage.setItem('olUid', u); } } catch { u = null; } return u; }
+function q2Info() { const a = q1Acc(); return { plat: i5Plat(), std: i5Std(), plano: a ? a.plano : 'free', ecra: innerWidth + 'x' + innerHeight }; }
+function q2(k, d) { if (!Q2.on || q2Dono()) return; Q2.q.push({ t: Date.now(), k, d: d || {} }); clearTimeout(Q2.t); Q2.t = setTimeout(q2Flush, Q2.q.length > 20 ? 0 : 4000); }
+function q2Flush(beacon) {
+  if (!Q2.on || !Q2.q.length) return; const uid = q2Uid(); if (!uid) return;
+  const ev = Q2.q.splice(0, 60), body = JSON.stringify({ uid, info: q2Info(), ev });
+  try { if (beacon && navigator.sendBeacon) { navigator.sendBeacon('/api/evento', new Blob([body], { type: 'application/json' })); return; } fetch('/api/evento', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {}); } catch {}
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') q2Flush(true); });
+window.addEventListener('pagehide', () => q2Flush(true));
+// ganchos
+var _q2go = go; go = function (pg) { q2('pagina', { pg }); return _q2go(pg); };
+var _q2og = openGame; openGame = function (id) { const g = byId(id), s = (D.bloqueados || []).find((x) => x.id === id), x = g || s; if (x) q2(g && !g._lock ? 'jogo' : 'bloqueado', { id, jogo: x.casa + ' – ' + x.fora, plano: x.plano }); return _q2og(id); };
+var _q2op = openPlans; openPlans = function (need, ctx) { q2('planos', { plano: need, motivo: ctx && ctx.g ? 'jogo ' + ctx.g.casa + ' – ' + ctx.g.fora : ctx && ctx.pg ? 'secção ' + ctx.pg : 'botão' }); return _q2op(need, ctx); };
+var _q2oi = openInstall; openInstall = function (tab) { q2('tutorial', { aparelho: tab || i5Plat() }); return _q2oi(tab); };
+window.addEventListener('appinstalled', () => q2('instalado', {}));
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-p9buy]'); if (b) q2('comprar', { plano: b.dataset.p9buy, faturacao: p9Bill === 'a' ? 'anual' : 'mensal' });
+  const c = e.target.closest('[data-bc]'); if (c) { const [id, ap] = c.dataset.bc.split('|'); const g = byId(id); if (g && !g._lock) q2('copiar', { id, jogo: g.casa + ' – ' + g.fora, aposta: ap }); }
+  const s = e.target.closest('[data-inend],[data-i6sp]'); if (s && s.closest('#intro')) q2('entrada', { escolha: s.dataset.i6sp ? 'instalar' : 'entrar' });
+}, true);
+// o código e o período grátis passam o identificador do aparelho ao servidor
+var _q2f = q1Fetch;
+q1Fetch = async function (code, silent) {
+  const uid = Q2.on ? q2Uid() : null;
+  if (!uid) return _q2f(code, silent);
+  const of = window.fetch; window.fetch = (u, o) => of(typeof u === 'string' && u.startsWith('/api/acesso?c=') ? u + '&u=' + uid : u, o);
+  try { const j = await _q2f(code, silent); const tst = (q1Acc() || {}).teste; if ((!silent || j.plano) && !tst) q2(j.erro ? 'codigo_erro' : 'codigo', j.erro ? { erro: j.erro } : { plano: j.plano }); return j; } finally { window.fetch = of; }
+};
+window.addEventListener('click', (e) => { if (e.target.closest('[data-p9trial]')) { const uid = Q2.on ? q2Uid() : ''; const of = window.fetch; window.fetch = (u, o) => of(typeof u === 'string' && u === '/api/acesso?acao=teste' ? u + '&u=' + uid : u, o); setTimeout(() => { window.fetch = of; }, 4000); q2('teste', {}); } }, true);
+// modo Dono
+function q2Dono() { const a = q1Acc(); return !!(a && a.plano === 'dono'); }
+var _q2pp = p9Plan; p9Plan = function () { return q2Dono() ? 'elite' : _q2pp(); };
+var _q2chip = p9Chip;
+p9Chip = function () {
+  if (!q2Dono()) return _q2chip();
+  const r = document.querySelector('header .hd-r'); if (!r) return;
+  const i6 = $('i6Hc'); if (i6) i6.remove();
+  let b = $('p9Hc'); if (!b) { b = document.createElement('a'); b.id = 'p9Hc'; r.insertBefore(b, r.querySelector('.hlp')); }
+  if (b.tagName !== 'A') { const a = document.createElement('a'); a.id = 'p9Hc'; b.replaceWith(a); b = a; }
+  b.href = '/admin'; b.className = 'p9-hc q2-dono'; b.innerHTML = '<span aria-hidden="true">👑</span><span>Painel</span>';
+};
+var _q2i6 = i6Can; i6Can = function () { return !q2Dono() && _q2i6(); };
+var _q2home = p9Home; p9Home = function () { _q2home(); if (q2Dono()) { const box = $('p9Home'); if (box) box.insertAdjacentHTML('afterbegin', '<a class="q2-own card" href="/admin"><span>👑</span><span><b>Modo Dono</b><small>Vês tudo, sem bloqueios. A tua atividade não conta nas estatísticas.</small></span><em>Painel ›</em></a>'); } };
+(function q2Init() {
+  if (Q2.on) { q2Uid(); q2('abrir', { instalada: i5Std() ? 'sim' : 'não', origem: (document.referrer || '').replace(/^https?:\/\//, '').split('/')[0].slice(0, 40), link: location.search.slice(0, 40) }); }
+  p9Chip(); try { if (!$('pg-inicio').hidden) renderInicio(); } catch {}
+  const aj = $('pg-ajuda'); if (aj && !$('q2Priv')) aj.insertAdjacentHTML('beforeend', '<p class="q2-priv" id="q2Priv">Privacidade: para melhorar a app registamos de forma anónima as páginas e jogos abertos, com um identificador aleatório guardado neste aparelho. Não pedimos nome, email nem localização exata.</p>');
+})();
 </script>
 
 </body></html>

@@ -14,6 +14,12 @@
   "functions": {
     "api/acesso.js": {
       "includeFiles": "{data/**,tools/**}"
+    },
+    "api/admin.js": {
+      "includeFiles": "{data/**,tools/**}"
+    },
+    "api/evento.js": {
+      "includeFiles": "{data/**,tools/**}"
     }
   }
 }

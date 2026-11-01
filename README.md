@@ -20,3 +20,9 @@ Probabilidades estimadas, não certezas. 18+
 - `/admin` cria códigos de acesso (precisa da palavra-passe de administrador).
 - Variáveis na Vercel: `ODDSLAB_PRIVATE_KEY` (chave privada PEM) e `ODDSLAB_ADMIN` (palavra-passe do dono).
 - `data/chave-publica.pem` é pública e só serve para cifrar.
+
+## Painel do dono e registos (desde 01/11/2026)
+- `/admin`: resumo, utilizadores (o que cada um viu e copiou), vendas (códigos, clientes, valor), atividade em direto e criação de códigos.
+- `api/evento.js` recebe a atividade anónima da app; `api/admin.js` serve o painel.
+- Precisa de uma base Upstash Redis ligada ao projeto na Vercel (Storage → Upstash for Redis), que cria `KV_REST_API_URL` e `KV_REST_API_TOKEN`.
+- Plano "Dono": código de acesso total, mostra o botão 👑 Painel na app e não conta nas estatísticas.

@@ -2,86 +2,259 @@
 <html lang="pt-PT">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>ODDSLAB · Códigos de acesso</title>
+<meta name="theme-color" content="#0a0b0d">
+<title>ODDSLAB · Painel do dono</title>
 <link rel="icon" type="image/png" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
-:root { color-scheme: dark; --bg:#0a0b0d; --s1:#111317; --s2:#16191e; --bd:#2a2f37; --text:#f7f8fa; --muted:#c3c8cf; --faint:#8c929b; --acc:#f5be3c; --acc2:#ffd977; --pos:#22e584; --neg:#ff5d5d; }
+:root { color-scheme: dark; --bg:#0a0b0d; --s1:#111317; --s2:#16191e; --s3:#1c2026; --bd:#2a2f37; --text:#f7f8fa; --muted:#c3c8cf; --faint:#8c929b; --acc:#f5be3c; --acc2:#ffd977; --pos:#22e584; --neg:#ff5d5d; --info:#6fb3ff; --vio:#cdb8ff; --mono: ui-monospace, 'SF Mono', Menlo, monospace; }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; }
-main { max-width: 520px; margin: 0 auto; padding: 28px 18px 60px; }
-h1 { display: flex; align-items: center; gap: 10px; font-size: 22px; margin: 0 0 4px; } h1 img { width: 36px; height: 36px; border-radius: 10px; }
-p.sub { margin: 0 0 22px; color: var(--muted); font-size: 14px; }
-.card { background: var(--s1); border: 1px solid var(--bd); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
-label { display: block; font-size: 13px; color: var(--muted); margin: 0 0 6px; }
-input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--bd); background: var(--bg); color: var(--text); font: inherit; margin-bottom: 12px; }
-.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
-.seg button, .dur button { padding: 11px 6px; border-radius: 12px; border: 1px solid var(--bd); background: none; color: var(--muted); font: 700 14px inherit; cursor: pointer; }
-.seg button[aria-pressed="true"], .dur button[aria-pressed="true"] { border-color: var(--acc); color: var(--acc2); background: rgb(245 190 60 / .1); }
-.dur { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
-.go { width: 100%; padding: 14px; border: 0; border-radius: 14px; background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #15110a; font: 800 16px inherit; cursor: pointer; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14.5px/1.45 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.m { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+header.top { position: sticky; top: 0; z-index: 5; background: rgb(10 11 13 / .9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--bd); padding: max(10px, env(safe-area-inset-top)) 16px 0; }
+.bar { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
+.bar img { width: 32px; height: 32px; border-radius: 9px; }
+.bar b { font-size: 17px; font-weight: 800; letter-spacing: .02em; } .bar b span { color: var(--acc); }
+.bar .tag { font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 99px; background: var(--acc); color: #111; }
+.bar .sp { flex: 1; }
+.bar a, .bar button.lk { color: var(--muted); font-size: 13px; text-decoration: none; border: 1px solid var(--bd); background: none; padding: 6px 10px; border-radius: 10px; }
+nav.tabs { max-width: 1100px; margin: 10px auto 0; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs::-webkit-scrollbar { display: none; }
+nav.tabs button { flex: none; border: 0; background: none; padding: 10px 12px; color: var(--faint); font-weight: 700; border-bottom: 2px solid transparent; }
+nav.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--acc); }
+main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 80px; }
+.card { background: var(--s1); border: 1px solid var(--bd); border-radius: 16px; padding: 16px; }
+h2 { font-size: 16px; margin: 22px 0 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; } h2 small { font-size: 12px; color: var(--faint); font-weight: 500; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.kpi { padding: 12px 14px; border-radius: 14px; background: var(--s1); border: 1px solid var(--bd); display: grid; gap: 2px; }
+.kpi span { font-size: 12px; color: var(--muted); } .kpi b { font-size: 24px; font-weight: 800; letter-spacing: -.02em; } .kpi small { font-size: 11.5px; color: var(--faint); }
+.kpi.g b { color: var(--pos); } .kpi.a b { color: var(--acc2); }
+.chart { display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 4px; align-items: end; height: 150px; padding-top: 18px; }
+.chart div { position: relative; display: grid; align-items: end; height: 100%; }
+.chart i { display: block; border-radius: 5px 5px 2px 2px; background: linear-gradient(180deg, var(--acc2), var(--acc)); min-height: 2px; }
+.chart i.n { position: absolute; left: 25%; right: 25%; bottom: 0; background: var(--pos); opacity: .9; }
+.chart em { position: absolute; top: -16px; left: 0; right: 0; text-align: center; font: 600 10px var(--mono); color: var(--muted); font-style: normal; }
+.chx { display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 4px; margin-top: 4px; font: 10px var(--mono); color: var(--faint); text-align: center; }
+.leg { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 8px; } .leg i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.funnel { display: grid; gap: 8px; }
+.fn { display: grid; grid-template-columns: 150px minmax(0, 1fr) 60px; gap: 10px; align-items: center; font-size: 13px; }
+.fn .t { height: 22px; border-radius: 7px; background: var(--s3); overflow: hidden; } .fn .t i { display: block; height: 100%; background: linear-gradient(90deg, rgb(245 190 60 / .5), var(--acc)); border-radius: inherit; }
+.fn b { text-align: right; }
+.grid2 { display: grid; gap: 12px; }
+.list { display: grid; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 11px 4px; border-top: 1px solid var(--bd); text-align: left; background: none; border-left: 0; border-right: 0; border-bottom: 0; width: 100%; }
+.row:first-child { border-top: 0; }
+.row:hover { background: rgb(255 255 255 / .02); }
+.row .n { font-weight: 700; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .s { grid-column: 1; font-size: 12px; color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .r { grid-row: 1 / 3; grid-column: 2; display: grid; justify-items: end; gap: 3px; font-size: 12px; color: var(--muted); }
+.bd { display: inline-block; padding: 2px 8px; border-radius: 99px; font: 800 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.bd.free { background: var(--s3); color: var(--muted); } .bd.pro { background: var(--acc); color: #111; } .bd.elite { background: var(--vio); color: #140f22; } .bd.tm { background: #ff9a4d; color: #111; } .bd.teste { background: rgb(34 229 132 / .18); color: var(--pos); } .bd.dono { background: linear-gradient(180deg, #fff1b8, var(--acc)); color: #111; } .bd.exp { background: rgb(255 93 93 / .15); color: var(--neg); }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.filters button { padding: 7px 12px; border-radius: 99px; border: 1px solid var(--bd); background: none; color: var(--muted); font-size: 13px; font-weight: 650; }
+.filters button[aria-pressed="true"] { border-color: var(--acc); color: var(--acc2); background: rgb(245 190 60 / .1); }
+.filters input { flex: 1; min-width: 160px; padding: 7px 12px; border-radius: 99px; border: 1px solid var(--bd); background: var(--bg); }
+.feed .ev { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; padding: 9px 2px; border-top: 1px solid var(--bd); font-size: 13.5px; }
+.feed .ev:first-child { border-top: 0; }
+.feed .ev time { font: 12px var(--mono); color: var(--faint); padding-top: 1px; }
+.feed .ev b { font-weight: 700; } .feed .ev .who { color: var(--acc2); cursor: pointer; font-weight: 700; }
+.feed .ev small { color: var(--faint); }
+.ico { display: inline-block; width: 18px; text-align: center; }
+.dayh { font-size: 12px; font-weight: 800; color: var(--muted); margin: 14px 0 2px; text-transform: capitalize; }
+label { display: block; font-size: 12.5px; color: var(--muted); margin: 0 0 5px; }
+input.f, select.f, textarea.f { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1px solid var(--bd); background: var(--bg); margin-bottom: 12px; }
+.seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+.seg button { padding: 10px 4px; border-radius: 12px; border: 1px solid var(--bd); background: none; color: var(--muted); font-weight: 750; font-size: 13.5px; }
+.seg button[aria-pressed="true"] { border-color: var(--acc); color: var(--acc2); background: rgb(245 190 60 / .1); }
+.go { width: 100%; padding: 14px; border: 0; border-radius: 14px; background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #15110a; font-weight: 800; font-size: 16px; }
 .go:disabled { opacity: .6; }
-.res { display: none; } .res.on { display: block; }
-.code { font: 800 20px ui-monospace, Menlo, monospace; letter-spacing: .04em; color: var(--acc2); word-break: break-all; margin: 6px 0 10px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.row button { padding: 11px; border-radius: 12px; border: 1px solid var(--bd); background: var(--s2); color: var(--text); font: 700 14px inherit; cursor: pointer; }
-textarea { width: 100%; min-height: 110px; padding: 12px; border-radius: 12px; border: 1px solid var(--bd); background: var(--bg); color: var(--muted); font: 13px/1.45 inherit; margin-top: 10px; resize: vertical; }
+.btn2 { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--bd); background: var(--s2); font-weight: 700; font-size: 13.5px; }
+.code { font: 800 20px var(--mono); letter-spacing: .04em; color: var(--acc2); word-break: break-all; margin: 6px 0 10px; }
 .err { color: var(--neg); font-size: 13.5px; min-height: 1em; margin: 8px 0 0; }
-.hist li { font: 13px ui-monospace, Menlo, monospace; color: var(--muted); padding: 4px 0; border-top: 1px solid var(--bd); list-style: none; }
-.hist { padding: 0; margin: 8px 0 0; }
-small { color: var(--faint); }
+.note { padding: 12px 14px; border-radius: 12px; background: rgb(245 190 60 / .1); border: 1px solid rgb(245 190 60 / .35); color: var(--acc2); font-size: 13.5px; line-height: 1.5; margin-bottom: 12px; }
+.note ol { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+.login { max-width: 380px; margin: 12vh auto 0; }
+.login h1 { display: flex; gap: 10px; align-items: center; font-size: 22px; } .login h1 img { width: 40px; height: 40px; border-radius: 11px; }
+.drawer { position: fixed; inset: 0; z-index: 20; display: grid; justify-items: end; }
+.drawer[hidden] { display: none; }
+.drawer .bk { position: absolute; inset: 0; background: rgb(0 0 0 / .6); }
+.drawer .pn { position: relative; width: min(560px, 100%); height: 100%; overflow-y: auto; background: #0e1013; border-left: 1px solid var(--bd); padding: max(16px, env(safe-area-inset-top)) 16px 40px; }
+.dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.dl div { padding: 10px 12px; border-radius: 12px; background: var(--s1); border: 1px solid var(--bd); min-width: 0; } .dl dt { font-size: 11.5px; color: var(--faint); } .dl dd { margin: 2px 0 0; font-weight: 700; overflow-wrap: anywhere; }
+.empty { padding: 26px; text-align: center; color: var(--faint); }
+table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.t th { text-align: left; font-size: 11.5px; color: var(--faint); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--bd); white-space: nowrap; }
+table.t td { padding: 9px 8px; border-bottom: 1px solid var(--bd); vertical-align: top; }
+.scroll { overflow-x: auto; }
+@media (min-width: 760px) { .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } .grid2 { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); } }
 </style>
 </head>
 <body>
-<main>
-  <h1><img src="/apple-touch-icon.png" alt="">Códigos de acesso</h1>
-  <p class="sub">Só para o dono. Cria um código depois de receberes o pagamento e envia-o ao cliente. O cliente escreve-o em Planos → "Já tens um código de acesso?".</p>
-  <div class="card">
-    <label for="pw">Palavra-passe de administrador</label>
-    <input id="pw" type="password" autocomplete="current-password" placeholder="ODDSLAB_ADMIN">
-    <label>Plano</label>
-    <div class="seg" id="pl"><button type="button" data-v="pro" aria-pressed="true">PRO</button><button type="button" data-v="elite" aria-pressed="false">ELITE</button><button type="button" data-v="tm" aria-pressed="false">Tip Master</button></div>
-    <div id="durBox"><label>Duração</label>
-    <div class="dur" id="du"><button type="button" data-v="7" aria-pressed="false">7 dias</button><button type="button" data-v="31" aria-pressed="true">1 mês</button><button type="button" data-v="366" aria-pressed="false">1 ano</button><button type="button" data-v="3650" aria-pressed="false">Dono</button></div></div>
-    <button type="button" class="go" id="go">Criar código</button>
-    <p class="err" id="err"></p>
-  </div>
-  <div class="card res" id="res">
-    <small id="what"></small>
-    <div class="code" id="code"></div>
-    <div class="row"><button type="button" id="cp">Copiar código</button><button type="button" id="cpm">Copiar mensagem</button></div>
-    <textarea id="msg" readonly></textarea>
-  </div>
-  <div class="card"><b>Últimos códigos neste aparelho</b><ul class="hist" id="hist"></ul><small>Guardados só neste browser.</small></div>
-</main>
+<div id="app"></div>
 <script>
-const $ = (id) => document.getElementById(id);
-let plano = 'pro', dias = 31;
-try { $('pw').value = sessionStorage.getItem('olAdm') || ''; } catch {}
-function seg(id, cb) { $(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); cb(b.dataset.v); }); }
-seg('pl', (v) => { plano = v; $('durBox').style.display = v === 'tm' ? 'none' : ''; });
-seg('du', (v) => { dias = Number(v); });
-function hist() { let H = []; try { H = JSON.parse(localStorage.getItem('olAdmHist') || '[]'); } catch {} $('hist').innerHTML = H.slice(0, 15).map((h) => `<li>${h.d} · ${h.p} · ${h.c}</li>`).join('') || '<li>Nenhum ainda.</li>'; return H; }
-hist();
-$('go').addEventListener('click', async () => {
-  $('err').textContent = ''; const senha = $('pw').value; if (!senha) { $('err').textContent = 'Escreve a palavra-passe.'; return; }
-  $('go').disabled = true;
+const $ = (s, r = document) => r.querySelector(s), esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let PW = ''; try { PW = sessionStorage.getItem('olAdm') || ''; } catch {}
+let TAB = 'resumo', CACHE = {}, UF = 'todos', UQ = '', VT = false;
+const eur = (v) => (Number(v) || 0).toFixed(2).replace('.', ',') + ' €';
+const ago = (ms) => { ms = Number(ms); if (!ms) return '–'; const s = (Date.now() - ms) / 1000; if (s < 60) return 'agora'; if (s < 3600) return Math.floor(s / 60) + ' min'; if (s < 86400) return Math.floor(s / 3600) + ' h'; return Math.floor(s / 86400) + ' d'; };
+const dt = (ms) => ms ? new Date(Number(ms)).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+const dd = (ms) => ms ? new Date(Number(ms)).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '–';
+const PLAT = { ios: '📱 iPhone', android: '🤖 Android', pc: '💻 Computador' };
+const PG = { inicio: 'Início', jogos: 'Futebol', tenis: 'Ténis', res: 'Resultados', mk: 'Top 10', mult: 'Múltiplas', dados: 'Dados', tools: 'Agenda', pop: 'Populares', valor: 'Comparar odds', ajuda: 'Como apostar' };
+function evTxt(e) {
+  const d = e.d || {};
+  switch (e.k) {
+    case 'abrir': return ['🚪', `Abriu a app${d.instalada === 'sim' ? ' (instalada)' : ''}`, d.origem ? 'vindo de ' + d.origem : ''];
+    case 'pagina': return ['📄', `Abriu ${PG[d.pg] || d.pg}`, ''];
+    case 'jogo': return ['⚽', `Viu o jogo ${d.jogo || d.id}`, ''];
+    case 'bloqueado': return ['🔒', `Tentou ver ${d.jogo || d.id}`, 'bloqueado · ' + (d.plano || '')];
+    case 'planos': return ['💳', `Viu os planos (${d.plano || ''})`, d.motivo || ''];
+    case 'comprar': return ['🛒', `Carregou em comprar ${String(d.plano || '').toUpperCase()}`, d.faturacao || ''];
+    case 'teste': return ['🎁', 'Ativou os 7 dias grátis', ''];
+    case 'codigo': return ['✅', `Ativou código ${String(d.plano || '').toUpperCase()}`, ''];
+    case 'codigo_erro': return ['⚠️', 'Escreveu um código errado', d.erro || ''];
+    case 'copiar': return ['📋', `Copiou ${d.aposta || ''}`, d.jogo || ''];
+    case 'tutorial': return ['📲', 'Abriu o tutorial de instalação', d.aparelho || ''];
+    case 'instalado': return ['⭐', 'Instalou a app', ''];
+    case 'entrada': return ['✨', d.escolha === 'instalar' ? 'Escolheu instalar no ecrã de entrada' : 'Entrou sem instalar', ''];
+    default: return ['•', e.k, ''];
+  }
+}
+async function api(acao, opt = {}) {
+  const r = await fetch('/api/admin?acao=' + acao + (opt.q || ''), { method: opt.body ? 'POST' : 'GET', headers: { 'x-admin': PW, 'Content-Type': 'application/json' }, body: opt.body ? JSON.stringify(opt.body) : undefined, cache: 'no-store' });
+  const j = await r.json().catch(() => ({})); if (r.status === 401) { PW = ''; try { sessionStorage.removeItem('olAdm'); } catch {} render(); throw new Error('401'); }
+  if (!r.ok) { const e = new Error(j.erro || 'Erro ' + r.status); e.j = j; throw e; } return j;
+}
+function login() {
+  $('#app').innerHTML = `<div class="login card"><h1><img src="/apple-touch-icon.png" alt="">Painel do dono</h1><p style="color:var(--muted);margin-top:-6px">Escreve a palavra-passe de administrador (ODDSLAB_ADMIN).</p>
+    <input class="f" id="pw" type="password" autocomplete="current-password" placeholder="Palavra-passe"><button class="go" id="in">Entrar</button><p class="err" id="er"></p></div>`;
+  const go = async () => { PW = $('#pw').value; if (!PW) return; $('#in').disabled = true; try { await fetch('/api/admin?acao=resumo', { headers: { 'x-admin': PW } }).then(async (r) => { if (r.status === 401) throw new Error('Palavra-passe errada.'); }); try { sessionStorage.setItem('olAdm', PW); } catch {} render(); } catch (e) { $('#er').textContent = e.message; PW = ''; } finally { $('#in') && ($('#in').disabled = false); } };
+  $('#in').onclick = go; $('#pw').onkeydown = (e) => e.key === 'Enter' && go(); $('#pw').focus();
+}
+function shell() {
+  $('#app').innerHTML = `<header class="top"><div class="bar"><img src="/apple-touch-icon.png" alt=""><b>ODDS<span>LAB</span></b><span class="tag">DONO</span><span class="sp"></span><a href="/">Abrir app</a><button class="lk" id="out">Sair</button></div>
+    <nav class="tabs" role="tablist">${[['resumo', 'Resumo'], ['users', 'Utilizadores'], ['vendas', 'Vendas'], ['feed', 'Atividade'], ['criar', 'Criar código']].map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${TAB === k}">${l}</button>`).join('')}</nav></header>
+    <main id="main"><div class="empty">A carregar…</div></main>
+    <div class="drawer" id="dr" hidden><div class="bk" data-x></div><div class="pn" id="drp"></div></div>`;
+  $('#out').onclick = () => { PW = ''; try { sessionStorage.removeItem('olAdm'); } catch {} render(); };
+}
+function render() { if (!PW) return login(); if (!$('#main')) shell(); document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar })[TAB](); }
+function setupNote(e) { return `<div class="note"><b>${esc(e.message)}</b>${e.j && e.j.semBase ? `<ol><li>Na Vercel, abre o projeto oddslab → <b>Storage</b> → <b>Create Database</b> → <b>Upstash for Redis</b> (plano grátis).</li><li>Liga-a ao projeto oddslab (Connect).</li><li>Em Deployments, faz <b>Redeploy</b>.</li></ol><p style="margin:8px 0 0;color:var(--muted)">Os códigos continuam a funcionar sem isto; só os registos e o painel precisam da base de dados.</p>` : ''}</div>`; }
+async function resumo() {
+  const M = $('#main');
   try {
-    const r = await fetch('/api/acesso?acao=codigo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha, plano, dias }) });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok) { $('err').textContent = j.erro || 'Erro ' + r.status; return; }
-    try { sessionStorage.setItem('olAdm', senha); } catch {}
-    const nome = plano === 'tm' ? 'Tip Master de hoje' : plano.toUpperCase() + (dias >= 3650 ? ' (dono)' : dias >= 366 ? ' · 1 ano' : dias >= 31 ? ' · 1 mês' : ' · ' + dias + ' dias');
-    $('what').textContent = nome; $('code').textContent = j.codigo; $('res').classList.add('on');
-    const site = location.origin + '/';
-    $('msg').value = `Obrigado! O teu acesso ${nome} ao ODDSLAB está pronto.\n\nCódigo: ${j.codigo}\n\n1. Abre ${site}\n2. No Início, toca em "Ver planos" (ou no botão ? → "Planos e preços")\n3. Em "Já tens um código de acesso?", cola o código e toca em Ativar.\n\n18+ · Joga com responsabilidade.`;
-    const H = hist(); H.unshift({ d: new Date().toLocaleString('pt-PT'), p: nome, c: j.codigo }); localStorage.setItem('olAdmHist', JSON.stringify(H.slice(0, 50))); hist();
-  } catch { $('err').textContent = 'Sem ligação.'; } finally { $('go').disabled = false; }
+    const r = CACHE.resumo = await api('resumo'), S = r.serie, sum = (k) => S.reduce((t, d) => t + (d[k] || 0), 0), mx = Math.max(1, ...S.map((d) => d.ativos || 0)), H = S[S.length - 1] || {};
+    const F = [['Abriram a app', sum('abrir')], ['Viram os planos', sum('planos')], ['Carregaram em comprar', sum('comprar')], ['Ativaram 7 dias grátis', sum('teste')], ['Ativaram um código', sum('codigo')]], fm = Math.max(1, F[0][1]);
+    M.innerHTML = `<div class="kpis">
+      <div class="kpi a"><span>Receita registada</span><b class="m">${eur(r.vendas.receita)}</b><small>${r.vendas.n} vendas</small></div>
+      <div class="kpi g"><span>Assinaturas ativas</span><b class="m">${r.vendas.ativas}</b><small>${Object.entries(r.vendas.porPlano).map(([k, v]) => k.toUpperCase() + ' ' + v).join(' · ') || 'sem vendas'}</small></div>
+      <div class="kpi"><span>Ativos hoje</span><b class="m">${H.ativos || 0}</b><small>${r.ativos7d} nos últimos 7 dias</small></div>
+      <div class="kpi"><span>Utilizadores</span><b class="m">${r.total}</b><small>${H.novos || 0} novos hoje</small></div>
+      <div class="kpi"><span>Testes grátis</span><b class="m">${r.testes.n}</b><small>${r.testes.ativos} a decorrer</small></div>
+      <div class="kpi"><span>Instalaram a app</span><b class="m">${sum('instalado')}</b><small>14 dias</small></div>
+      <div class="kpi"><span>Apostas copiadas</span><b class="m">${sum('copiar')}</b><small>14 dias · hoje ${H.copiar || 0}</small></div>
+      <div class="kpi"><span>Bloqueios vistos</span><b class="m">${sum('bloqueado')}</b><small>jogos pagos tocados</small></div></div>
+    <div class="grid2"><div><h2>Pessoas por dia <small>últimos 14 dias</small></h2><div class="card"><div class="chart">${S.map((d) => `<div title="${d.dia}: ${d.ativos || 0} ativos, ${d.novos || 0} novos"><em>${d.ativos || ''}</em><i style="height:${((d.ativos || 0) / mx) * 100}%"></i><i class="n" style="height:${((d.novos || 0) / mx) * 100}%"></i></div>`).join('')}</div><div class="chx">${S.map((d) => `<span>${d.dia.slice(8)}</span>`).join('')}</div><div class="leg"><span><i style="background:var(--acc)"></i>Ativos</span><span><i style="background:var(--pos)"></i>Novos</span></div></div></div>
+    <div><h2>Funil de venda <small>14 dias</small></h2><div class="card funnel">${F.map(([k, v]) => `<div class="fn"><span>${k}</span><div class="t"><i style="width:${(v / fm) * 100}%"></i></div><b class="m">${v}</b></div>`).join('')}</div>
+    <h2>Jogos mais vistos hoje</h2><div class="card list">${r.jogosTop.map((j) => `<div class="row"><span class="n">${esc(j.id)}</span><span class="r m">${j.n}×</span></div>`).join('') || '<div class="empty">Ainda nada hoje.</div>'}</div></div></div>`;
+  } catch (e) { if (e.message !== '401') M.innerHTML = setupNote(e); }
+}
+async function users() {
+  const M = $('#main');
+  try {
+    const L = (CACHE.users = (await api('utilizadores')).utilizadores);
+    const st = (u) => u.dono === '1' ? 'dono' : u.planoPago && Number(u.expira) > Date.now() ? u.planoPago : u.plano === 'pro' && !u.planoPago ? 'teste' : 'free';
+    const draw = () => {
+      const q = UQ.toLowerCase(), V = L.filter((u) => (UF === 'todos' || (UF === 'pagos' ? ['pro', 'elite', 'tm'].includes(st(u)) && (u.codigo || '') : UF === 'gratis' ? st(u) === 'free' : UF === 'inst' ? u.std === '1' : st(u) === UF)) && (!q || [u.id, u.nome, u.cidade, u.pais, u.codigo].join(' ').toLowerCase().includes(q)));
+      $('#ul').innerHTML = V.map((u) => { const s = st(u); return `<button class="row" data-u="${u.id}"><span class="n">${esc(u.nome || 'Anónimo ' + u.id.slice(2, 8))} ${u.std === '1' ? '⭐' : ''}</span><span class="s">${PLAT[u.plat] || '–'} · ${esc([u.cidade, u.pais].filter(Boolean).join(', ') || 'sem local')} · ${u.n || 0} ações</span><span class="r"><span class="bd ${s}">${s === 'free' ? 'grátis' : s}</span><span>${ago(u.last)}</span></span></button>`; }).join('') || '<div class="empty">Ninguém com este filtro.</div>';
+      $('#uc').textContent = V.length + ' de ' + L.length;
+    };
+    M.innerHTML = `<h2>Utilizadores <small id="uc"></small></h2><div class="filters">${[['todos', 'Todos'], ['pagos', 'Pagantes'], ['teste', 'Em teste'], ['gratis', 'Grátis'], ['inst', 'Com app instalada']].map(([k, l]) => `<button data-uf="${k}" aria-pressed="${UF === k}">${l}</button>`).join('')}<input id="uq" placeholder="Procurar nome, cidade, código" value="${esc(UQ)}"></div><div class="card list" id="ul"></div><p style="font-size:12px;color:var(--faint)">⭐ = abre pela app instalada. Os nomes aparecem quando o cliente ativa um código com nome; podes dar nome a qualquer utilizador na ficha.</p>`;
+    draw();
+    M.querySelectorAll('[data-uf]').forEach((b) => (b.onclick = () => { UF = b.dataset.uf; M.querySelectorAll('[data-uf]').forEach((x) => x.setAttribute('aria-pressed', x === b)); draw(); }));
+    $('#uq').oninput = (e) => { UQ = e.target.value; draw(); };
+  } catch (e) { if (e.message !== '401') M.innerHTML = setupNote(e); }
+}
+async function openUser(id) {
+  const D = $('#dr'), P = $('#drp'); D.hidden = false; P.innerHTML = '<div class="empty">A carregar…</div>';
+  try {
+    const u = await api('utilizador', { q: '&id=' + encodeURIComponent(id) }), c = u.codigoInfo;
+    const E = u.eventos || [], cnt = (k) => E.filter((e) => e.k === k).length;
+    let last = '', tl = '';
+    E.forEach((e) => { const k = new Date(e.t).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'short' }); if (k !== last) { last = k; tl += `<div class="dayh">${k}</div>`; } const [ic, t, s] = evTxt(e); tl += `<div class="ev"><time>${new Date(e.t).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</time><span><span class="ico">${ic}</span> ${esc(t)}${s ? ` <small>· ${esc(s)}</small>` : ''}</span></div>`; });
+    P.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 style="margin:0">${esc(u.nome || 'Anónimo ' + id.slice(2, 8))}</h2><button class="btn2" data-x>Fechar</button></div>
+      <div style="display:flex;gap:8px;margin-top:10px"><input class="f" id="nm" placeholder="Dar um nome a este utilizador" value="${esc(u.nome || '')}" style="margin:0"><button class="btn2" id="nmS">Guardar</button></div>
+      <dl class="dl"><div><dt>Plano</dt><dd>${u.dono === '1' ? '👑 Dono' : u.planoPago ? `${u.planoPago.toUpperCase()} ${Number(u.expira) > Date.now() ? 'até ' + dd(u.expira) : '(expirado)'}` : u.plano === 'pro' ? 'PRO (teste)' : 'Grátis'}</dd></div><div><dt>Aparelho</dt><dd>${PLAT[u.plat] || '–'}${u.std === '1' ? ' · app instalada' : ''}</dd></div>
+        <div><dt>Primeira visita</dt><dd>${dt(u.first)}</dd></div><div><dt>Última visita</dt><dd>${dt(u.last)} (${ago(u.last)})</dd></div>
+        <div><dt>Local aproximado</dt><dd>${esc([u.cidade, u.pais].filter(Boolean).join(', ') || '–')}</dd></div><div><dt>Ações registadas</dt><dd class="m">${u.n || 0}</dd></div>
+        <div><dt>Jogos vistos</dt><dd class="m">${cnt('jogo')} <small style="color:var(--faint)">+ ${cnt('bloqueado')} bloqueados</small></dd></div><div><dt>Apostas copiadas</dt><dd class="m">${cnt('copiar')}</dd></div>
+        ${c ? `<div style="grid-column:1/-1"><dt>Compra</dt><dd>${esc(u.codigo)} · ${String(c.plano || '').toUpperCase()} · ${eur(c.valor)} · ${esc(c.nome || '')} ${esc(c.contacto || '')} · criado ${dd(c.criado)}</dd></div>` : ''}</dl>
+      <h2>O que fez <small>${E.length} ações mais recentes</small></h2><div class="card feed">${tl || '<div class="empty">Sem ações registadas.</div>'}</div>`;
+    $('#nmS').onclick = async () => { await api('nome', { body: { id, nome: $('#nm').value } }); $('#nmS').textContent = 'Guardado ✓'; CACHE.users = null; };
+  } catch (e) { if (e.message !== '401') P.innerHTML = setupNote(e) + '<button class="btn2" data-x>Fechar</button>'; }
+}
+async function vendas() {
+  const M = $('#main');
+  try {
+    const C = (await api('codigos')).codigos, now = Date.now();
+    const V = C.filter((c) => VT || (c.tipo !== 'teste'));
+    const pg = C.filter((c) => c.tipo === 'venda');
+    M.innerHTML = `<div class="kpis"><div class="kpi a"><span>Receita</span><b class="m">${eur(pg.reduce((t, c) => t + (Number(c.valor) || 0), 0))}</b><small>${pg.length} vendas</small></div><div class="kpi g"><span>Ativas</span><b class="m">${pg.filter((c) => Number(c.expira) > now).length}</b><small>por expirar</small></div><div class="kpi"><span>Expiram em 7 dias</span><b class="m">${pg.filter((c) => Number(c.expira) > now && Number(c.expira) - now < 7 * 864e5).length}</b><small>lembra-te de renovar</small></div><div class="kpi"><span>Testes grátis</span><b class="m">${C.filter((c) => c.tipo === 'teste').length}</b><small>${C.filter((c) => c.tipo === 'teste' && (c.aparelhos || []).length).length} usados</small></div></div>
+    <h2>Códigos <small><label style="display:inline;font-size:12px"><input type="checkbox" id="vt" ${VT ? 'checked' : ''}> mostrar testes grátis</label></small></h2>
+    <div class="card scroll">${V.length ? `<table class="t"><thead><tr><th>Cliente</th><th>Plano</th><th>Valor</th><th>Criado</th><th>Expira</th><th>Aparelhos</th><th>Código</th></tr></thead><tbody>${V.map((c) => { const exp = Number(c.expira) <= now; const k = c.tipo === 'teste' ? 'teste' : c.plano; return `<tr><td><b>${esc(c.nome || (c.tipo === 'teste' ? 'Teste grátis' : '—'))}</b><br><small style="color:var(--faint)">${esc(c.contacto || '')}</small></td><td><span class="bd ${exp ? 'exp' : k}">${exp ? 'expirado' : k}</span></td><td class="m">${eur(c.valor)}</td><td>${dd(c.criado)}</td><td>${c.plano === 'tm' ? 'fim do dia' : dd(c.expira)}</td><td>${(c.aparelhos || []).map((a) => `<a href="#" data-u="${a}" style="color:var(--acc2)">${a.slice(2, 8)}</a>`).join(' ') || '<small style="color:var(--faint)">por ativar</small>'}</td><td class="m" style="font-size:11.5px">${esc(c.codigo)}</td></tr>`; }).join('')}</tbody></table>` : '<div class="empty">Ainda não criaste códigos. Usa o separador "Criar código" depois de receberes um pagamento.</div>'}</div>`;
+    $('#vt').onchange = (e) => { VT = e.target.checked; vendas(); };
+  } catch (e) { if (e.message !== '401') M.innerHTML = setupNote(e); }
+}
+let FT = 0;
+async function feed() {
+  const M = $('#main'); clearTimeout(FT);
+  try {
+    const E = (await api('atividade')).eventos;
+    M.innerHTML = `<h2>Atividade em direto <small>atualiza a cada 20 s</small></h2><div class="card feed">${E.map((e) => { const [ic, t, s] = evTxt(e), q = e.quem || {}; return `<div class="ev"><time>${ago(e.t)}</time><span><span class="who" data-u="${e.u}">${esc(q.nome || 'Anónimo ' + e.u.slice(2, 8))}</span> ${q.plano && q.plano !== 'free' ? `<span class="bd ${q.plano}">${q.plano}</span>` : ''} <span class="ico">${ic}</span> ${esc(t)}${s ? ` <small>· ${esc(s)}</small>` : ''}</span></div>`; }).join('') || '<div class="empty">Ainda sem atividade.</div>'}</div>`;
+    FT = setTimeout(() => TAB === 'feed' && feed(), 20000);
+  } catch (e) { if (e.message !== '401') M.innerHTML = setupNote(e); }
+}
+let CP = 'pro', CD = 31;
+function criar() {
+  const M = $('#main');
+  M.innerHTML = `<div class="grid2"><div class="card">
+    <label>Plano</label><div class="seg" id="pl">${[['pro', 'PRO'], ['elite', 'ELITE'], ['tm', 'Tip Master'], ['dono', '👑 Dono']].map(([k, l]) => `<button data-v="${k}" aria-pressed="${CP === k}">${l}</button>`).join('')}</div>
+    <div id="durB" ${CP === 'tm' || CP === 'dono' ? 'hidden' : ''}><label>Duração</label><div class="seg" id="du">${[[7, '7 dias'], [31, '1 mês'], [92, '3 meses'], [366, '1 ano']].map(([k, l]) => `<button data-v="${k}" aria-pressed="${CD === k}">${l}</button>`).join('')}</div></div>
+    <label for="cn">Nome do cliente</label><input class="f" id="cn" placeholder="Ex.: João Silva">
+    <label for="cc">Contacto (Instagram, telefone ou email)</label><input class="f" id="cc" placeholder="@joao.silva">
+    <label for="cv">Valor recebido (€)</label><input class="f" id="cv" inputmode="decimal" placeholder="4,99">
+    <button class="go" id="go">Criar código</button><p class="err" id="err"></p></div>
+    <div class="card" id="res" hidden><small id="what" style="color:var(--faint)"></small><div class="code" id="code"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn2" id="cp">Copiar código</button><button class="btn2" id="cpm">Copiar mensagem</button></div><textarea class="f" id="msg" readonly style="min-height:150px;margin-top:10px"></textarea></div></div>`;
+  const PRICE = { pro: { 7: '', 31: '4,99', 92: '', 366: '39,99' }, elite: { 7: '', 31: '14,99', 92: '', 366: '119,99' }, tm: { 0: '4,99' }, dono: { 0: '0' } };
+  const setV = () => { $('#cv').value = (PRICE[CP] || {})[CP === 'tm' || CP === 'dono' ? 0 : CD] || ''; if (CP === 'dono') $('#cn').value = $('#cn').value || 'Dono'; };
+  setV();
+  M.querySelectorAll('#pl button').forEach((b) => (b.onclick = () => { CP = b.dataset.v; M.querySelectorAll('#pl button').forEach((x) => x.setAttribute('aria-pressed', x === b)); $('#durB').hidden = CP === 'tm' || CP === 'dono'; setV(); }));
+  M.querySelectorAll('#du button').forEach((b) => (b.onclick = () => { CD = Number(b.dataset.v); M.querySelectorAll('#du button').forEach((x) => x.setAttribute('aria-pressed', x === b)); setV(); }));
+  $('#go').onclick = async () => {
+    $('#err').textContent = ''; $('#go').disabled = true;
+    try {
+      const dias = CP === 'dono' ? 3650 : CP === 'tm' ? 0 : CD;
+      const r = await fetch('/api/acesso?acao=codigo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha: PW, plano: CP, dias, nome: $('#cn').value, contacto: $('#cc').value, valor: $('#cv').value }) });
+      const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.erro || 'Erro ' + r.status);
+      const nome = CP === 'tm' ? 'Tip Master de hoje' : CP === 'dono' ? 'Dono (acesso total)' : CP.toUpperCase() + ' · ' + ({ 7: '7 dias', 31: '1 mês', 92: '3 meses', 366: '1 ano' })[CD];
+      $('#res').hidden = false; $('#what').textContent = nome + ($('#cn').value ? ' · ' + $('#cn').value : ''); $('#code').textContent = j.codigo;
+      $('#msg').value = CP === 'dono' ? `O teu código de dono: ${j.codigo}\nAbre a app → ? → Planos e preços → "Já tens um código de acesso?" → cola e toca em Ativar. Faz isto em cada aparelho teu.` : `Obrigado${$('#cn').value ? ', ' + $('#cn').value.split(' ')[0] : ''}! O teu acesso ${nome} ao ODDSLAB está pronto.\n\nCódigo: ${j.codigo}\n\n1. Abre ${location.origin}/\n2. No Início, toca em "Ver planos" (ou no botão ? → "Planos e preços")\n3. Em "Já tens um código de acesso?", cola o código e toca em Ativar.\n\n18+ · Joga com responsabilidade.`;
+    } catch (e) { $('#err').textContent = e.message; } finally { $('#go').disabled = false; }
+  };
+  const cp = async (t, b) => { try { await navigator.clipboard.writeText(t); const o = b.textContent; b.textContent = 'Copiado ✓'; setTimeout(() => (b.textContent = o), 1400); } catch { prompt('Copia:', t); } };
+  $('#cp').onclick = (e) => cp($('#code').textContent, e.target); $('#cpm').onclick = (e) => cp($('#msg').value, e.target);
+}
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-tab]'); if (t) { TAB = t.dataset.tab; render(); return; }
+  const u = e.target.closest('[data-u]'); if (u) { e.preventDefault(); openUser(u.dataset.u); return; }
+  if (e.target.closest('[data-x]')) $('#dr').hidden = true;
 });
-const cp = async (t, b) => { try { await navigator.clipboard.writeText(t); const o = b.textContent; b.textContent = 'Copiado ✓'; setTimeout(() => (b.textContent = o), 1400); } catch { prompt('Copia:', t); } };
-$('cp').addEventListener('click', (e) => cp($('code').textContent, e.target));
-$('cpm').addEventListener('click', (e) => cp($('msg').value, e.target));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#dr')) $('#dr').hidden = true; });
+render();
 </script>
 </body>
 </html>
