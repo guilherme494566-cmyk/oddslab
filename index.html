@@ -2212,6 +2212,74 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
   #deck .h3r > .h3k { scroll-snap-align: center; }
 }
 </style>
+<style id="p9css">
+/* ===== Planos ===== */
+.p9-blur { filter: blur(7px); user-select: none; -webkit-user-select: none; opacity: .8; }
+.h3k.p9-lk { position: relative; border-color: rgb(245 190 60 / .3); background: linear-gradient(180deg, var(--s1), #15130d); }
+.p9-cta { display: grid; justify-items: center; text-align: center; gap: 6px; padding: 14px 12px; border-radius: 14px; border: 1px dashed rgb(245 190 60 / .4); background: rgb(245 190 60 / .05); margin-top: auto; }
+.p9-ci { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accbg); color: var(--acc); }
+.p9-ci svg { width: 17px; height: 17px; }
+.p9-cta b { font-size: 16px; font-weight: 800; } .p9-cta p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.4; max-width: 30ch; }
+.p9-cta .btn { margin-top: 4px; width: 100%; padding: 12px; }
+.p9-lr .pk.p9-pk { display: flex; align-items: center; gap: 6px; color: var(--acc2); } .p9-pk small { color: var(--muted); font-size: 12px; margin-left: 4px; }
+.p9-lr .o.p9-o { color: var(--acc); display: grid; place-items: center; }
+.p9-in { display: inline-flex; align-items: center; gap: 5px; color: var(--acc2) !important; }
+.p9-more { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px; text-align: left; border: 1px dashed rgb(245 190 60 / .45); background: rgb(245 190 60 / .05); color: var(--acc); }
+.p9-more b { display: block; color: var(--text); font-size: 15px; } .p9-more small { display: block; color: var(--muted); font-size: 12.5px; } .p9-more em { font-style: normal; font-size: 22px; }
+#p9Home { display: grid; gap: 10px; margin-top: 14px; } #p9Home:empty { display: none; }
+.p9-up { padding: 14px; display: grid; gap: 10px; border-color: rgb(245 190 60 / .35); background: linear-gradient(120deg, rgb(245 190 60 / .1), var(--s1) 65%); }
+.p9-ut { display: grid; gap: 2px; } .p9-ut b { font-size: 16px; font-weight: 800; } .p9-ut small { font-size: 12.5px; color: var(--muted); }
+.p9-bd { justify-self: start; padding: 2px 8px; border-radius: 99px; font: 800 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.p9-bd.free { background: var(--s3); color: var(--muted); } .p9-bd.pro { background: var(--acc); color: #111; }
+.p9-ub { height: 6px; border-radius: 6px; background: var(--s3); overflow: hidden; } .p9-ub i { display: block; height: 100%; width: var(--w); background: var(--acc); border-radius: inherit; }
+.p9-up .btn { padding: 12px; }
+.p9-tr { border-color: rgb(34 229 132 / .35); background: linear-gradient(120deg, rgb(34 229 132 / .08), var(--s1) 65%); }
+.p9-tm { position: relative; overflow: hidden; display: grid; gap: 6px; padding: 16px; text-align: left; width: 100%; border-color: rgb(245 190 60 / .45); background: radial-gradient(120% 120% at 100% 0%, rgb(245 190 60 / .18), transparent 55%), #13110b; }
+.p9-tk { font: 700 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--acc); }
+.p9-tm > b { font-size: 17px; font-weight: 800; } .p9-tm > strong { font-size: 15px; color: var(--acc2); }
+.p9-tf { display: flex; gap: 14px; font-size: 13px; color: var(--muted); } .p9-tf .m:first-child { color: var(--acc2); font-weight: 700; }
+.p9-tm small { font-size: 12px; color: var(--faint); line-height: 1.4; }
+.p9-tb { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; } .p9-tb .btn { padding: 11px 8px; white-space: nowrap; }
+.p9-hc { display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 11px; border-radius: 99px; font-size: 12.5px; font-weight: 800; border: 1px solid rgb(245 190 60 / .45); background: var(--accbg); color: var(--acc2); white-space: nowrap; }
+.p9-hc.pro, .p9-hc.elite { background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #111; border: 0; letter-spacing: .06em; }
+.p9-aj .p9-ci { width: 40px; height: 40px; }
+/* ecrã de planos */
+.p9-pn { max-width: 980px; }
+.p9-why { display: flex; gap: 8px; align-items: center; margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: var(--accbg); color: var(--acc2); font-size: 13px; border: 1px solid rgb(245 190 60 / .3); }
+.p9-why b { color: var(--text); }
+.p9-trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
+.p9-trust div { padding: 9px 10px; border-radius: 12px; background: var(--s1); border: 1px solid var(--bd); display: grid; gap: 1px; }
+.p9-trust b { font-size: 18px; font-weight: 800; } .p9-trust div:first-child b { color: var(--pos); } .p9-trust small { font-size: 11px; color: var(--faint); }
+.p9-bill { display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: var(--s1); border: 1px solid var(--bd); margin-bottom: 12px; }
+.p9-bill button { flex: 1; border: 0; background: none; padding: 9px; border-radius: 10px; font-weight: 750; font-size: 14px; color: var(--muted); }
+.p9-bill button[aria-pressed="true"] { background: var(--s3); color: var(--text); }
+.p9-bill em { font-style: normal; font-size: 11.5px; color: var(--pos); margin-left: 4px; }
+.p9-cards { display: grid; gap: 10px; }
+.p9-c { position: relative; padding: 16px; border-radius: 18px; background: var(--s1); border: 1px solid var(--bd2); display: grid; gap: 10px; }
+.p9-c.pro { border-color: rgb(245 190 60 / .6); background: linear-gradient(180deg, #19160d, var(--s1) 45%); box-shadow: 0 16px 40px -24px rgb(245 190 60 / .6); }
+.p9-c.elite { background: linear-gradient(180deg, #16141b, var(--s1) 45%); border-color: rgb(186 156 255 / .35); }
+.p9-c.cur { outline: 2px solid var(--pos); outline-offset: -2px; }
+.p9-rib { position: absolute; top: -10px; right: 14px; padding: 3px 10px; border-radius: 99px; background: var(--acc); color: #111; font-size: 11.5px; font-weight: 800; }
+.p9-ch { display: flex; justify-content: space-between; align-items: center; } .p9-ch b { font-size: 18px; font-weight: 850; letter-spacing: .02em; }
+.p9-c.elite .p9-ch b { color: #cdb8ff; }
+.p9-now { font-size: 11.5px; font-weight: 700; color: var(--pos); }
+.p9-pr { margin: 0; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; } .p9-pr b { font-size: 30px; font-weight: 850; letter-spacing: -.03em; } .p9-pr small { color: var(--muted); font-size: 13px; }
+.p9-pr em { flex-basis: 100%; font-style: normal; font-size: 12.5px; color: var(--pos); }
+.p9-c ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.p9-c li { position: relative; padding-left: 22px; font-size: 13.5px; line-height: 1.35; color: var(--muted); }
+.p9-c li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 900; background: rgb(34 229 132 / .15); color: var(--pos); }
+.p9-c .btn { padding: 13px; font-size: 15px; }
+.p9-gold { background: linear-gradient(180deg, #e3d4ff, #b79cff) !important; color: #140f22 !important; }
+.p9-fn { font-size: 11.5px; color: var(--faint); text-align: center; margin-top: -4px; }
+.p9-av { margin-top: 10px; padding: 12px 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.p9-av b { display: block; font-size: 14.5px; } .p9-av small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; } .p9-av .btn { padding: 10px 14px; white-space: nowrap; }
+.p9-msg { margin-top: 10px; padding: 14px; border-radius: 14px; background: var(--accbg); border: 1px solid rgb(245 190 60 / .4); font-size: 13.5px; }
+.p9-msg p { margin: 4px 0 10px; color: var(--muted); } .p9-msg div { display: grid; gap: 8px; } .p9-msg .btn { padding: 12px; text-align: center; text-decoration: none; }
+.p9-q { margin-top: 8px; padding: 12px 14px; border-radius: 12px; background: var(--s1); border: 1px solid var(--bd); }
+.p9-q summary { cursor: pointer; font-weight: 700; font-size: 14px; } .p9-q p { margin: 8px 0 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+.p9-rg { text-align: center; font-size: 11.5px; color: var(--faint); margin: 14px 0 8px; }
+@media (min-width: 760px) { .p9-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4537,6 +4605,166 @@ i5Banner = function () { const h = document.getElementById('i5Ban'); if (h && i6
 (function i7Init() {
   i7Swap(document.getElementById('intro'));
   i5Banner(); i7Bar();
+})();
+
+// ===== Planos: Grátis / PRO / ELITE + Tip Master avulsa (sem pagamento ligado) =====
+var P9 = {
+  pro: { n: 'PRO', m: 4.99, a: 39.99 }, elite: { n: 'ELITE', m: 14.99, a: 119.99 }, tm: 4.99, trialDays: 7,
+  ig: 'https://ig.me/m/oddslab.pt',
+};
+var P9R = { free: 0, pro: 1, elite: 2 }, p9Bill = 'm', p9FreeSet = null;
+const p9eur = (v) => v.toFixed(2).replace('.', ',') + ' €';
+const p9ls = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch { return null; } };
+(function p9Owner() { try { const q = new URLSearchParams(location.search); if (q.get('dono') === '1') p9ls('p9Plan', 'elite'); if (q.get('dono') === '0') { p9ls('p9Plan', null); p9ls('p9Trial', null); p9ls('p9TrialUsed', null); } } catch {} })();
+function p9TrialLeft() { const t = Number(p9ls('p9Trial') || 0); return t > Date.now() ? t - Date.now() : 0; }
+function p9Plan() {
+  if (!document.querySelector('link[rel="manifest"]')) return 'elite'; // dentro do Claude: o dono vê tudo
+  const p = p9ls('p9Plan'); if (p === 'elite' || p === 'pro') return p;
+  return p9TrialLeft() ? 'pro' : 'free';
+}
+function p9Rank() { return P9R[p9Plan()]; }
+function p9Free() {
+  if (p9FreeSet) return p9FreeSet;
+  const s = new Set(jogos.filter((g) => g.plano === 'free').map((g) => g.id));
+  const nowMs = Date.now(), cand = openList().filter((g) => !g.aviso && T(g.inicio) > nowMs);
+  const tod = cand.filter((g) => dayKey(new Date(g.inicio)) === today), pool = tod.length >= 3 ? tod : cand.filter((g) => T(g.inicio) - nowMs < 72 * 3600e3);
+  pool.map((g) => ({ g, s: h3Score(g, pickOf(g).prob) })).sort((a, b) => b.s - a.s).slice(0, 3).forEach((x) => s.add(x.g.id));
+  return (p9FreeSet = s);
+}
+function p9Can(g) { if (!g) return true; return p9Rank() >= (P9R[g.plano] ?? 1) || p9Free().has(g.id); }
+function p9Need(g) { return g && g.plano === 'elite' ? 'elite' : 'pro'; }
+const P9PG = { tenis: 'pro', mk: 'pro', mult: 'pro', dados: 'pro', tools: 'pro', pop: 'pro', valor: 'elite' };
+const P9LK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function p9Counts() { const op = openList().filter((g) => !g.aviso); return { all: op.length, can: op.filter(p9Can).length }; }
+
+// --- bloqueios nos ecrãs ---
+var _p9go = go;
+go = function (pg) { const need = P9PG[pg]; if (need && p9Rank() < P9R[need]) return openPlans(need, { pg }); return _p9go(pg); };
+var _p9og = openGame;
+openGame = function (id) { const g = byId(id); if (g && !p9Can(g)) return openPlans(p9Need(g), { g }); return _p9og(id); };
+var _p9row = rowHtml;
+rowHtml = function (g, a, idx = 0) {
+  if (p9Can(g)) return _p9row(g, a, idx);
+  const h = _p9row(g, a, idx), need = p9Need(g);
+  return h.replace(/<span class="pk">[\s\S]*?<\/span><\/span>\s*(<span class="o">[\s\S]*?<\/span>|<span><\/span>)/, `<span class="pk p9-pk">${P9LK}<b>Aposta ${P9[need].n}</b><small>${pct(pickOf(g).prob)}</small></span></span><span class="o p9-o">${P9LK}</span>`).replace('class="row card', 'class="row card p9-lr');
+};
+var _p9picks = h3Picks;
+h3Picks = function (tab) { const L = _p9picks(tab); if (p9Rank() >= 2) return L; return L.slice().sort((a, b) => (p9Can(b.g) ? 1 : 0) - (p9Can(a.g) ? 1 : 0)); };
+var _p9card = h3Card;
+h3Card = function (x, k) {
+  if (p9Can(x.g)) return _p9card(x, k);
+  const { g, a } = x, P = Math.round(a.prob * 100), need = p9Need(g);
+  return `<article class="h3k p9-lk" data-k="${k}">
+    <header class="h3k-h"><span>${flag(g.pais)}${esc(g.liga)}</span><span>${h3When(g)}</span></header>
+    <h3 class="h3k-m">${esc(g.casa)}<span>vs</span>${esc(g.fora)}</h3>
+    <div class="h3k-p"><small>A nossa aposta</small><strong class="p9-blur" aria-hidden="true">Vitória ${esc(g.casa)}</strong><b class="m">${P}%<small>odd mín. ••••</small></b><div class="h3k-bar" style="--p:${P}%"><i></i></div></div>
+    <div class="p9-cta"><span class="p9-ci">${P9LK}</span><b>Aposta ${P9[need].n}</b><p>${need === 'elite' ? 'Este jogo está no plano ELITE, com a Tip Master de todos os dias.' : 'Desbloqueia esta e todas as apostas do dia com o PRO.'}</p>
+      <button type="button" class="btn acc" data-p9open="${need}">${need === 'pro' && !p9ls('p9TrialUsed') ? 'Experimentar 7 dias grátis' : 'Ver planos'}</button></div>
+  </article>`;
+};
+var _p9xb = h3Extra;
+h3Extra = function (tab) { const L = _p9xb(tab); window._p9xbHid = L.filter((x) => !p9Can(x.g)).length; return L.filter((x) => p9Can(x.g)); };
+var _p9rxb = renderXB;
+renderXB = function () { _p9rxb(); const el = $('xBets'), n = window._p9xbHid || 0; if (el && n) el.insertAdjacentHTML('beforeend', `<button type="button" class="p9-more card" data-p9open="pro">${P9LK}<span><b>Mais ${n} apostas fortes</b><small>Desbloqueia todas com o PRO</small></span><em>›</em></button>`); };
+function p9Mask(root) {
+  if (!root || p9Rank() >= 2) return;
+  root.querySelectorAll('.nu[data-open]').forEach((b) => { const g = byId(b.dataset.open); if (g && !p9Can(g)) { const p = b.querySelector('.nu-p'); if (p) p.innerHTML = `<b class="p9-in">${P9LK} Aposta ${P9[p9Need(g)].n}</b>`; } });
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-bc],[data-xbc],[data-xbc2]'); if (!b) return;
+  const v = b.dataset.bc || b.dataset.xbc || b.dataset.xbc2, g = byId(String(v).split('|')[0]);
+  if (g && !p9Can(g)) { e.stopImmediatePropagation(); e.preventDefault(); openPlans(p9Need(g), { g }); }
+}, true);
+
+// --- Início: estado do plano e Tip Master ---
+function p9Home() {
+  const sec = $('pg-inicio'); if (!sec) return;
+  let box = $('p9Home'); if (!box) { box = document.createElement('div'); box.id = 'p9Home'; const dk = sec.querySelector('.h3-dk'); if (dk) dk.after(box); else sec.prepend(box); }
+  const pl = p9Plan(), c = p9Counts(), tm = D.tipMaster, tmOk = tm && tm.inicio && T(tm.inicio) > Date.now();
+  const tl = p9TrialLeft(), days = Math.ceil(tl / 864e5);
+  let up = '';
+  if (pl === 'free') up = `<div class="p9-up card"><div class="p9-ut"><span class="p9-bd free">Grátis</span><b>Vês ${c.can} de ${c.all} apostas</b><small>O PRO desbloqueia ${p9Free().size ? 'todas as apostas do dia, ténis e múltiplas' : 'tudo'}.</small></div><div class="p9-ub"><i style="--w:${c.all ? (c.can / c.all) * 100 : 0}%"></i></div><button type="button" class="btn acc" data-p9open="pro">${p9ls('p9TrialUsed') ? 'Ver planos' : 'Experimentar o PRO 7 dias grátis'}</button></div>`;
+  else if (tl && !p9ls('p9Plan')) up = `<div class="p9-up card p9-tr"><div class="p9-ut"><span class="p9-bd pro">PRO</span><b>Período grátis: falta${days > 1 ? 'm' : ''} ${days} dia${days > 1 ? 's' : ''}</b><small>Tens acesso a tudo do PRO.</small></div><button type="button" class="btn ghost" data-p9open="pro">Ver planos</button></div>`;
+  const tmH = tmOk ? (pl === 'elite' ? `<button type="button" class="p9-tm card" data-open="${tm.id || ''}"><span class="p9-tk">★ Tip Master de hoje</span><b>${esc(tm.jogo)}</b><strong>${esc(tm.aposta)}</strong><span class="p9-tf"><span class="m">odd mín. ${odd(tm.oddMinima)}</span><span class="m">${pct(tm.prob)}</span><span>${hm(tm.inicio)}</span></span><small>Risco alto: ganha cerca de 1 vez em 5. Aposta pouco.</small></button>`
+    : `<div class="p9-tm card p9-tml"><span class="p9-tk">★ Tip Master de hoje</span><b class="p9-blur" aria-hidden="true">${esc(tm.jogo)}</b><span class="p9-tf"><span class="m">odd mín. ${odd(tm.oddMinima)}</span><span class="m">${pct(tm.prob)}</span><span>às ${hm(tm.inicio)}</span></span><small>Uma aposta de odd alta por dia. Jogo e aposta só para quem a tem. Risco alto: ganha cerca de 1 vez em 5.</small><div class="p9-tb"><button type="button" class="btn acc" data-p9open="elite">Incluída no ELITE</button><button type="button" class="btn ghost" data-p9buy="tm">Só esta · ${p9eur(P9.tm)}</button></div></div>`) : '';
+  box.innerHTML = up + tmH;
+}
+var _p9ri = renderInicio;
+renderInicio = function () { p9FreeSet = null; _p9ri(); p9Home(); p9Mask($('nextUp')); };
+
+// --- ecrã de planos ---
+function p9Card(k) {
+  const pl = p9Plan(), cur = pl === k, an = p9Bill === 'a';
+  if (k === 'free') return `<div class="p9-c${cur ? ' cur' : ''}"><div class="p9-ch"><b>Grátis</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div><p class="p9-pr"><b class="m">0 €</b></p><ul>
+    <li>As 3 apostas mais fortes de cada dia</li><li>Resultados completos, ganhas e perdidas</li><li>Guia para quem nunca apostou</li></ul></div>`;
+  const P = P9[k], price = an ? P.a : P.m, per = an ? '/ano' : '/mês', save = Math.round((1 - P.a / (P.m * 12)) * 100);
+  const trial = k === 'pro' && !p9ls('p9TrialUsed') && pl === 'free';
+  const feats = k === 'pro' ? ['Todas as apostas do dia (mais de 15 por dia)', 'Ficha completa de cada jogo: estatísticas e outras apostas', 'Mais apostas entre 70% e 90%', 'Ténis com Elo', 'Múltiplas prontas e criador de múltiplas', 'Top 10, dados das ligas e agenda']
+    : ['Tudo o que tem o PRO', 'Todos os jogos, incluindo os ELITE (o dobro dos jogos)', '★ Tip Master todos os dias (odd 5+)', 'Comparar odds: vê se a odd da tua casa compensa', 'Múltiplas de risco alto'];
+  return `<div class="p9-c ${k}${cur ? ' cur' : ''}">${k === 'pro' ? '<span class="p9-rib">Mais escolhido</span>' : ''}<div class="p9-ch"><b>${P.n}</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div>
+    <p class="p9-pr"><b class="m">${p9eur(price)}</b><small>${per}</small>${an ? `<em>${p9eur(P.a / 12)}/mês · poupas ${save}%</em>` : ''}</p>
+    <ul>${feats.map((f) => `<li>${f}</li>`).join('')}</ul>
+    ${cur ? '' : trial ? `<button type="button" class="btn acc" data-p9trial="1">Experimentar 7 dias grátis</button><small class="p9-fn">Sem cartão. Depois ${p9eur(P.m)}/mês, se quiseres continuar.</small>` : `<button type="button" class="btn ${k === 'elite' ? 'acc p9-gold' : 'acc'}" data-p9buy="${k}">Escolher ${P.n}</button>`}
+  </div>`;
+}
+function p9Render(need, ctx) {
+  const el = $('p9'); if (!el) return;
+  const hs = histStats(), c = p9Counts();
+  const why = ctx && ctx.g ? `<p class="p9-why">${P9LK}<span><b>${esc(ctx.g.casa)} – ${esc(ctx.g.fora)}</b> está no plano ${P9[need].n}.</span></p>` : ctx && ctx.pg ? `<p class="p9-why">${P9LK}<span>Esta secção faz parte do plano ${P9[need].n}.</span></p>` : '';
+  el.querySelector('.p9-bd2').innerHTML = `${why}
+    <div class="p9-trust"><div><b class="m">${hs.n ? pct(hs.rate) : '–'}</b><small>acerto real</small></div><div><b class="m">${hs.n}</b><small>apostas registadas</small></div><div><b class="m">${c.all}</b><small>apostas abertas</small></div></div>
+    <div class="p9-bill" role="group" aria-label="Faturação"><button type="button" data-p9bill="m" aria-pressed="${p9Bill === 'm'}">Mensal</button><button type="button" data-p9bill="a" aria-pressed="${p9Bill === 'a'}">Anual <em>−33%</em></button></div>
+    <div class="p9-cards">${['pro', 'elite', 'free'].map(p9Card).join('')}</div>
+    <div class="p9-av card"><div><b>★ Só a Tip Master de hoje</b><small>Compra única, sem subscrição. Risco alto: ganha cerca de 1 vez em 5.</small></div><button type="button" class="btn ghost" data-p9buy="tm">${p9eur(P9.tm)}</button></div>
+    <div class="p9-msg" id="p9Msg" hidden></div>
+    <details class="p9-q"><summary>Posso cancelar quando quiser?</summary><p>Sim. Sem fidelização: cancelas a qualquer momento e mantens o acesso até ao fim do período pago.</p></details>
+    <details class="p9-q"><summary>Garantem lucro?</summary><p>Não. Damos a probabilidade de cada aposta e mostramos todos os resultados, ganhos e perdidos. As apostas têm sempre risco.</p></details>
+    <details class="p9-q"><summary>Como vou pagar?</summary><p>Os pagamentos estão a ser ativados (cartão, MB WAY e Apple Pay / Google Pay). Até lá podes experimentar o PRO 7 dias grátis.</p></details>
+    <p class="p9-rg">18+ · Joga com responsabilidade · Linha 214 193 748</p>`;
+}
+function openPlans(need = 'pro', ctx) {
+  let el = $('p9');
+  if (!el) {
+    el = document.createElement('div'); el.id = 'p9'; el.className = 'i5 p9'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Planos ODDSLAB');
+    el.innerHTML = `<div class="i5-bk" data-p9x="1"></div><div class="i5-pn p9-pn"><header class="i5-hd"><div class="i5-ti">${I5L()}<div><b>Planos ODDSLAB</b><small>Cancela quando quiseres.</small></div></div><button type="button" class="i5-x" data-p9x="1" aria-label="Fechar">×</button></header><div class="i5-bd p9-bd2"></div></div>`;
+    document.body.appendChild(el);
+  }
+  el._need = need; el._ctx = ctx; p9Render(need, ctx);
+  el.hidden = false; el.classList.remove('out'); document.body.style.overflow = 'hidden'; el.querySelector('.p9-bd2').scrollTop = 0;
+  if (typeof closeSheet === 'function' && $('sheet') && !$('sheet').hidden) closeSheet();
+}
+function closePlans() { const el = $('p9'); if (!el || el.hidden) return; el.classList.add('out'); setTimeout(() => { el.hidden = true; el.classList.remove('out'); document.body.style.overflow = ''; }, 220); }
+function p9Refresh() { p9FreeSet = null; try { renderInicio(); } catch {} try { refresh(); } catch {} p9Chip(); }
+function p9Chip() {
+  const r = document.querySelector('header .hd-r'); if (!r) return;
+  let b = $('p9Hc'); const pl = p9Plan();
+  if ($('i6Hc')) { if (b) b.remove(); return; }
+  if (!b) { b = document.createElement('button'); b.type = 'button'; b.id = 'p9Hc'; b.dataset.p9open = 'pro'; r.insertBefore(b, r.querySelector('.hlp')); }
+  b.className = 'p9-hc ' + pl; b.innerHTML = pl === 'free' ? `${P9LK}<span>Desbloquear</span>` : `<span>${pl === 'elite' ? 'ELITE' : 'PRO'}</span>`;
+}
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-p9open],[data-p9x],[data-p9bill],[data-p9trial],[data-p9buy]'); if (!t) return;
+  if (t.dataset.p9open) { e.preventDefault(); return openPlans(t.dataset.p9open); }
+  if (t.dataset.p9x) return closePlans();
+  const el = $('p9');
+  if (t.dataset.p9bill) { p9Bill = t.dataset.p9bill; return p9Render(el._need, el._ctx); }
+  if (t.dataset.p9trial) { p9ls('p9Trial', String(Date.now() + P9.trialDays * 864e5)); p9ls('p9TrialUsed', '1'); buzz(20); closePlans(); p9Refresh(); toast('PRO ativo: 7 dias grátis'); return; }
+  if (t.dataset.p9buy) {
+    const k = t.dataset.p9buy, m = $('p9Msg'), lab = k === 'tm' ? 'a Tip Master de hoje' : 'o plano ' + P9[k].n + (p9Bill === 'a' ? ' anual' : ' mensal');
+    if (!m) return openPlans(k === 'tm' ? 'elite' : k);
+    m.hidden = false;
+    m.innerHTML = `<b>Os pagamentos ainda não estão ativos.</b><p>Para teres ${lab} já, fala connosco por mensagem e ativamos à mão.</p><div><a class="btn acc" href="${P9.ig}" target="_blank" rel="noopener">Enviar mensagem no Instagram</a>${!p9ls('p9TrialUsed') && p9Plan() === 'free' ? '<button type="button" class="btn ghost" data-p9trial="1">Experimentar o PRO 7 dias grátis</button>' : ''}</div>`;
+    m.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePlans(); });
+// Ajuda: atalho para os planos
+(function p9Init() {
+  const aj = $('pg-ajuda');
+  if (aj && !$('p9Aj')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'p9Aj'; b.className = 'i5-aj card p9-aj'; b.dataset.p9open = 'pro'; b.innerHTML = `<span class="p9-ci">${P9LK}</span><span><b>Planos e preços</b><small>Grátis, PRO ${p9eur(P9.pro.m)}/mês e ELITE ${p9eur(P9.elite.m)}/mês</small></span><em>›</em>`; const a = $('i5Aj'); if (a) a.after(b); else aj.prepend(b); }
+  p9Chip();
+  try { refresh(); } catch {}
+  setInterval(() => { if (p9ls('p9Trial') && !p9TrialLeft() && !p9ls('p9TrialEnd')) { p9ls('p9TrialEnd', '1'); p9Refresh(); } }, 60000);
 })();
 </script>
 
