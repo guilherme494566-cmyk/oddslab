@@ -18,7 +18,7 @@ async function emitir(plano, dias, info) {
   A._setPK((await CFG.load()).pk);
   const codigo = A._make(plano, plano === 'tm' ? 0 : dias), v = A._check(codigo);
   if (R.ok()) {
-    const cmds = [['HSET', 'code:' + codigo, 'plano', plano, 'dias', String(dias), 'nome', info.nome || '', 'contacto', info.email || '', 'valor', String(info.valor || 0), 'criado', String(Date.now()), 'expira', String(v.expira), 'tipo', 'stripe', 'sub', info.sub || '', 'sessao', info.sessao || '', 'renovacao', info.renov ? '1' : '0'], ['ZADD', 'codes', String(Date.now()), codigo]];
+    const cmds = [['HSET', 'code:' + codigo, 'plano', plano, 'dias', String(dias), 'nome', info.nome || '', 'contacto', info.email || '', 'valor', String(info.valor || 0), 'criado', String(Date.now()), 'expira', String(v.expira), 'tipo', info.tipo || 'stripe', 'sub', info.sub || '', 'sessao', info.sessao || '', 'renovacao', info.renov ? '1' : '0'], ['ZADD', 'codes', String(Date.now()), codigo]];
     if (info.uid) cmds.push(['SADD', 'cdev:' + codigo, info.uid], ['HSET', 'u:' + info.uid, 'codigo', codigo, 'planoPago', plano, 'expira', String(v.expira), 'nome', info.nome || '', 'email', info.email || '']);
     try { await R.pipe(cmds); } catch {}
   }
@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
       const s = await S.api('POST', '/checkout/sessions', {
         mode: P.int ? 'subscription' : 'payment', line_items: [{ price: M[b.k], quantity: 1 }], locale: 'pt', allow_promotion_codes: 'true',
         success_url: o + '/?pago={CHECKOUT_SESSION_ID}', cancel_url: o + '/?pagamento=cancelado', client_reference_id: uid || undefined,
-        metadata: { k: b.k, plano: P.plano, uid }, subscription_data: P.int ? { metadata: { k: b.k, plano: P.plano, uid } } : undefined,
+        metadata: { k: b.k, plano: P.plano, uid, trial: b.trial && P.int === 'year' ? '1' : '' }, subscription_data: P.int ? { metadata: { k: b.k, plano: P.plano, uid }, trial_period_days: b.trial && P.int === 'year' ? 7 : undefined } : undefined,
         customer_creation: P.int ? undefined : 'always',
       });
       return send(res, 200, { url: s.url });
@@ -62,16 +62,21 @@ module.exports = async (req, res) => {
       const k = (s.metadata && s.metadata.k) || 'pro_m', P = S.PLANOS[k] || S.PLANOS.pro_m, sub = s.subscription && typeof s.subscription === 'object' ? s.subscription : null;
       const dias = sub ? diasAte(fimPeriodo(sub)) : 0;
       const info = { nome: (s.customer_details && s.customer_details.name) || '', email: (s.customer_details && s.customer_details.email) || '', valor: (s.amount_total || 0) / 100, sub: sub ? sub.id : '', sessao: id, uid: uid || okUid(s.client_reference_id) };
+      const trial = sub && sub.status === 'trialing';
+      if (trial) { info.tipo = 'teste'; info.valor = 0; }
       const r = await emitir(P.plano, dias, info);
+      if (R.ok() && s.invoice) { try { await R.pipe([['SADD', 'faturas', typeof s.invoice === 'string' ? s.invoice : s.invoice.id]]); } catch {} }
       if (R.ok()) await R.pipe([['HSET', 'cs:' + id, 'codigo', r.codigo, 'plano', r.plano, 'expira', String(r.expira), 'sub', info.sub], ['EXPIRE', 'cs:' + id, String(400 * 86400)]]);
       return send(res, 200, { ...r, sub: info.sub });
     }
     if (q.acao === 'renovar') {
       const id = String(b.sub || ''); if (!/^sub_[A-Za-z0-9]+$/.test(id)) return send(res, 400, { erro: 'Subscrição inválida.' });
-      const sub = await S.api('GET', '/subscriptions/' + id);
+      const sub = await S.api('GET', '/subscriptions/' + id, { expand: ['latest_invoice', 'customer'] });
       if (!['active', 'trialing'].includes(sub.status)) return send(res, 402, { erro: 'A subscrição já não está ativa.', estado: sub.status });
       const k = (sub.metadata && sub.metadata.k) || 'pro_m', P = S.PLANOS[k] || S.PLANOS.pro_m;
-      const r = await emitir(P.plano, diasAte(fimPeriodo(sub)), { sub: id, uid, valor: 0, renov: true, nome: '', email: '' });
+      const inv = sub.latest_invoice && typeof sub.latest_invoice === 'object' ? sub.latest_invoice : null, cu = sub.customer && typeof sub.customer === 'object' ? sub.customer : {};
+      let nova = false; if (inv && inv.amount_paid > 0 && R.ok()) { try { const [a] = await R.pipe([['SADD', 'faturas', inv.id]]); nova = a === 1; } catch {} }
+      const r = await emitir(P.plano, diasAte(fimPeriodo(sub)), { sub: id, uid, valor: nova ? inv.amount_paid / 100 : 0, renov: !nova, nome: cu.name || '', email: cu.email || '', tipo: sub.status === 'trialing' ? 'teste' : 'stripe' });
       return send(res, 200, r);
     }
     if (q.acao === 'cancelar') {

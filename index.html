@@ -2364,6 +2364,7 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 @media (min-width: 1400px) { #multis.rows { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
 <style id="p9tr2css">.p9-c .btn.p9-tr2{padding:11px;font-size:14px;font-weight:700;margin-top:-2px}</style>
+<style id="p9ancss">.p9-annual{border:1px dashed rgb(34 229 132 / .45);background:rgb(34 229 132 / .07);color:var(--pos);border-radius:12px;padding:9px 10px;font-size:13px;font-weight:700;text-align:center}</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4743,7 +4744,7 @@ h3Card = function (x, k) {
     <h3 class="h3k-m">${esc(g.casa)}<span>vs</span>${esc(g.fora)}</h3>
     <div class="h3k-p"><small>A nossa aposta</small><strong class="p9-blur" aria-hidden="true">Vitória ${esc(g.casa)}</strong><b class="m">${P}%<small>odd mín. ••••</small></b><div class="h3k-bar" style="--p:${P}%"><i></i></div></div>
     <div class="p9-cta"><span class="p9-ci">${P9LK}</span><b>Aposta ${P9[need].n}</b><p>${need === 'elite' ? 'Este jogo está no plano ELITE, com a Tip Master de todos os dias.' : 'Desbloqueia esta e todas as apostas do dia com o PRO.'}</p>
-      <button type="button" class="btn acc" data-p9open="${need}">${need === 'pro' && !p9ls('p9TrialUsed') ? 'Experimentar 7 dias grátis' : 'Ver planos'}</button></div>
+      <button type="button" class="btn acc" data-p9open="${need}">${!p9ls('p9TrialUsed') ? 'Ver planos · 7 dias grátis no anual' : 'Ver planos'}</button></div>
   </article>`;
 };
 var _p9xb = h3Extra;
@@ -4767,7 +4768,7 @@ function p9Home() {
   const pl = p9Plan(), c = p9Counts(), tm = D.tipMaster, tmOk = tm && tm.inicio && T(tm.inicio) > Date.now();
   const tl = p9TrialLeft(), days = Math.ceil(tl / 864e5);
   let up = '';
-  if (pl === 'free') up = `<div class="p9-up card"><div class="p9-ut"><span class="p9-bd free">Grátis</span><b>Vês ${c.can} de ${c.all} apostas</b><small>O PRO desbloqueia ${p9Free().size ? 'todas as apostas do dia, ténis e múltiplas' : 'tudo'}.</small></div><div class="p9-ub"><i style="--w:${c.all ? (c.can / c.all) * 100 : 0}%"></i></div><button type="button" class="btn acc" data-p9open="pro">${p9ls('p9TrialUsed') ? 'Ver planos' : 'Experimentar o PRO 7 dias grátis'}</button></div>`;
+  if (pl === 'free') up = `<div class="p9-up card"><div class="p9-ut"><span class="p9-bd free">Grátis</span><b>Vês ${c.can} de ${c.all} apostas</b><small>O PRO desbloqueia ${p9Free().size ? 'todas as apostas do dia, ténis e múltiplas' : 'tudo'}.</small></div><div class="p9-ub"><i style="--w:${c.all ? (c.can / c.all) * 100 : 0}%"></i></div><button type="button" class="btn acc" data-p9open="pro">${p9ls('p9TrialUsed') ? 'Ver planos' : 'Ver planos · 7 dias grátis no anual'}</button></div>`;
   else if (tl && !p9ls('p9Plan')) up = `<div class="p9-up card p9-tr"><div class="p9-ut"><span class="p9-bd pro">PRO</span><b>Período grátis: falta${days > 1 ? 'm' : ''} ${days} dia${days > 1 ? 's' : ''}</b><small>Tens acesso a tudo do PRO.</small></div><button type="button" class="btn ghost" data-p9open="pro">Ver planos</button></div>`;
   const tmH = tmOk ? (pl === 'elite' ? `<button type="button" class="p9-tm card" data-open="${tm.id || ''}"><span class="p9-tk">★ Tip Master de hoje</span><b>${esc(tm.jogo)}</b><strong>${esc(tm.aposta)}</strong><span class="p9-tf"><span class="m">odd mín. ${odd(tm.oddMinima)}</span><span class="m">${pct(tm.prob)}</span><span>${hm(tm.inicio)}</span></span><small>Risco alto: ganha cerca de 1 vez em 5. Aposta pouco.</small></button>`
     : `<div class="p9-tm card p9-tml"><span class="p9-tk">★ Tip Master de hoje</span><b class="p9-blur" aria-hidden="true">${esc(tm.jogo)}</b><span class="p9-tf"><span class="m">odd mín. ${odd(tm.oddMinima)}</span><span class="m">${pct(tm.prob)}</span><span>às ${hm(tm.inicio)}</span></span><small>Uma aposta de odd alta por dia. Jogo e aposta só para quem a tem. Risco alto: ganha cerca de 1 vez em 5.</small><div class="p9-tb"><button type="button" class="btn acc" data-p9open="elite">Incluída no ELITE</button><button type="button" class="btn ghost" data-p9buy="tm">Só esta · ${p9eur(P9.tm)}</button></div></div>`) : '';
@@ -4782,13 +4783,14 @@ function p9Card(k) {
   if (k === 'free') return `<div class="p9-c${cur ? ' cur' : ''}"><div class="p9-ch"><b>Grátis</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div><p class="p9-pr"><b class="m">0 €</b></p><ul>
     <li>As 3 apostas mais fortes de cada dia</li><li>Resultados completos, ganhas e perdidas</li><li>Guia para quem nunca apostou</li></ul></div>`;
   const P = P9[k], price = an ? P.a : P.m, per = an ? '/ano' : '/mês', save = Math.round((1 - P.a / (P.m * 12)) * 100);
-  const trial = k === 'pro' && !p9ls('p9TrialUsed') && pl === 'free';
+  const trial = an && !p9ls('p9TrialUsed') && pl === 'free';
   const feats = k === 'pro' ? ['Todas as apostas do dia (mais de 15 por dia)', 'Ficha completa de cada jogo: estatísticas e outras apostas', 'Mais apostas entre 70% e 90%', 'Ténis com Elo', 'Múltiplas prontas e criador de múltiplas', 'Top 10, dados das ligas e agenda']
     : ['Tudo o que tem o PRO', 'Todos os jogos, incluindo os ELITE (o dobro dos jogos)', '★ Tip Master todos os dias (odd 5+)', 'Comparar odds: vê se a odd da tua casa compensa', 'Múltiplas de risco alto'];
   return `<div class="p9-c ${k}${cur ? ' cur' : ''}">${k === 'pro' ? '<span class="p9-rib">Mais escolhido</span>' : ''}<div class="p9-ch"><b>${P.n}</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div>
     <p class="p9-pr"><b class="m">${p9eur(price)}</b><small>${per}</small>${an ? `<em>${p9eur(P.a / 12)}/mês · poupas ${save}%</em>` : ''}</p>
     <ul>${feats.map((f) => `<li>${f}</li>`).join('')}</ul>
-    ${cur ? '' : trial ? `<button type="button" class="btn acc" data-p9buy="pro">Escolher PRO · ${p9eur(an ? P.a : P.m)}${an ? '/ano' : '/mês'}</button><button type="button" class="btn ghost p9-tr2" data-p9trial="1">ou experimenta 7 dias grátis, sem cartão</button>` : `<button type="button" class="btn ${k === 'elite' ? 'acc p9-gold' : 'acc'}" data-p9buy="${k}">Escolher ${P.n}</button>`}
+    ${!an && !cur && !p9ls('p9TrialUsed') && pl === 'free' ? '<button type="button" class="p9-annual" data-p9bill="a">🎁 No plano anual tens 7 dias grátis →</button>' : ''}
+    ${cur ? '' : trial ? `<button type="button" class="btn ${k === 'elite' ? 'acc p9-gold' : 'acc'}" data-p9buy="${k}" data-trial="1">Experimentar 7 dias grátis</button><small class="p9-fn">Pões o cartão no pagamento seguro do Stripe, mas só pagas a partir do 8.º dia (${p9eur(P.a)}/ano). Cancela antes e não pagas nada.</small>` : `<button type="button" class="btn ${k === 'elite' ? 'acc p9-gold' : 'acc'}" data-p9buy="${k}">Escolher ${P.n}</button>`}
   </div>`;
 }
 function p9Render(need, ctx) {
@@ -4803,7 +4805,7 @@ function p9Render(need, ctx) {
     <div class="p9-msg" id="p9Msg" hidden></div>
     <details class="p9-q"><summary>Posso cancelar quando quiser?</summary><p>Sim. Sem fidelização: cancelas a qualquer momento e mantens o acesso até ao fim do período pago.</p></details>
     <details class="p9-q"><summary>Garantem lucro?</summary><p>Não. Damos a probabilidade de cada aposta e mostramos todos os resultados, ganhos e perdidos. As apostas têm sempre risco.</p></details>
-    <details class="p9-q"><summary>Como vou pagar?</summary><p>Os pagamentos estão a ser ativados (cartão, MB WAY e Apple Pay / Google Pay). Até lá podes experimentar o PRO 7 dias grátis.</p></details>
+    <details class="p9-q"><summary>Como vou pagar?</summary><p>Os pagamentos estão a ser ativados (cartão, MB WAY e Apple Pay / Google Pay). </p></details>
     <p class="p9-rg">18+ · Joga com responsabilidade · Linha 214 193 748</p>`;
 }
 function openPlans(need = 'pro', ctx) {
@@ -4837,7 +4839,7 @@ document.addEventListener('click', (e) => {
     const k = t.dataset.p9buy, m = $('p9Msg'), lab = k === 'tm' ? 'a Tip Master de hoje' : 'o plano ' + P9[k].n + (p9Bill === 'a' ? ' anual' : ' mensal');
     if (!m) return openPlans(k === 'tm' ? 'elite' : k);
     m.hidden = false;
-    m.innerHTML = `<b>Os pagamentos ainda não estão ativos.</b><p>Para teres ${lab} já, fala connosco por mensagem e ativamos à mão.</p><div><a class="btn acc" href="${P9.ig}" target="_blank" rel="noopener">Enviar mensagem no Instagram</a>${!p9ls('p9TrialUsed') && p9Plan() === 'free' ? '<button type="button" class="btn ghost" data-p9trial="1">Experimentar o PRO 7 dias grátis</button>' : ''}</div>`;
+    m.innerHTML = `<b>Os pagamentos ainda não estão ativos.</b><p>Para teres ${lab} já, fala connosco por mensagem e ativamos à mão.</p><div><a class="btn acc" href="${P9.ig}" target="_blank" rel="noopener">Enviar mensagem no Instagram</a></div>`;
     m.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 });
@@ -4996,7 +4998,7 @@ h3Card = function (x, k) {
   return `<article class="h3k p9-lk r2" data-k="${k}">
     ${r2Tip(g, a, P, true)}
     <div class="p9-cta"><span class="p9-ci">${P9LK}</span><b>Aposta ${P9[need].n}</b><p>${need === 'elite' ? 'Este jogo está no plano ELITE, com a Tip Master de todos os dias.' : 'Desbloqueia esta e todas as apostas do dia com o PRO.'}</p>
-      <button type="button" class="btn acc" data-p9open="${need}">${need === 'pro' && !p9ls('p9TrialUsed') ? 'Experimentar 7 dias grátis' : 'Ver planos'}</button></div>
+      <button type="button" class="btn acc" data-p9open="${need}">${!p9ls('p9TrialUsed') ? 'Ver planos · 7 dias grátis no anual' : 'Ver planos'}</button></div>
     <div class="r2-dt"><span>Detalhes do jogo</span></div>
     <header class="h3k-h"><span>${flag(g.pais)}${esc(g.liga)}</span><span>${h3When(g)}</span></header>
     <h3 class="h3k-m">${esc(g.casa)}<span>vs</span>${esc(g.fora)}</h3>
@@ -5126,7 +5128,7 @@ window.addEventListener('click', async (e) => {
   const k = b.dataset.p9buy === 'tm' ? 'tm' : b.dataset.p9buy + (p9Bill === 'a' ? '_a' : '_m');
   const old = b.innerHTML; b.disabled = true; b.innerHTML = 'A abrir o pagamento…';
   try { q2 && q2('comprar', { plano: b.dataset.p9buy, faturacao: p9Bill === 'a' ? 'anual' : 'mensal' }); q2Flush && q2Flush(); } catch {}
-  try { const j = await stPost('sessao', { k, uid: stUid() }); location.href = j.url; }
+  try { const j = await stPost('sessao', { k, uid: stUid(), trial: b.dataset.trial === '1' }); location.href = j.url; }
   catch (err) { b.disabled = false; b.innerHTML = old; toast(err.message); }
 }, true);
 // regresso do Stripe
@@ -5140,7 +5142,7 @@ window.addEventListener('click', async (e) => {
   if (canc) { toast('Pagamento cancelado. Não foste cobrado.'); return; }
   toast('A confirmar o pagamento…');
   for (let i = 0; i < 4; i++) {
-    try { const j = await stPost('confirmar', { s, uid: stUid() }); await stGuardar(j); toast(j.plano === 'tm' ? '★ Tip Master de hoje desbloqueada' : `Obrigado! ${j.plano === 'elite' ? 'ELITE' : 'PRO'} ativo`); return; }
+    try { const j = await stPost('confirmar', { s, uid: stUid() }); await stGuardar(j); try { localStorage.setItem('olTesteUsado', '1'); p9ls('p9TrialUsed', '1'); } catch {} toast(j.plano === 'tm' ? '★ Tip Master de hoje desbloqueada' : `Obrigado! ${j.plano === 'elite' ? 'ELITE' : 'PRO'} ativo`); return; }
     catch (err) { if (!(err.j && /concluído/.test(err.j.erro || ''))) { toast(err.message); return; } await new Promise((r) => setTimeout(r, 2500)); }
   }
   toast('O pagamento ainda está a ser processado. Abre a app daqui a um minuto.');
