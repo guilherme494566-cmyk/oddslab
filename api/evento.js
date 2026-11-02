@@ -18,6 +18,7 @@ module.exports = async (req, res) => {
       const t = Math.min(now, Math.max(now - 7 * 864e5, Number(e.t) || now));
       return { t, k: e.k, d };
     });
+    const [dn] = await R.pipe([['HGET', 'u:' + uid, 'dono']]); if (dn === '1') return end(204);
     const pais = clip(req.headers['x-vercel-ip-country'] || '', 4), cidade = clip(decodeURIComponent(req.headers['x-vercel-ip-city'] || ''), 40);
     const cmds = [
       ['HSETNX', 'u:' + uid, 'first', String(now)],

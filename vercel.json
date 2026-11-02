@@ -23,6 +23,9 @@
     },
     "api/configurar.js": {
       "includeFiles": "{data/**,tools/**}"
+    },
+    "api/pagar.js": {
+      "includeFiles": "{data/**,tools/**}"
     }
   }
 }

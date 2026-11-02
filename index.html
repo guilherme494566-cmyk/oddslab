@@ -2347,6 +2347,7 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 .r3-done { font-size: 13px; font-weight: 800; color: var(--pos); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .r3 *, .r3 { animation: none !important; } .r3-s2 { opacity: 0; } }
 </style>
+<style id="stcss">.st-test{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:rgb(111 179 255 / .12);border:1px solid rgb(111 179 255 / .35);color:#9cc9ff;font-size:12.5px}</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4991,7 +4992,7 @@ try { renderDeck(); } catch {}
 var Q2 = { q: [], t: 0, on: !q1Inside() && /^https?:$/.test(location.protocol) };
 function q2Uid() { let u = null; try { u = localStorage.getItem('olUid'); if (!u || !/^u_[a-z0-9]{8,16}$/.test(u)) { u = 'u_' + Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => (b % 36).toString(36)).join('') + Date.now().toString(36).slice(-4); localStorage.setItem('olUid', u); } } catch { u = null; } return u; }
 function q2Info() { const a = q1Acc(); return { plat: i5Plat(), std: i5Std(), plano: a ? a.plano : 'free', ecra: innerWidth + 'x' + innerHeight }; }
-function q2(k, d) { if (!Q2.on || q2Dono()) return; Q2.q.push({ t: Date.now(), k, d: d || {} }); clearTimeout(Q2.t); Q2.t = setTimeout(q2Flush, Q2.q.length > 20 ? 0 : 4000); }
+function q2(k, d) { if (!Q2.on || q2Dono() || (function () { try { return localStorage.getItem('olOwner') === '1'; } catch { return false; } })()) return; Q2.q.push({ t: Date.now(), k, d: d || {} }); clearTimeout(Q2.t); Q2.t = setTimeout(q2Flush, Q2.q.length > 20 ? 0 : 4000); }
 function q2Flush(beacon) {
   if (!Q2.on || !Q2.q.length) return; const uid = q2Uid(); if (!uid) return;
   const ev = Q2.q.splice(0, 60), body = JSON.stringify({ uid, info: q2Info(), ev });
@@ -5090,6 +5091,78 @@ document.addEventListener('click', (e) => {
     else toast((j && j.erro) || 'Não foi possível ativar o código.');
   });
 })();
+
+// ===== Stripe na app: pagar, confirmar no regresso, renovar e cancelar =====
+var ST = { ativo: null, teste: false };
+function stUid() { try { return (typeof q2Uid === 'function' && q2Uid()) || ''; } catch { return ''; } }
+async function stEstado() { if (ST.ativo !== null || q1Inside()) return ST.ativo; try { const j = await (await fetch('/api/pagar?acao=estado', { cache: 'no-store' })).json(); ST.ativo = !!j.ativo; ST.teste = !!j.teste; } catch { ST.ativo = false; } return ST.ativo; }
+async function stPost(acao, body) { const r = await fetch('/api/pagar?acao=' + acao, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); const j = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(j.erro || 'Erro ' + r.status), { j }); return j; }
+async function stGuardar(j) {
+  try { localStorage.setItem(Q1.key, JSON.stringify({ c: j.codigo, plano: j.plano, exp: j.expira, sub: j.sub || '', teste: false })); localStorage.removeItem('olCancel'); } catch {}
+  await q1Fetch(j.codigo, true); p9Chip(); try { renderInicio(); } catch {}
+}
+// botões de comprar: vão para o Stripe quando está ligado
+window.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-p9buy]'); if (!b || b.dataset.stSkip) return;
+  if (ST.ativo === false) return; // sem Stripe: fica a mensagem antiga (Instagram)
+  e.stopImmediatePropagation(); e.preventDefault();
+  if (!(await stEstado())) { b.dataset.stSkip = '1'; b.click(); delete b.dataset.stSkip; return; }
+  const k = b.dataset.p9buy === 'tm' ? 'tm' : b.dataset.p9buy + (p9Bill === 'a' ? '_a' : '_m');
+  const old = b.innerHTML; b.disabled = true; b.innerHTML = 'A abrir o pagamento…';
+  try { q2 && q2('comprar', { plano: b.dataset.p9buy, faturacao: p9Bill === 'a' ? 'anual' : 'mensal' }); q2Flush && q2Flush(); } catch {}
+  try { const j = await stPost('sessao', { k, uid: stUid() }); location.href = j.url; }
+  catch (err) { b.disabled = false; b.innerHTML = old; toast(err.message); }
+}, true);
+// regresso do Stripe
+(async function stRegresso() {
+  let q; try { q = new URLSearchParams(location.search); } catch { return; }
+  const s = q.get('pago'), canc = q.get('pagamento');
+  if (!s && !canc) return;
+  try { history.replaceState(null, '', location.pathname); } catch {}
+  const it = $('intro'); if (it && !it.hidden) { it.hidden = true; document.body.style.overflow = ''; }
+  try { sessionStorage.setItem('i6Shown', '1'); } catch {}
+  if (canc) { toast('Pagamento cancelado. Não foste cobrado.'); return; }
+  toast('A confirmar o pagamento…');
+  for (let i = 0; i < 4; i++) {
+    try { const j = await stPost('confirmar', { s, uid: stUid() }); await stGuardar(j); toast(j.plano === 'tm' ? '★ Tip Master de hoje desbloqueada' : `Obrigado! ${j.plano === 'elite' ? 'ELITE' : 'PRO'} ativo`); return; }
+    catch (err) { if (!(err.j && /concluído/.test(err.j.erro || ''))) { toast(err.message); return; } await new Promise((r) => setTimeout(r, 2500)); }
+  }
+  toast('O pagamento ainda está a ser processado. Abre a app daqui a um minuto.');
+})();
+// renovação automática do acesso enquanto a subscrição estiver ativa
+(async function stRenovar() {
+  const a = q1Acc() || (function () { try { return JSON.parse(localStorage.getItem(Q1.key) || 'null'); } catch { return null; } })();
+  if (!a || !a.sub || q1Inside()) return;
+  if (a.exp - Date.now() > 2 * 864e5) return;
+  try { const j = await stPost('renovar', { sub: a.sub, uid: stUid() }); await stGuardar({ ...j, sub: a.sub }); }
+  catch (err) { if (err.j && err.j.estado) { try { localStorage.removeItem(Q1.key); } catch {} } }
+})();
+// cancelar: também cancela a renovação no Stripe
+window.addEventListener('click', (e) => {
+  if (!e.target.closest('[data-r3cancel]')) return;
+  const a = q1Acc(); if (!a || !a.sub) return;
+  stPost('cancelar', { sub: a.sub }).catch((err) => toast('Não foi possível cancelar no Stripe: ' + err.message));
+}, true);
+// q1Fetch guarda o código mas perde o "sub": repõe-o
+var _stq1 = q1Fetch;
+q1Fetch = async function (code, silent) {
+  let sub = ''; try { const a = JSON.parse(localStorage.getItem(Q1.key) || 'null'); if (a && a.c === code) sub = a.sub || ''; } catch {}
+  const j = await _stq1(code, silent);
+  if (sub) { try { const a = JSON.parse(localStorage.getItem(Q1.key) || 'null'); if (a && a.c === code && !a.sub) { a.sub = sub; localStorage.setItem(Q1.key, JSON.stringify(a)); } } catch {} }
+  return j;
+};
+// textos dos planos quando o Stripe está ligado
+var _stpr = p9Render;
+p9Render = function (need, ctx) {
+  _stpr(need, ctx);
+  if (ST.ativo === null) { stEstado().then((on) => { if (on && document.querySelector('#p9:not([hidden])')) p9Render(need, ctx); }); return; }
+  if (!ST.ativo) return;
+  const bd = document.querySelector('#p9 .p9-bd2'); if (!bd) return;
+  const q = [...bd.querySelectorAll('.p9-q')].find((d) => /Como vou pagar/i.test(d.textContent)); if (q) q.querySelector('p').textContent = 'Pagas no Stripe, com cartão, Apple Pay, Google Pay ou MB WAY (conforme o plano). O acesso ativa-se logo a seguir ao pagamento, neste aparelho.';
+  if (ST.teste && !bd.querySelector('.st-test')) bd.insertAdjacentHTML('afterbegin', '<p class="st-test">🧪 Pagamentos em modo de teste: ninguém é cobrado.</p>');
+};
+
+stEstado();
 </script>
 
 </body></html>

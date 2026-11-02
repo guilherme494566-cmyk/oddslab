@@ -163,7 +163,7 @@ function login() {
 }
 function shell() {
   $('#app').innerHTML = `<header class="top"><div class="bar"><img src="/apple-touch-icon.png" alt=""><b>ODDS<span>LAB</span></b><span class="tag">DONO</span><span class="sp"></span><a href="/">Abrir app</a><button class="lk" id="pwB">Palavra-passe</button><button class="lk" id="out">Sair</button></div>
-    <nav class="tabs" role="tablist">${[['resumo', 'Resumo'], ['users', 'Utilizadores'], ['vendas', 'Vendas'], ['feed', 'Atividade'], ['criar', '+ Criar código']].map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${TAB === k}">${l}</button>`).join('')}</nav></header>
+    <nav class="tabs" role="tablist">${[['resumo', 'Resumo'], ['users', 'Utilizadores'], ['vendas', 'Vendas'], ['feed', 'Atividade'], ['stripe', 'Stripe'], ['criar', '+ Criar código']].map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${TAB === k}">${l}</button>`).join('')}</nav></header>
     <main id="main"><div class="empty">A carregar…</div></main>
     <button class="fab" id="fab" data-tab="criar">+ Criar código</button>
     <div class="drawer" id="dr" hidden><div class="bk" data-x></div><div class="pn" id="drp"></div></div>`;
@@ -172,7 +172,9 @@ function shell() {
       <div class="card" style="margin-top:14px"><label>Nova palavra-passe (mínimo 6 caracteres)</label><input class="f" id="np1" type="password" autocomplete="new-password"><label>Repete a nova palavra-passe</label><input class="f" id="np2" type="password" autocomplete="new-password"><button class="go" id="npGo">Guardar</button><p class="err" id="npEr"></p></div>`;
     $('#npGo').onclick = async () => { const a = $('#np1').value, b = $('#np2').value; $('#npEr').textContent = ''; if (a.length < 6) return ($('#npEr').textContent = 'Mínimo 6 caracteres.'); if (a !== b) return ($('#npEr').textContent = 'As palavras-passe não são iguais.'); $('#npGo').disabled = true; try { await api('senha', { body: { nova: a } }); PW = a; try { sessionStorage.setItem('olAdm', a); } catch {} $('#drp').querySelector('.card').innerHTML = '<p style="color:var(--pos);font-weight:700;margin:0">✓ Palavra-passe mudada. Usa a nova da próxima vez que entrares.</p>'; } catch (e) { $('#npEr').textContent = e.message; $('#npGo').disabled = false; } }; };
 }
-function render() { if (!PW && !DONO) return login(); if (!$('#main')) shell(); const fb = $('#fab'); if (fb) fb.hidden = TAB === 'criar'; document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar })[TAB](); }
+let EU_OK = false;
+function markMe() { if (EU_OK) return; EU_OK = true; let id = ''; try { id = localStorage.getItem('olUid') || ''; localStorage.setItem('olOwner', '1'); } catch {} api('eu', { body: { id } }).catch(() => {}); }
+function render() { if (!PW && !DONO) return login(); markMe(); if (!$('#main')) shell(); const fb = $('#fab'); if (fb) fb.hidden = TAB === 'criar'; document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar, stripe })[TAB](); }
 function setupNote(e) { return `<div class="note"><b>${esc(e.message)}</b>${e.j && e.j.semBase ? `<ol><li>Na Vercel, abre o projeto oddslab → <b>Storage</b> → <b>Create Database</b> → <b>Upstash for Redis</b> (plano grátis).</li><li>Liga-a ao projeto oddslab (Connect).</li><li>Em Deployments, faz <b>Redeploy</b>.</li></ol><p style="margin:8px 0 0;color:var(--muted)">Os códigos continuam a funcionar sem isto; só os registos e o painel precisam da base de dados.</p>` : ''}</div>`; }
 async function resumo() {
   const M = $('#main');
@@ -232,7 +234,7 @@ async function vendas() {
   try {
     const C = (await api('codigos')).codigos, now = Date.now();
     const V = C.filter((c) => VT || (c.tipo !== 'teste'));
-    const pg = C.filter((c) => c.tipo === 'venda');
+    const pg = C.filter((c) => c.tipo === 'venda' || (c.tipo === 'stripe' && c.renovacao !== '1'));
     M.innerHTML = `<div class="kpis"><div class="kpi a"><span>Receita</span><b class="m">${eur(pg.reduce((t, c) => t + (Number(c.valor) || 0), 0))}</b><small>${pg.length} vendas</small></div><div class="kpi g"><span>Ativas</span><b class="m">${pg.filter((c) => Number(c.expira) > now).length}</b><small>por expirar</small></div><div class="kpi"><span>Expiram em 7 dias</span><b class="m">${pg.filter((c) => Number(c.expira) > now && Number(c.expira) - now < 7 * 864e5).length}</b><small>lembra-te de renovar</small></div><div class="kpi"><span>Testes grátis</span><b class="m">${C.filter((c) => c.tipo === 'teste').length}</b><small>${C.filter((c) => c.tipo === 'teste' && (c.aparelhos || []).length).length} usados</small></div></div>
     <h2>Códigos <small><label style="display:inline;font-size:12px"><input type="checkbox" id="vt" ${VT ? 'checked' : ''}> mostrar testes grátis</label></small></h2>
     <div class="card scroll">${V.length ? `<table class="t"><thead><tr><th>Cliente</th><th>Plano</th><th>Valor</th><th>Criado</th><th>Expira</th><th>Aparelhos</th><th>Código</th></tr></thead><tbody>${V.map((c) => { const exp = Number(c.expira) <= now; const k = c.tipo === 'teste' ? 'teste' : c.plano; return `<tr><td><b>${esc(c.nome || (c.tipo === 'teste' ? 'Teste grátis' : '—'))}</b>${c.cancelado ? ' <span class="bd exp">cancelou</span>' : ''}<br><small style="color:var(--faint)">${esc(c.contacto || '')}</small></td><td><span class="bd ${exp ? 'exp' : k}">${exp ? 'expirado' : k}</span></td><td class="m">${eur(c.valor)}</td><td>${dd(c.criado)}</td><td>${c.plano === 'tm' ? 'fim do dia' : dd(c.expira)}</td><td>${(c.aparelhos || []).map((a) => `<a href="#" data-u="${a}" style="color:var(--acc2)">${a.slice(2, 8)}</a>`).join(' ') || '<small style="color:var(--faint)">por ativar</small>'}</td><td class="m" style="font-size:11.5px">${esc(c.codigo)}</td></tr>`; }).join('')}</tbody></table>` : '<div class="empty">Ainda não criaste códigos. Usa o separador "Criar código" depois de receberes um pagamento.</div>'}</div>`;
@@ -247,6 +249,20 @@ async function feed() {
     M.innerHTML = `<h2>Atividade em direto <small>atualiza a cada 20 s</small></h2><div class="card feed">${E.map((e) => { const [ic, t, s] = evTxt(e), q = e.quem || {}; return `<div class="ev"><time>${ago(e.t)}</time><span><span class="who" data-u="${e.u}">${esc(q.nome || 'Anónimo ' + e.u.slice(2, 8))}</span> ${q.plano && q.plano !== 'free' ? `<span class="bd ${q.plano}">${q.plano}</span>` : ''} <span class="ico">${ic}</span> ${esc(t)}${s ? ` <small>· ${esc(s)}</small>` : ''}</span></div>`; }).join('') || '<div class="empty">Ainda sem atividade.</div>'}</div>`;
     FT = setTimeout(() => TAB === 'feed' && feed(), 20000);
   } catch (e) { if (e.message !== '401') M.innerHTML = setupNote(e); }
+}
+
+async function stripe() {
+  const M = $('#main');
+  let st = {}; try { st = await api('stripe'); } catch (e) { if (e.message === '401') return; M.innerHTML = setupNote(e); return; }
+  const P = { pro_m: 'PRO mensal · 4,99 €', pro_a: 'PRO anual · 39,99 €', elite_m: 'ELITE mensal · 14,99 €', elite_a: 'ELITE anual · 119,99 €', tm: 'Tip Master · 4,99 €' };
+  M.innerHTML = `<h2>Pagamentos com Stripe</h2>
+    ${st.ativo ? `<div class="card" style="border-color:rgb(34 229 132 / .4)"><b style="color:var(--pos)">✓ Stripe ligado${st.conta ? ' · ' + esc(st.conta) : ''}</b><p style="margin:6px 0 0;color:var(--muted);font-size:13.5px">${st.teste ? '🧪 Modo de TESTE: ninguém é cobrado. Paga com o cartão 4242 4242 4242 4242, qualquer data futura e qualquer CVC.' : '💶 Modo REAL: os pagamentos são cobrados.'} Chave terminada em …${esc(st.fim || '')}.</p>
+      <div style="margin-top:10px;display:grid;gap:4px;font-size:13.5px">${Object.entries(P).map(([k, l]) => `<div>${st.precos && st.precos[k] ? '✅' : '⏳'} ${l}</div>`).join('')}</div></div>` : '<div class="note">Ainda não está ligado. Cola a chave secreta do Stripe aqui em baixo: eu crio os produtos e os preços sozinho.</div>'}
+    <div class="card" style="margin-top:12px"><label for="sk">${st.ativo ? 'Trocar a chave (por exemplo, de teste para real)' : 'Chave secreta do Stripe'}</label>
+      <input class="f" id="sk" placeholder="sk_test_… ou sk_live_…" autocomplete="off" spellcheck="false" style="font-family:var(--mono)">
+      <button class="go" id="skGo">Ligar o Stripe</button><p class="err" id="skEr"></p>
+      <p style="font-size:12.5px;color:var(--faint);margin:6px 0 0">Onde a encontras: no Stripe, Programadores → Chaves de API → Chave secreta → Revelar. Começa pela de teste (sk_test_) para experimentar sem cobranças.</p></div>`;
+  $('#skGo').onclick = async () => { const v = $('#sk').value.trim(); if (!v) return; $('#skGo').disabled = true; $('#skEr').textContent = ''; try { await api('stripe', { body: { chave: v } }); stripe(); } catch (e) { $('#skEr').textContent = e.message; $('#skGo').disabled = false; } };
 }
 let CP = 'pro', CD = 31;
 function criar() {

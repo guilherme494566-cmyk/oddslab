@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
     }
     const v = check(q.c); if (v.erro) return send(res, 401, v);
     const uid = /^u_[a-z0-9]{8,16}$/.test(q.u || '') ? q.u : '';
-    if (uid && R.ok()) { try { const code = 'OL-' + String(q.c).toUpperCase().replace(/^OL-?/, '').replace(/[^0-9A-Z]/g, '').match(/.{1,4}/g).join('-'); const r = await R.pipe([['HGET', 'code:' + code, 'nome'], ['SADD', 'cdev:' + code, uid], ['HSET', 'code:' + code, 'ultimo', String(Date.now())], ['HSET', 'u:' + uid, 'codigo', code, 'planoPago', v.plano, 'expira', String(v.expira), 'dono', v.plano === 'dono' ? '1' : '0']]); if (r[0]) await R.pipe([['HSETNX', 'u:' + uid, 'nome', r[0]]]); } catch {} }
+    if (uid && R.ok()) { try { const code = 'OL-' + String(q.c).toUpperCase().replace(/^OL-?/, '').replace(/[^0-9A-Z]/g, '').match(/.{1,4}/g).join('-'); const r = await R.pipe([['HGET', 'code:' + code, 'nome'], ['SADD', 'cdev:' + code, uid], ['HSET', 'code:' + code, 'ultimo', String(Date.now())], ['HSET', 'u:' + uid, 'codigo', code, 'planoPago', v.plano, 'expira', String(v.expira), 'dono', v.plano === 'dono' ? '1' : '0']]); if (r[0]) await R.pipe([['HSETNX', 'u:' + uid, 'nome', r[0]]]); if (v.plano === 'dono') await R.pipe([['ZREM', 'users', uid], ['DEL', 'ev:' + uid]]); } catch {} }
     return send(res, 200, { ...v, dados: paraPlano(dados(), v.plano, Date.now()) });
   } catch (e) { return send(res, 500, { erro: 'Erro no servidor.' }); }
 };
