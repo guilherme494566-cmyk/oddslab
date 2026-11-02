@@ -74,7 +74,7 @@ module.exports = async (req, res) => {
       }
       const sk = await ST.key(); if (!sk) return send(res, 200, { ativo: false });
       const [nm] = await R.pipe([['HGET', 'cfg', 'stripeConta']]);
-      let precos = {}; try { precos = await ST.precos(sk); } catch {}
+      let precos = {}; try { precos = await ST.criarProdutos(sk); } catch (e) { precos = { erro: e.message }; }
       return send(res, 200, { ativo: true, teste: sk.includes('_test_'), conta: nm || '', precos, fim: sk.slice(-4) });
     }
     if (q.acao === 'eu' && req.method === 'POST') {
