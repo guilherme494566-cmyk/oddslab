@@ -2348,6 +2348,21 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 @media (prefers-reduced-motion: reduce) { .r3 *, .r3 { animation: none !important; } .r3-s2 { opacity: 0; } }
 </style>
 <style id="stcss">.st-test{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:rgb(111 179 255 / .12);border:1px solid rgb(111 179 255 / .35);color:#9cc9ff;font-size:12.5px}</style>
+<style id="m2css">
+#multis.rows, #custom .rows { display: grid; gap: 12px; }
+.h3k.m2 { padding: 16px; }
+.h3k.m2 .r2-tip strong { font-size: 19px; }
+.h3k.m2 .r2-tip > b { font-size: 28px; color: var(--acc2); }
+.h3k.m2.cus { border-color: rgb(245 190 60 / .5); }
+.m2-legs { display: grid; gap: 6px; }
+.m2-leg { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; width: 100%; padding: 9px 10px; border-radius: 12px; border: 1px solid var(--bd); background: none; text-align: left; }
+.m2-leg:active, .m2-leg:hover { background: var(--s2); }
+.m2-n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--s3); color: var(--muted); font-size: 12px; font-weight: 700; }
+.m2-t { min-width: 0; display: grid; gap: 1px; } .m2-t b { font-size: 14px; font-weight: 700; } .m2-t small { font-size: 12px; color: var(--faint); display: flex; align-items: center; gap: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.m2-p { display: grid; justify-items: end; gap: 1px; } .m2-p b { font-size: 14px; color: var(--pos); } .m2-p small { font-size: 11.5px; color: var(--muted); }
+@media (min-width: 1024px) { #multis.rows { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; } }
+@media (min-width: 1400px) { #multis.rows { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -5163,6 +5178,24 @@ p9Render = function (need, ctx) {
 };
 
 stEstado();
+
+// ===== Múltiplas com o mesmo design das apostas do dia =====
+multiCard = function (m, key, i, cus) {
+  const p = m.pernas.reduce((t, x) => t * x.prob, 1), P = Math.round(p * 100), n = m.pernas.length;
+  const tag = cus ? (m.soN ? `${n} jogos à tua medida` : `Odd alvo ${odd(m.alvo)}`) : 'Múltipla pronta';
+  const last = m.pernas.reduce((a, x) => (x.inicio > a ? x.inicio : a), m.pernas[0].inicio), first = m.pernas.reduce((a, x) => (x.inicio < a ? x.inicio : a), m.pernas[0].inicio);
+  const when = (iso) => (dayKey(new Date(iso)) === today ? 'Hoje' : dayKey(new Date(iso)) === tomorrow ? 'Amanhã' : cap(dayLabel(iso).split(',')[0])) + ' ' + hm(iso);
+  return `<article class="h3k r2 m2${cus ? ' cus' : ''}" style="--i:${i}">
+    <div class="h3k-p r2-tip"><small>${esc(tag)}</small><strong>${esc(m.titulo)}</strong><b class="m">${odd(1 / p)}<small>odd total · ${P}%</small></b><div class="h3k-bar" style="--p:${Math.max(P, 3)}%"><i></i></div>
+      <span class="r2-gm">${n} ${n > 1 ? 'jogos' : 'jogo'} · ${when(first)}${first !== last ? ' a ' + when(last) : ''}</span></div>
+    <p class="h3k-ex">Ganhas se ${n > 1 ? `as ${n} apostas entrarem` : 'a aposta entrar'}. Uma que falhe e perdes a múltipla.</p>
+    <footer class="h3k-a">${bcLink(`data-bcm="${key}"`, 'Copiar múltipla')}${cus ? '<button type="button" class="btn ghost" id="tAgain">Outra opção</button>' : `<button type="button" class="btn ghost" data-m2open="${esc(m.pernas[0].jogo || '')}">Ver 1.º jogo</button>`}</footer>
+    <div class="r2-dt"><span>As apostas</span></div>
+    <div class="m2-legs">${m.pernas.map((x, j) => `<button type="button" class="m2-leg" ${x.jogo ? `data-open="${esc(x.jogo)}"` : ''}><span class="m2-n m">${j + 1}</span><span class="m2-t"><b>${esc(x.aposta)}</b><small>${x.pais ? flag(x.pais) : ''}${esc(x.texto)} · ${when(x.inicio)}</small></span><span class="m2-p"><b class="m">${pct(x.prob)}</b><small class="m">${odd(1 / x.prob)}</small></span></button>`).join('')}</div>
+  </article>`;
+};
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-m2open]'); if (b && b.dataset.m2open) openGame(b.dataset.m2open); });
+try { if (!$('pg-mult').hidden) renderMult(); } catch {}
 </script>
 
 </body></html>
