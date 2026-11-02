@@ -2365,6 +2365,17 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 </style>
 <style id="p9tr2css">.p9-c .btn.p9-tr2{padding:11px;font-size:14px;font-weight:700;margin-top:-2px}</style>
 <style id="p9ancss">.p9-annual{border:1px dashed rgb(34 229 132 / .45);background:rgb(34 229 132 / .07);color:var(--pos);border-radius:12px;padding:9px 10px;font-size:13px;font-weight:700;text-align:center}</style>
+<style id="lgcss">
+.lg-bar { position: fixed; left: 10px; right: 10px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 32; max-width: 460px; margin: 0 auto; display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 12px; border-radius: 14px; background: rgb(17 19 23 / .96); border: 1px solid var(--bd2); box-shadow: 0 10px 30px -12px #000; font-size: 12px; color: var(--muted); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: x3In .4s both; }
+body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
+.lg-bar span { flex: 1; line-height: 1.35; } .lg-bar a { color: var(--muted); text-decoration: underline; }
+.lg-bar button { flex: none; border: 1px solid var(--bd2); background: none; color: var(--muted); font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 9px; }
+.lg-bar button.ok { color: var(--text); background: var(--s3); }
+@media (min-width: 900px) and (hover: hover) { .lg-bar { left: 24px; right: auto; bottom: 24px; } body.i7-on .lg-bar { bottom: 24px; } }
+.lg-pl { margin: 12px 2px 0; font-size: 11px; line-height: 1.45; color: var(--faint); text-align: center; } .lg-pl a { color: var(--faint); text-decoration: underline; }
+.q2-priv a, .lg-x { color: var(--faint); text-decoration: underline; }
+.lg-sw { border: 0; background: none; padding: 0; color: var(--faint); text-decoration: underline; font-size: inherit; }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -5199,6 +5210,40 @@ multiCard = function (m, key, i, cus) {
 };
 document.addEventListener('click', (e) => { const b = e.target.closest('[data-m2open]'); if (b && b.dataset.m2open) openGame(b.dataset.m2open); });
 try { if (!$('pg-mult').hidden) renderMult(); } catch {}
+
+// ===== Termos, privacidade e consentimento discreto =====
+function lgC() { try { return localStorage.getItem('olConsent') || ''; } catch { return ''; } }
+var _lgq2 = q2; q2 = function (k, d) { if (lgC() !== 'sim') return; return _lgq2(k, d); };
+function lgBar() {
+  if (lgC() || q1Inside() || !/^https?:$/.test(location.protocol)) return;
+  if ($('lgBar') || (($('intro') || {}).hidden === false)) return;
+  const el = document.createElement('div'); el.id = 'lgBar'; el.className = 'lg-bar';
+  el.innerHTML = '<span>Usamos estatísticas anónimas para melhorar a app. <a href="/privacidade">Saber mais</a></span><button type="button" data-lg="nao">Não</button><button type="button" class="ok" data-lg="sim">Aceitar</button>';
+  document.body.appendChild(el);
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-lg]'); if (!b) return;
+  try { localStorage.setItem('olConsent', b.dataset.lg); } catch {}
+  const el = $('lgBar'); if (el) el.remove();
+  if (b.dataset.lg === 'sim') { q2('abrir', { instalada: i5Std() ? 'sim' : 'não', consentimento: 'agora' }); }
+  lgAj();
+});
+function lgAj() {
+  const p = $('q2Priv'); if (!p) return;
+  const c = lgC();
+  p.innerHTML = `<a href="/termos">Termos</a> · <a href="/privacidade">Privacidade</a> · Estatísticas anónimas: ${c === 'sim' ? 'ativadas' : 'desativadas'} · <button type="button" class="lg-sw" data-lg="${c === 'sim' ? 'nao' : 'sim'}">${c === 'sim' ? 'desativar' : 'ativar'}</button>`;
+}
+var _lgpr = p9Render;
+p9Render = function (need, ctx) {
+  _lgpr(need, ctx);
+  const bd = document.querySelector('#p9 .p9-bd2'); if (!bd || bd.querySelector('.lg-pl')) return;
+  const rg = bd.querySelector('.p9-rg');
+  const t = '<p class="lg-pl">Ao subscrever, aceitas os <a href="/termos" target="_blank">Termos</a> e a <a href="/privacidade" target="_blank">Política de privacidade</a> e pedes acesso imediato, pelo que deixas de poder desistir nos 14 dias seguintes. Nos 7 dias grátis podes cancelar sem pagar.</p>';
+  if (rg) rg.insertAdjacentHTML('beforebegin', t); else bd.insertAdjacentHTML('beforeend', t);
+};
+var _lgcs = closeSplash; closeSplash = function (then) { _lgcs(then); setTimeout(lgBar, 1600); };
+var _lgwh = welcomeHtml; welcomeHtml = function () { return _lgwh().replace('Joga com responsabilidade.</p>', 'Joga com responsabilidade. <a href="/termos" class="lg-x">Termos</a> · <a href="/privacidade" class="lg-x">Privacidade</a></p>'); };
+(function lgInit() { lgAj(); setTimeout(lgBar, 2500); const x = document.querySelector('#intro .x3-18'); if (x && !x.querySelector('.lg-x')) x.insertAdjacentHTML('beforeend', ' <a href="/termos" class="lg-x">Termos</a> · <a href="/privacidade" class="lg-x">Privacidade</a>'); })();
 </script>
 
 </body></html>
