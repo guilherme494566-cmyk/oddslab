@@ -51,6 +51,7 @@ module.exports = async (req, res) => {
         success_url: o + '/?pago={CHECKOUT_SESSION_ID}', cancel_url: o + '/?pagamento=cancelado', client_reference_id: uid || undefined,
         metadata: { k: b.k, plano: P.plano, uid, trial: b.trial && P.int === 'year' ? '1' : '' }, subscription_data: P.int ? { metadata: { k: b.k, plano: P.plano, uid }, trial_period_days: b.trial && P.int === 'year' ? 7 : undefined } : undefined,
         customer_creation: P.int ? undefined : 'always',
+        payment_method_collection: P.int ? 'always' : undefined,
       });
       return send(res, 200, { url: s.url });
     }
