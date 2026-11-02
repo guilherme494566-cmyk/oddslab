@@ -3,6 +3,7 @@
 // POST ?acao=nome {id, nome}  -> dá um nome a um utilizador
 const crypto = require('crypto');
 const R = require('../tools/redis.js');
+const CFG = require('../tools/config.js');
 const send = (res, c, o) => { res.statusCode = c; res.setHeader('Content-Type', 'application/json; charset=utf-8'); res.setHeader('Cache-Control', 'no-store'); res.end(JSON.stringify(o)); };
 const eqs = (a, b) => crypto.timingSafeEqual(crypto.createHash('sha256').update(String(a)).digest(), crypto.createHash('sha256').update(String(b)).digest());
 const J = (s) => { try { return JSON.parse(s); } catch { return null; } };
@@ -14,8 +15,7 @@ async function codigos(lim = 500) {
   return ids.map((c, i) => ({ codigo: c, ...R.hobj(r[i * 2]), aparelhos: r[i * 2 + 1] || [] }));
 }
 module.exports = async (req, res) => {
-  const adm = process.env.ODDSLAB_ADMIN || '';
-  if (!adm || !req.headers['x-admin'] || !eqs(req.headers['x-admin'], adm)) { await new Promise((r) => setTimeout(r, 700)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
+  if (!(await CFG.checkAdmin(req.headers['x-admin']))) { await new Promise((r) => setTimeout(r, 700)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
   if (!R.ok()) return send(res, 503, { erro: 'Falta ligar a base de dados (Upstash Redis) na Vercel.', semBase: true });
   const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
   try {

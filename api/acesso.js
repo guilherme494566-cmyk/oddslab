@@ -8,8 +8,10 @@
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const { paraPlano } = require('../tools/subconjunto.js');
 const R = require('../tools/redis.js');
+const CFG = require('../tools/config.js');
+let PK = '';
 const B32 = '0123456789ABCDEFGHJKMNPQRSTVWXYZ', PLANS = { 1: 'pro', 2: 'elite', 3: 'tm', 4: 'dono' }, PN = { pro: 1, elite: 2, tm: 3, dono: 4 };
-const pk = () => (process.env.ODDSLAB_PRIVATE_KEY || '').replace(/\\n/g, '\n').trim();
+const pk = () => PK;
 const hkey = () => crypto.createHash('sha256').update('oddslab-codigos|' + pk()).digest();
 function b32(buf) { let bits = 0, v = 0, o = ''; for (const x of buf) { v = (v << 8) | x; bits += 8; while (bits >= 5) { o += B32[(v >>> (bits - 5)) & 31]; bits -= 5; } } if (bits) o += B32[(v << (5 - bits)) & 31]; return o; }
 function unb32(s) { let bits = 0, v = 0; const o = []; for (const ch of s) { const i = B32.indexOf(ch); if (i < 0) return null; v = (v << 5) | i; bits += 5; if (bits >= 8) { o.push((v >>> (bits - 8)) & 255); bits -= 8; } } return Buffer.from(o); }
@@ -42,13 +44,14 @@ function send(res, code, obj) { res.statusCode = code; res.setHeader('Content-Ty
 async function body(req) { if (req.body) return typeof req.body === 'string' ? JSON.parse(req.body) : req.body; let s = ''; for await (const c of req) s += c; return s ? JSON.parse(s) : {}; }
 module.exports = async (req, res) => {
   try {
+    PK = (await CFG.load()).pk;
     const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
-    if (q.acao === 'estado') { let chaveOk = false; if (pk()) { try { crypto.createPrivateKey(pk()); chaveOk = true; } catch {} } return send(res, 200, { chave: !!pk(), chaveValida: chaveOk, admin: !!process.env.ODDSLAB_ADMIN, base: R.ok(), nomes: Object.keys(process.env).filter((k) => /ODDSLAB|KV_REST|UPSTASH/i.test(k)) }); }
+    if (q.acao === 'estado') { let chaveOk = false; if (pk()) { try { crypto.createPrivateKey(pk()); chaveOk = true; } catch {} } return send(res, 200, { chave: !!pk(), chaveValida: chaveOk, admin: !!((await CFG.load()).admin || (await CFG.load()).adminHash), base: R.ok(), nomes: Object.keys(process.env).filter((k) => /ODDSLAB|KV_REST|UPSTASH/i.test(k)) }); }
     if (!pk()) return send(res, 503, { erro: 'Os acessos ainda estão a ser ativados.' });
     if (q.acao === 'codigo') {
       if (req.method !== 'POST') return send(res, 405, { erro: 'Usa POST.' });
-      const b = await body(req), adm = process.env.ODDSLAB_ADMIN || '';
-      const ok = adm && b.senha && crypto.timingSafeEqual(crypto.createHash('sha256').update(String(b.senha)).digest(), crypto.createHash('sha256').update(adm).digest());
+      const b = await body(req);
+      const ok = await CFG.checkAdmin(b.senha);
       if (!ok) { await new Promise((r) => setTimeout(r, 800)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
       const plano = PN[b.plano] ? b.plano : 'pro', dias = Math.max(0, Math.min(3650, Number(b.dias) || 30));
       const codigo = make(plano, plano === 'tm' ? 0 : dias), v = check(codigo);

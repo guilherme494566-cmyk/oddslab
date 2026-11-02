@@ -130,10 +130,31 @@ async function api(acao, opt = {}) {
   const j = await r.json().catch(() => ({})); if (r.status === 401) { PW = ''; try { sessionStorage.removeItem('olAdm'); } catch {} render(); throw new Error('401'); }
   if (!r.ok) { const e = new Error(j.erro || 'Erro ' + r.status); e.j = j; throw e; } return j;
 }
+
+function setupForm(e) {
+  const box = document.createElement('div'); box.className = 'card'; box.style.cssText = 'max-width:380px;margin:12px auto 40px';
+  box.innerHTML = `<h2 style="margin:0 0 6px">Configurar em 1 passo</h2><p style="color:var(--muted);font-size:13.5px;margin:0 0 12px">Sem mexer nas definições da Vercel. Escolhe o ficheiro da chave e cria a tua palavra-passe do painel.</p>
+    <label>1. Ficheiro ODDSLAB_PRIVATE_KEY.txt</label><input class="f" id="kf" type="file" accept=".txt,.pem,text/plain">
+    <label>ou cola aqui o conteúdo do ficheiro</label><textarea class="f" id="kt" rows="4" placeholder="-----BEGIN PRIVATE KEY----- …" style="font:12px var(--mono)"></textarea>
+    <label>2. Nova palavra-passe do painel (mínimo 6 caracteres)</label><input class="f" id="np" type="password" autocomplete="new-password">
+    <label>Repete a palavra-passe</label><input class="f" id="np2" type="password" autocomplete="new-password">
+    <button class="go" id="cfgGo">Guardar e entrar</button><p class="err" id="cfgEr"></p>`;
+  $('#app').appendChild(box);
+  $('#kf').onchange = async (ev) => { const f = ev.target.files[0]; if (f) $('#kt').value = (await f.text()).trim(); };
+  $('#cfgGo').onclick = async () => {
+    const chave = $('#kt').value.trim(), a = $('#np').value, b2 = $('#np2').value; $('#cfgEr').textContent = '';
+    if (!chave) return ($('#cfgEr').textContent = 'Escolhe o ficheiro da chave ou cola o conteúdo.');
+    if (a.length < 6) return ($('#cfgEr').textContent = 'A palavra-passe tem de ter pelo menos 6 caracteres.');
+    if (a !== b2) return ($('#cfgEr').textContent = 'As palavras-passe não são iguais.');
+    $('#cfgGo').disabled = true;
+    try { const r = await fetch('/api/configurar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chave, senha: a }) }); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.erro || 'Erro ' + r.status); PW = a; try { sessionStorage.setItem('olAdm', a); } catch {} box.remove(); render(); }
+    catch (err) { $('#cfgEr').textContent = err.message; } finally { $('#cfgGo') && ($('#cfgGo').disabled = false); }
+  };
+}
 function login() {
   $('#app').innerHTML = `<div class="login card"><h1><img src="/apple-touch-icon.png" alt="">Painel do dono</h1><p style="color:var(--muted);margin-top:-6px">Escreve a palavra-passe de administrador (ODDSLAB_ADMIN).</p>
     <input class="f" id="pw" type="password" autocomplete="current-password" placeholder="Palavra-passe"><button class="go" id="in">Entrar</button><p class="err" id="er"></p><div id="est" style="margin-top:14px;font-size:13.5px;line-height:1.7"></div></div>`;
-  fetch('/api/acesso?acao=estado', { cache: 'no-store' }).then((r) => r.json()).then((e) => { const L = (ok, t, f) => `<div>${ok ? '✅' : '❌'} ${ok ? t : f}</div>`; $('#est').innerHTML = '<b>Estado do site</b>' + L(e.chaveValida, 'Chave (ODDSLAB_PRIVATE_KEY) lida', e.chave ? 'A chave existe mas está incompleta: cola o ficheiro todo, com as linhas BEGIN e END' : 'Falta ODDSLAB_PRIVATE_KEY (ou não tem Production marcado)') + L(e.admin, 'Palavra-passe (ODDSLAB_ADMIN) lida', 'Falta ODDSLAB_ADMIN (ou não tem Production marcado)') + L(e.base, 'Base de dados ligada', 'Base de dados por ligar (só para registos)') + `<div style="color:var(--faint);font-size:12px">Variáveis encontradas: ${(e.nomes || []).join(', ') || 'nenhuma'}</div>`; }).catch(() => {});
+  fetch('/api/acesso?acao=estado', { cache: 'no-store' }).then((r) => r.json()).then((e) => { const L = (ok, t, f) => `<div>${ok ? '✅' : '❌'} ${ok ? t : f}</div>`; if (!e.chaveValida || !e.admin) setupForm(e); $('#est').innerHTML = '<b>Estado do site</b>' + L(e.chaveValida, 'Chave (ODDSLAB_PRIVATE_KEY) lida', e.chave ? 'A chave existe mas está incompleta: cola o ficheiro todo, com as linhas BEGIN e END' : 'Falta ODDSLAB_PRIVATE_KEY (ou não tem Production marcado)') + L(e.admin, 'Palavra-passe (ODDSLAB_ADMIN) lida', 'Falta ODDSLAB_ADMIN (ou não tem Production marcado)') + L(e.base, 'Base de dados ligada', 'Base de dados por ligar (só para registos)') + `<div style="color:var(--faint);font-size:12px">Variáveis encontradas: ${(e.nomes || []).join(', ') || 'nenhuma'}</div>`; }).catch(() => {});
   const go = async () => { PW = $('#pw').value; if (!PW) return; $('#in').disabled = true; try { await fetch('/api/admin?acao=resumo', { headers: { 'x-admin': PW } }).then(async (r) => { if (r.status === 401) throw new Error('Palavra-passe errada.'); }); try { sessionStorage.setItem('olAdm', PW); } catch {} render(); } catch (e) { $('#er').textContent = e.message; PW = ''; } finally { $('#in') && ($('#in').disabled = false); } };
   $('#in').onclick = go; $('#pw').onkeydown = (e) => e.key === 'Enter' && go(); $('#pw').focus();
 }

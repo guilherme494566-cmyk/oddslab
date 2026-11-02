@@ -20,6 +20,9 @@
     },
     "api/evento.js": {
       "includeFiles": "{data/**,tools/**}"
+    },
+    "api/configurar.js": {
+      "includeFiles": "{data/**,tools/**}"
     }
   }
 }
