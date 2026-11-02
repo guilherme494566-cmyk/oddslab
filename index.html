@@ -2376,6 +2376,7 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
 .q2-priv a, .lg-x { color: var(--faint); text-decoration: underline; }
 .lg-sw { border: 0; background: none; padding: 0; color: var(--faint); text-decoration: underline; font-size: inherit; }
 </style>
+<style id="rmcss">.rm-dots{display:inline-flex;gap:2px;vertical-align:middle}.rm-dots i{width:7px;height:7px;border-radius:2px;background:var(--faint)}.rm-dots i.won{background:var(--pos)}.rm-dots i.lost{background:var(--neg)}.rm-dots i.void{background:var(--info)}</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -5244,6 +5245,78 @@ p9Render = function (need, ctx) {
 var _lgcs = closeSplash; closeSplash = function (then) { _lgcs(then); setTimeout(lgBar, 1600); };
 var _lgwh = welcomeHtml; welcomeHtml = function () { return _lgwh().replace('Joga com responsabilidade.</p>', 'Joga com responsabilidade. <a href="/termos" class="lg-x">Termos</a> · <a href="/privacidade" class="lg-x">Privacidade</a></p>'); };
 (function lgInit() { lgAj(); setTimeout(lgBar, 2500); const x = document.querySelector('#intro .x3-18'); if (x && !x.querySelector('.lg-x')) x.insertAdjacentHTML('beforeend', ' <a href="/termos" class="lg-x">Termos</a> · <a href="/privacidade" class="lg-x">Privacidade</a>'); })();
+
+// ===== Resultados → Múltiplas, com o mesmo painel das apostas =====
+renderResMult = function () {
+  const H0 = (D.historico || []).map((x, i) => ({ ...x, _i: i, pernas: x.pernas || [], nivel: x.nivel || (String(x.aposta).match(/^Múltipla (.+?):/) || [, 'Múltipla'])[1], prob: x.prob || 1 / x.oddMinima })).filter((x) => x.tipo === 'multipla');
+  const nT = H0.filter((x) => x.teste).length, nR = H0.length - nT;
+  if (rMode === 'reais' && !nR) rMode = 'tudo';
+  const E = H0.filter((x) => rMode === 'tudo' || (rMode === 'teste' ? x.teste : !x.teste));
+  const chrono = E.slice().sort((a, b) => (a.inicio || '').localeCompare(b.inicio || '') || a._i - b._i);
+  const S = r4Stat(E);
+  $('resCnt').textContent = E.length + ' múltiplas liquidadas';
+  const modeSeg = viewSeg() + `<div class="seg r4-mode">${[['reais', 'Reais', nR], ['teste', 'Teste', nT], ['tudo', 'Tudo', H0.length]].map(([k, l, n]) => `<button type="button" data-rmode="${k}" aria-pressed="${rMode === k}">${l} <small class="m">${n}</small></button>`).join('')}</div>`;
+  if (!E.length) { $('rHero').innerHTML = modeSeg + '<div class="empty card" style="margin-top:14px">Ainda sem múltiplas liquidadas.</div>'; $('rBody').innerHTML = ''; return; }
+  let cur = 0, curK = '', best = 0, run = 0; chrono.forEach((x) => { if (x.resultado === 'void') return; if (x.resultado === 'won') { run++; best = Math.max(best, run); } else run = 0; });
+  for (let i = chrono.length - 1; i >= 0; i--) { const r = chrono[i].resultado; if (r === 'void') continue; if (!curK) curK = r; if (r === curK) cur++; else break; }
+  const legs = E.flatMap((m) => m.pernas), lw = legs.filter((p) => p.resultado === 'won').length, ld = legs.filter((p) => p.resultado !== 'void').length;
+  const won = E.filter((m) => m.resultado === 'won'), oddW = won.length ? won.reduce((t, m) => t + (m.oddPaga || m.oddMinima), 0) / won.length : 0, oddA = E.reduce((t, m) => t + m.oddMinima, 0) / E.length;
+  const yest = dayKey(new Date(Date.now() - 864e5)), d7 = dayKey(new Date(Date.now() - 7 * 864e5)), lastDay = r4Day(chrono[chrono.length - 1]);
+  const PER = [[lastDay === today ? 'Hoje' : lastDay === yest ? 'Ontem' : 'Último dia', E.filter((x) => r4Day(x) === lastDay)], ['Últimos 7 dias', E.filter((x) => r4Day(x) && r4Day(x) > d7)], ['Últimas 10', chrono.filter((x) => x.resultado !== 'void').slice(-10)], ['Desde o início', E]];
+  const form = chrono.filter((x) => x.resultado !== 'void').slice(-20);
+  $('rHero').innerHTML = modeSeg + `<section class="r4-hero card">
+    <div class="r4-glow" aria-hidden="true"></div>
+    <div class="r4-top">
+      <div class="r4-rw">${r4Ring(S.r)}<div class="r4-rc"><b class="m" data-r4n="${Math.round(S.r * 1000) / 10}" data-r4dec="1">0%</b><span>de acerto</span></div></div>
+      <div class="r4-main"><span class="r4-k">${rMode === 'teste' ? 'Teste retroativo' : rMode === 'tudo' ? 'Reais + teste' : 'Múltiplas reais'}</span>
+        <p class="r4-big"><b class="m ok" data-r4n="${S.w}">0</b><span>certas em</span><b class="m">${S.d}</b></p>
+        <p class="r4-vs">Previsto pelo modelo <b class="m">${pct(S.e)}</b> ${r4Pp(S.r, S.e)}</p></div>
+    </div>
+    <div class="r4-wl"><i class="w" style="--f:${S.w}"></i><i class="l" style="--f:${S.l}"></i></div>
+    <div class="r4-wll"><span><i class="w"></i>${S.w} ganha${S.w===1?'':'s'}</span><span><i class="l"></i>${S.l} perdida${S.l===1?'':'s'}</span></div>
+    <dl class="r4-k6">
+      <div><dt>Jogos certos</dt><dd class="m ok">${pct(ld ? lw / ld : 0)}<small> de ${legs.length}</small></dd></div>
+      <div><dt>Sequência atual</dt><dd class="m ${curK === 'won' ? 'ok' : 'no'}">${cur}<small>${curK === 'won' ? ' ganhas' : ' perdidas'}</small></dd></div>
+      <div><dt>Odd média</dt><dd class="m">${odd(oddA)}</dd></div>
+      <div><dt>Odd média ganhas</dt><dd class="m">${odd(oddW)}</dd></div>
+    </dl>
+    <div class="r4-form"><span>Últimas ${form.length}</span><div>${form.map((x, i) => `<i class="${x.resultado}" style="--i:${i}" title="${esc(x.nivel)}"></i>`).join('')}</div></div>
+  </section>
+  <div class="r4-per">${PER.map(([k, L], i) => { const s = r4Stat(L); return `<div class="r4-pc card" style="--i:${i}"><span>${k}</span><b class="m" style="color:${s.d ? r4Col(s.r) : 'var(--faint)'}">${s.d ? pct(s.r) : '–'}</b><small class="m">${s.w}–${s.l}</small><em><i style="--w:${(s.r * 100).toFixed(0)}%;--c:${r4Col(s.r)}"></i></em></div>`; }).join('')}</div>`;
+  const days = []; chrono.forEach((x) => { const k = r4Day(x) || x.data; let d = days[days.length - 1]; if (!d || d.k !== k) { d = { k, lab: x.data, L: [] }; days.push(d); } d.L.push(x); });
+  const D14 = days.slice(-14), wk = (k) => { try { return cap(new Date(k + 'T12:00:00Z').toLocaleDateString('pt-PT', { weekday: 'short' }).replace('.', '')); } catch { return ''; } };
+  const LV = ['Risco muito baixo', 'Risco baixo', 'Risco médio', 'Risco alto', 'Risco muito alto'];
+  const byLv = r4Groups(E, (x) => x.nivel).sort((a, b) => (LV.indexOf(a[0]) + 99) % 99 - (LV.indexOf(b[0]) + 99) % 99);
+  const byN = r4Groups(E, (x) => x.pernas.length + ' jogos').sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+  const list = E.slice().sort((a, b) => (b.inicio || '').localeCompare(a.inicio || '') || b._i - a._i), V = list.slice(0, rMore);
+  let lastK = '', hist = '';
+  V.forEach((m) => {
+    const k = r4Day(m) || m.data;
+    if (k !== lastK) { lastK = k; const s = r4Stat(list.filter((y) => (r4Day(y) || y.data) === k)); hist += `<div class="r4-hd"><b>${wk(k)} ${esc(m.data)}</b><span class="m">${s.w} de ${s.d} certas</span></div>`; }
+    const ok = m.pernas.filter((p) => p.resultado === 'won').length;
+    hist += `<button type="button" class="r4-row ${m.resultado}" data-rrow="${m._i}">
+      <span class="r4-rg"><b>${esc(m.nivel)}${m.teste ? ' <i class="tt2">TESTE</i>' : ''}</b><small>${ok} de ${m.pernas.length} jogos certos · <span class="rm-dots">${m.pernas.map((p) => `<i class="${p.resultado}"></i>`).join('')}</span></small></span>
+      <span class="r4-rs m">${odd(m.oddPaga || m.oddMinima)}</span>
+      <span class="r4-rr"><em>${m.resultado === 'won' ? 'Ganha' : m.resultado === 'lost' ? 'Perdida' : 'Devolvida'}</em><small class="m">${pct(m.prob)} previsto</small></span>
+    </button>`;
+  });
+  $('rBody').innerHTML = `
+    <div class="r4-g">
+      <section class="r4-box card r4-ev"><div class="r4-sh"><h2>Evolução do acerto</h2><span class="r4-lg"><i class="a"></i>Real<i class="b"></i>Previsto</span></div>${r4Line(E)}<p class="r4-cap">Acerto acumulado das múltiplas depois de cada bilhete, comparado com o que o modelo previa.</p></section>
+      <section class="r4-box card"><div class="r4-sh"><h2>Dia a dia</h2><small>${D14.length} dias</small></div>
+        <div class="r4-days">${D14.slice().reverse().map((d, i) => { const s = r4Stat(d.L); return `<div class="r4-dc" style="--i:${i};--c:${s.d ? r4Col(s.r) : 'var(--bd2)'}"><span>${wk(d.k)}</span><b class="m">${esc(d.lab)}</b><strong class="m">${s.d ? pct(s.r) : '–'}</strong><small class="m">${s.w}–${s.l}</small><em>${d.L.map((x) => `<i class="${x.resultado}"></i>`).join('')}</em></div>`; }).join('')}</div>
+      </section>
+    </div>
+    <div class="r4-g">
+      <section class="r4-box card"><div class="r4-sh"><h2>Por nível de risco</h2><small>marca branca = previsto</small></div>${r4Bars(byLv)}<p class="r4-cap">Uma múltipla só é ganha se todos os jogos entrarem. Quanto maior o risco, mais jogos e odd mais alta.</p></section>
+      <section class="r4-box card"><div class="r4-sh"><h2>Por número de jogos</h2></div>${r4Bars(byN)}</section>
+    </div>
+    <div class="r4-sh r4-sh2"><h2>Bilhetes</h2><small>toca para ver os jogos</small></div>
+    <div class="r4-hist card">${hist}</div>
+    ${list.length > rMore ? `<button type="button" class="more" data-rmore="1">Mostrar mais ${Math.min(25, list.length - rMore)} <span class="m">(${rMore} de ${list.length})</span></button>` : ''}
+    <p class="foot">Resultados passados não garantem os futuros. 18+</p>`;
+  r4Anim();
+};
 </script>
 
 </body></html>
