@@ -2377,6 +2377,35 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
 .lg-sw { border: 0; background: none; padding: 0; color: var(--faint); text-decoration: underline; font-size: inherit; }
 </style>
 <style id="rmcss">.rm-dots{display:inline-flex;gap:2px;vertical-align:middle}.rm-dots i{width:7px;height:7px;border-radius:2px;background:var(--faint)}.rm-dots i.won{background:var(--pos)}.rm-dots i.lost{background:var(--neg)}.rm-dots i.void{background:var(--info)}</style>
+<style id="mxcss">
+.mx-h{margin-top:18px;padding:18px;position:relative;overflow:hidden;border:1px solid rgb(245 190 60 / .38);background:linear-gradient(160deg,rgb(245 190 60 / .10),rgb(245 190 60 / .02) 45%,transparent),var(--s1)}
+.mx-h::before{content:"";position:absolute;right:-80px;top:-90px;width:260px;height:220px;background:radial-gradient(closest-side,rgb(245 190 60 / .22),transparent);pointer-events:none}
+.mx-hh{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:14px;position:relative}
+.mx-hh h2{margin:4px 0 0;font-size:21px;letter-spacing:-.02em}
+.mx-k{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.mx-k::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px var(--acc)}
+.mx-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;position:relative}
+.mx-t{position:relative;display:grid;align-content:start;gap:4px;text-align:left;padding:14px 13px;border-radius:16px;border:1px solid var(--bd);background:rgb(255 255 255 / .025);color:var(--tx);transition:transform .2s,border-color .2s,background .2s;animation:mxIn .45s var(--ease) both;animation-delay:calc(var(--i)*45ms)}
+.mx-t:hover{transform:translateY(-2px);border-color:rgb(245 190 60 / .5);background:rgb(245 190 60 / .06)}
+.mx-t b{font-size:14.5px;margin-top:6px}.mx-t small{font-size:12px;color:var(--muted);line-height:1.35}
+.mx-i{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#14100a;background:linear-gradient(135deg,var(--acc2),var(--acc) 55%,#ef8f1c);box-shadow:0 6px 18px rgb(245 190 60 / .25)}
+.mx-lk{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:3px;font-style:normal;font-size:10px;font-weight:900;letter-spacing:.06em;color:var(--acc);background:var(--accbg);border:1px solid rgb(245 190 60 / .35);padding:3px 7px;border-radius:99px}
+.mx-cta{width:100%;margin-top:14px;padding:13px}
+@keyframes mxIn{from{opacity:0;transform:translateY(8px)}}
+@media (max-width:640px){.mx-g{grid-template-columns:repeat(2,minmax(0,1fr))}.mx-t small{display:none}.mx-t{padding:13px 12px}.mx-i{width:36px;height:36px;border-radius:11px}}
+#pg-inicio.h3 .h3-c2 .mx-old{display:none}
+.mx-up{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:16px;margin:14px 0 4px;border:1px solid rgb(245 190 60 / .4);background:linear-gradient(160deg,rgb(245 190 60 / .1),transparent)}
+.mx-up b{display:block}.mx-up small{color:var(--muted);font-size:12.5px}.mx-up .btn{grid-column:1/-1;padding:12px}
+.mx-big{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.mx-b{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;text-align:left;padding:18px 16px;color:var(--tx);transition:transform .2s,border-color .2s;animation:mxIn .45s var(--ease) both;animation-delay:calc(var(--i)*50ms)}
+.mx-b:hover{transform:translateY(-2px);border-color:rgb(245 190 60 / .5)}
+.mx-b b{font-size:16.5px;display:block}.mx-b small{color:var(--muted);font-size:13px;line-height:1.4}
+.mx-b .mx-lk{position:static}.mx-go{color:var(--acc);font-size:20px;font-weight:800}
+.mx-hero{grid-column:1/-1;padding:22px 18px;border-color:rgb(245 190 60 / .45);background:linear-gradient(150deg,rgb(245 190 60 / .12),transparent 60%),var(--s1)}
+.mx-hero b{font-size:19px}.mx-hero .mx-i{width:52px;height:52px;border-radius:15px}
+@media (max-width:640px){.mx-big{grid-template-columns:1fr}}
+.mx-sp{margin-bottom:2px}
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -2399,6 +2428,7 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
       <div class="h3-dh"><h2>Apostas do dia</h2><div class="h3-tabs" id="dkTabs" role="tablist" aria-label="Dia"></div></div>
       <div class="deck" id="deck"></div>
     </div>
+    <div id="mxHome"></div>
     <div class="h3-cols">
       <div class="h3-c1">
         <div class="h3-sh"><h2>Mais apostas</h2><small id="xbSub"></small></div>
@@ -2407,8 +2437,8 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
       <div class="h3-c2">
         <div class="h3-sh"><h2>A seguir</h2><button type="button" class="lnk" data-pg="jogos">Todos os jogos →</button></div>
         <div class="nus" id="nextUp"></div>
-        <div class="h3-sh"><h2>Ferramentas</h2></div>
-        <div class="tiles" id="tiles"></div>
+        <div class="mx-old"><div class="h3-sh"><h2>Ferramentas</h2></div>
+        <div class="tiles" id="tiles"></div></div>
       </div>
     </div>
     <div hidden><div id="star"></div><div id="radar"></div><div id="thermo"></div><div id="hero"></div><div id="popMini"></div><ol id="meth"></ol></div>
@@ -2500,8 +2530,9 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
 
   <section id="pg-mult" hidden>
     <div class="ph"><h1>Múltiplas</h1><span id="multCnt"></span></div>
-    <p class="lead">Escolhe a odd, o número de jogos, ou os dois. Uso os mercados onde o modelo tem acertado mais: dupla hipótese, empate anula, golos da equipa e handicap +1,5.</p>
+    <p class="lead">Escolhe o desporto, a odd e o número de jogos. No futebol uso os mercados onde o modelo tem acertado mais (dupla hipótese, empate anula, golos da equipa e handicap +1,5); no ténis, vencedor e sets.</p>
     <div class="maker card">
+      <div class="seg mx-sp" role="group" aria-label="Desporto"><button type="button" data-tsp="fut" aria-pressed="true">⚽ Futebol</button><button type="button" data-tsp="ten" aria-pressed="false">🎾 Ténis</button><button type="button" data-tsp="all" aria-pressed="false">Os dois</button></div>
       <label class="oddin"><span>Odd alvo</span><input id="tOdd" inputmode="decimal" placeholder="3,00" aria-label="Odd alvo"></label>
       <div class="qk"><button type="button" data-todd="2">2,00</button><button type="button" data-todd="3">3,00</button><button type="button" data-todd="5">5,00</button><button type="button" data-todd="10">10,00</button><button type="button" data-todd="20">20,00</button></div>
       <div class="tnrow"><span>Nº de jogos</span><div class="seg" id="tNs"></div></div>
@@ -2528,6 +2559,12 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
     <div class="ph"><h1>Resultados</h1><span id="resCnt"></span></div>
     <div id="rHero"></div>
     <div id="rBody"></div>
+  </section>
+
+  <section id="pg-ferr" hidden>
+    <div class="ph"><h1>Ferramentas</h1><span class="m" style="color:var(--acc)">PRO</span></div>
+    <p class="lead">Tudo o que precisas para montar as tuas apostas: múltiplas à medida, comparação de odds, as melhores apostas e os dados por trás de cada jogo.</p>
+    <div id="ferrBody"></div>
   </section>
 
   <section id="pg-tools" hidden>
@@ -2566,7 +2603,7 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
   <button type="button" data-pg="jogos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.2 2.3-1.2 3.7h-4l-1.2-3.7z"/></svg>Futebol</button>
   <button type="button" data-pg="inicio" class="ctr" aria-current="page"><span class="ctr-b"><svg class="hmi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg></span>Início</button>
   <button type="button" data-pg="tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.2 3.2 3.2 9.6 0 12.8M18.4 5.6c-3.2 3.2-3.2 9.6 0 12.8"/></svg>Ténis</button>
-  <button type="button" data-pg="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Top 10</button>
+  <button type="button" data-pg="ferr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L4 16.8V20h3.2l5.3-5.3a4 4 0 0 0 5.2-5.4l-2.5 2.5-2.3-.6-.6-2.3z"/></svg>Ferramentas</button>
 </div></nav>
 <div class="toast" id="toast" hidden role="status"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset=".55" stop-color="#f5be3c"/><stop offset="1" stop-color="#ef8f1c"/></linearGradient><linearGradient id="shine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs></svg>
@@ -4732,7 +4769,7 @@ function p9Free() {
 }
 function p9Can(g) { if (!g) return true; return p9Rank() >= (P9R[g.plano] ?? 1) || p9Free().has(g.id); }
 function p9Need(g) { return g && g.plano === 'elite' ? 'elite' : 'pro'; }
-const P9PG = { tenis: 'pro', mk: 'pro', mult: 'pro', dados: 'pro', tools: 'pro', pop: 'pro', valor: 'elite' };
+const P9PG = { tenis: 'pro', mk: 'pro', mult: 'pro', dados: 'pro', tools: 'pro', pop: 'pro', valor: 'pro' };
 const P9LK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 function p9Counts() { const op = openList().filter((g) => !g.aviso); return { all: op.length, can: op.filter(p9Can).length }; }
 
@@ -4798,8 +4835,8 @@ function p9Card(k) {
     <li>As 3 apostas mais fortes de cada dia</li><li>Resultados completos, ganhas e perdidas</li><li>Guia para quem nunca apostou</li></ul></div>`;
   const P = P9[k], price = an ? P.a : P.m, per = an ? '/ano' : '/mês', save = Math.round((1 - P.a / (P.m * 12)) * 100);
   const trial = an && !p9ls('p9TrialUsed') && pl === 'free';
-  const feats = k === 'pro' ? ['Todas as apostas do dia (mais de 15 por dia)', 'Ficha completa de cada jogo: estatísticas e outras apostas', 'Mais apostas entre 70% e 90%', 'Ténis com Elo', 'Múltiplas prontas e criador de múltiplas', 'Top 10, dados das ligas e agenda']
-    : ['Tudo o que tem o PRO', 'Todos os jogos, incluindo os ELITE (o dobro dos jogos)', '★ Tip Master todos os dias (odd 5+)', 'Comparar odds: vê se a odd da tua casa compensa', 'Múltiplas de risco alto'];
+  const feats = k === 'pro' ? ['Todas as apostas do dia (mais de 15 por dia)', 'Ficha completa de cada jogo: estatísticas e outras apostas', 'Ténis com Elo', '<b>Todas as ferramentas:</b> criador de múltiplas de futebol e ténis, comparar odds, Top 10, populares, dados e agenda', 'Múltiplas prontas todos os dias']
+    : ['Tudo o que tem o PRO, ferramentas incluídas', 'Todos os jogos, incluindo os ELITE (o dobro dos jogos)', '★ Tip Master todos os dias (odd 5+)', 'Múltiplas de risco alto'];
   return `<div class="p9-c ${k}${cur ? ' cur' : ''}">${k === 'pro' ? '<span class="p9-rib">Melhor relação preço</span>' : ''}<div class="p9-ch"><b>${P.n}</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div>
     <p class="p9-pr"><b class="m">${p9eur(price)}</b><small>${per}</small>${an ? `<em>${p9eur(P.a / 12)}/mês · poupas ${save}%</em>` : ''}</p>
     <ul>${feats.map((f) => `<li>${f}</li>`).join('')}</ul>
@@ -5318,6 +5355,94 @@ renderResMult = function () {
     ${list.length > rMore ? `<button type="button" class="more" data-rmore="1">Mostrar mais ${Math.min(25, list.length - rMore)} <span class="m">(${rMore} de ${list.length})</span></button>` : ''}
     <p class="foot">Resultados passados não garantem os futuros. 18+</p>`;
   r4Anim();
+};
+
+// ===== mx: ferramentas PRO em destaque + criador de múltiplas com futebol e ténis =====
+var tSp = 'fut';
+const MXT = [
+  ['mult', 'Criador de múltiplas', 'Escolhe a odd e o nº de jogos. Futebol e ténis.', '<path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18.5" cy="17" r="2.5"/>'],
+  ['valor', 'Comparar odds', 'Mete a odd da tua casa e vê se compensa.', '<path d="M7 4v16M17 4v16M3 8h8M13 16h8"/>'],
+  ['mk', 'Top 10', 'As apostas mais fortes e todos os mercados.', '<path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>'],
+  ['pop', 'Populares', 'O que os tipsters jogam contra o nosso modelo.', '<circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><path d="M16 5.2a3 3 0 0 1 0 5.6M18 14.4c1.6.7 2.7 2.2 3 4.6"/>'],
+  ['dados', 'Dados das ligas', 'Tabelas, ataque, defesa e cantos.', '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
+  ['tools', 'Agenda', 'O teu plano de apostas, hora a hora.', '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'],
+];
+const mxPro = () => p9Rank() >= P9R.pro;
+const mxIco = (p, s = 22) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const MXLK = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function mxHome() {
+  const el = $('mxHome'); if (!el) return; const pro = mxPro();
+  el.innerHTML = `<section class="mx-h card">
+    <div class="mx-hh"><div><span class="mx-k">Ferramentas PRO</span><h2>Monta as tuas apostas</h2></div><button type="button" class="lnk" data-pg="ferr">Ver todas →</button></div>
+    <div class="mx-g">${MXT.map(([pg, t, d, ic], i) => `<button type="button" class="mx-t" data-pg="${pg}" style="--i:${i}"><span class="mx-i">${mxIco(ic)}</span><b>${t}</b><small>${d}</small>${pro ? '' : `<em class="mx-lk">${MXLK}PRO</em>`}</button>`).join('')}</div>
+    ${pro ? '' : `<button type="button" class="btn acc mx-cta" data-mxplans="1">Desbloquear com o PRO · ${p9eur(P9.pro.m)}/mês</button>`}
+  </section>`;
+}
+function mxFerr() {
+  const el = $('ferrBody'); if (!el) return; const pro = mxPro();
+  el.innerHTML = `${pro ? '' : `<div class="mx-up card"><span class="mx-i">${MXLK.replace(/12/g, '20')}</span><div><b>As ferramentas fazem parte do plano PRO</b><small>${p9eur(P9.pro.m)}/mês · no plano anual tens 7 dias grátis · cancelas com 1 clique</small></div><button type="button" class="btn acc" data-mxplans="1">Ver planos</button></div>`}
+    <div class="mx-big">${MXT.map(([pg, t, d, ic], i) => `<button type="button" class="mx-b card${i === 0 ? ' mx-hero' : ''}" data-pg="${pg}" style="--i:${i}"><span class="mx-i">${mxIco(ic, i === 0 ? 28 : 24)}</span><span class="mx-bt"><b>${t}</b><small>${d}</small></span>${pro ? '<span class="mx-go">→</span>' : `<em class="mx-lk">${MXLK}PRO</em>`}</button>`).join('')}</div>
+    <p class="foot">Estimativas, não certezas. 18+</p>`;
+}
+// páginas: Ferramentas entra na barra de baixo no lugar do Top 10 (que fica dentro de Ferramentas)
+PAGES.push('ferr'); DOCK[4] = 'ferr';
+var _mxgo = go; go = function (pg) { if (pg === 'ferr') mxFerr(); return _mxgo(pg); };
+var _mxri = renderInicio; renderInicio = function () { _mxri(); mxHome(); };
+document.addEventListener('click', (e) => {
+  const p = e.target.closest('[data-mxplans]'); if (p) { openPlans('pro', { pg: 'mult' }); return; }
+  const s = e.target.closest('[data-tsp]'); if (!s) return;
+  tSp = s.dataset.tsp; seen = new Set(); $('custom').innerHTML = '';
+  document.querySelectorAll('[data-tsp]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tsp === tSp)));
+  renderTN();
+});
+// candidatos por evento (um jogo de futebol ou um encontro de ténis)
+function mxEvents() {
+  const lim = now + tWin * 864e5, ok = (t) => { const x = new Date(t).getTime(); return x > now + 5 * 60e3 && x < lim; }, E = [];
+  if (tSp !== 'ten') jogos.filter((g) => !g.aviso && g.apostas && !g._lock && ok(g.inicio)).forEach((g) => {
+    const C = legPool(g).filter((a) => a.prob >= 0.55 && a.prob <= 0.93 && a.mercado !== 'Resultado exato').map((a) => ({ id: g.id, inicio: g.inicio, pais: g.pais, a, lo: -Math.log(a.prob), sc: legScore(g, a), leg: { ...legOf(g, a), liga: g.liga, pais: g.pais } })).sort((x, y) => y.sc - x.sc).slice(0, 4);
+    if (C.length) E.push(C);
+  });
+  if (tSp !== 'fut') ((D.tenis && D.tenis.jogos) || []).filter((m) => m.a && m.b && ok(m.inicio)).forEach((m) => {
+    const r = tnProb(m), liga = m.circuito + ' ' + m.torneio;
+    const C = r.sel.filter((x) => x.p >= 0.55 && x.p <= 0.93).map((x) => { const prob = Math.round(x.p * 100) / 100; return { id: m.id, inicio: m.inicio, pais: 'ténis', a: { aposta: x.t, prob }, lo: -Math.log(prob), sc: (m.horaConfirmada ? 1 : 0.95) * (/pelo menos 1 set$|^Vitória/.test(x.t) ? 1.03 : 0.97), leg: { jogo: m.id, texto: '🎾 ' + m.a.nome + ' – ' + m.b.nome, inicio: m.inicio, liga, aposta: x.t, mercado: x.grp, betclic: x.grp, prob } }; }).sort((x, y) => y.sc - x.sc).slice(0, 3);
+    if (C.length) E.push(C);
+  });
+  return E;
+}
+buildCustom = function (T) {
+  const E = mxEvents(), flat = E.flat().sort((x, y) => x.lo - y.lo); if (!flat.length) return null;
+  const done = (legs, extra) => ({ id: 'custom', titulo: 'A tua múltipla', pernas: legs.sort((x, y) => x.inicio.localeCompare(y.inicio)).map((l) => l.leg), ...extra });
+  if (!T) {
+    const pick = E.map((arr) => arr.slice().sort((x, y) => y.sc * y.a.prob - x.sc * x.a.prob)[0]).sort((x, y) => y.sc * y.a.prob - x.sc * x.a.prob);
+    const off = seen.size, legs = pick.slice(off, off + tN); if (legs.length < tN) return null;
+    seen.add('r' + off); const m = done(legs, { soN: true }); m.alvo = 1 / m.pernas.reduce((t, x) => t * x.prob, 1); return m;
+  }
+  const lo = Math.log(Math.max(1.01, T - 0.2)), hi = Math.log(T + 0.2); let best = null;
+  for (let n = tN || 1; n <= (tN || 8) && !best; n++) {
+    let steps = 0;
+    const dfs = (start, legs, sum, used) => {
+      if (++steps > 250000) return; const left = n - legs.length;
+      if (!left) { if (sum >= lo && sum <= hi) { const key = legs.map((l) => l.id + l.a.aposta).sort().join('|'); if (!seen.has(key)) { const mix = tSp === 'all' ? (new Set(legs.map((l) => l.pais === 'ténis')).size - 1) * 0.06 : 0; const sc = legs.reduce((t, l) => t + l.sc, 0) / n + (new Set(legs.map((l) => l.pais)).size / n) * 0.08 + mix - Math.abs(Math.exp(sum) - T) * 0.05; if (!best || sc > best.sc) best = { legs: legs.slice(), sc, key }; } } return; }
+      for (let k = start; k < flat.length; k++) {
+        const c = flat[k]; if (used.has(c.id)) continue; const s2 = sum + c.lo;
+        if (s2 + (left - 1) * flat[0].lo > hi) break;
+        if (s2 + (left - 1) * flat[flat.length - 1].lo < lo) continue;
+        used.add(c.id); legs.push(c); dfs(k + 1, legs, s2, used); legs.pop(); used.delete(c.id);
+      }
+    };
+    dfs(0, [], 0, new Set());
+  }
+  if (!best) return null; seen.add(best.key); return done(best.legs, { alvo: T });
+};
+feasible = function (n) {
+  const G = mxEvents().map((arr) => arr.map((c) => 1 / c.a.prob)); if (G.length < n) return null;
+  const mins = G.map((x) => Math.min(...x)).sort((a, b) => a - b), maxs = G.map((x) => Math.max(...x)).sort((a, b) => b - a);
+  return [mins.slice(0, n).reduce((t, x) => t * x, 1), maxs.slice(0, n).reduce((t, x) => t * x, 1), G.length];
+};
+var _mxtn = renderTN; renderTN = function () {
+  _mxtn(); const f = tN ? feasible(tN) : null, w = tSp === 'ten' ? 'encontros' : tSp === 'all' ? 'jogos e encontros' : 'jogos';
+  if (tN && f) $('tHint').innerHTML = `${tN} ${tSp === 'ten' ? 'encontros' : 'jogos'}: odd possível entre <b class="m">${odd(f[0])}</b> e <b class="m">${odd(f[1])}</b> (${f[2]} ${w} disponíveis). Deixa a odd vazia para a combinação mais provável.`;
+  else if (tN) $('tHint').innerHTML = `Não há ${tN} ${w} neste período. Escolhe “Próximos dias”${tSp !== 'all' ? ' ou “Os dois”' : ''}.`;
 };
 </script>
 

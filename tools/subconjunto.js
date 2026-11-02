@@ -36,11 +36,12 @@ function publico(full, now) {
 function paraPlano(full, plano, now) {
   if (plano === 'elite' || plano === 'dono') return { ...full, acesso: plano, bloqueados: [] };
   if (plano === 'tm') return { ...publico(full, now), acesso: 'tm', tipMaster: full.tipMaster || null };
-  // PRO: tudo menos os jogos ELITE, a Tip Master e a comparação de odds
+  // PRO: tudo menos os jogos ELITE e a Tip Master (as ferramentas, incluindo comparar odds, são PRO)
   const { jogos, bloqueados } = base(full, now, (g) => g.plano !== 'elite');
   const ok = new Set(jogos.map((g) => g.id));
   const mApp = (full.multiplasApp || []).filter((m) => (m.pernas || []).every((p) => ok.has(p.jogo) || !full.jogos.some((g) => g.id === p.jogo)));
   const { valor, multiplas, multiplasPendentes, tipMaster, ...rest } = full;
-  return { ...rest, acesso: 'pro', jogos, bloqueados, multiplasApp: mApp, tipMaster: tmTeaser(tipMaster) };
+  const vOk = valor && { ...valor, itens: (valor.itens || []).filter((v) => ok.has(v.jogo) || !full.jogos.some((g) => g.id === v.jogo)) };
+  return { ...rest, acesso: 'pro', jogos, bloqueados, multiplasApp: mApp, valor: vOk, tipMaster: tmTeaser(tipMaster) };
 }
 module.exports = { publico, paraPlano, gratis };

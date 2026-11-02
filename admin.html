@@ -107,7 +107,7 @@ const ago = (ms) => { ms = Number(ms); if (!ms) return '–'; const s = (Date.no
 const dt = (ms) => ms ? new Date(Number(ms)).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
 const dd = (ms) => ms ? new Date(Number(ms)).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '–';
 const PLAT = { ios: '📱 iPhone', android: '🤖 Android', pc: '💻 Computador' };
-const PG = { inicio: 'Início', jogos: 'Futebol', tenis: 'Ténis', res: 'Resultados', mk: 'Top 10', mult: 'Múltiplas', dados: 'Dados', tools: 'Agenda', pop: 'Populares', valor: 'Comparar odds', ajuda: 'Como apostar' };
+const PG = { inicio: 'Início', jogos: 'Futebol', tenis: 'Ténis', res: 'Resultados', mk: 'Top 10', mult: 'Múltiplas', dados: 'Dados', tools: 'Agenda', pop: 'Populares', valor: 'Comparar odds', ferr: 'Ferramentas', ajuda: 'Como apostar' };
 function evTxt(e) {
   const d = e.d || {};
   switch (e.k) {
