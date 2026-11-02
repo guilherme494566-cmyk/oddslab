@@ -2363,6 +2363,7 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 @media (min-width: 1024px) { #multis.rows { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; } }
 @media (min-width: 1400px) { #multis.rows { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
+<style id="p9tr2css">.p9-c .btn.p9-tr2{padding:11px;font-size:14px;font-weight:700;margin-top:-2px}</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -4787,7 +4788,7 @@ function p9Card(k) {
   return `<div class="p9-c ${k}${cur ? ' cur' : ''}">${k === 'pro' ? '<span class="p9-rib">Mais escolhido</span>' : ''}<div class="p9-ch"><b>${P.n}</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div>
     <p class="p9-pr"><b class="m">${p9eur(price)}</b><small>${per}</small>${an ? `<em>${p9eur(P.a / 12)}/mês · poupas ${save}%</em>` : ''}</p>
     <ul>${feats.map((f) => `<li>${f}</li>`).join('')}</ul>
-    ${cur ? '' : trial ? `<button type="button" class="btn acc" data-p9trial="1">Experimentar 7 dias grátis</button><small class="p9-fn">Sem cartão. Depois ${p9eur(P.m)}/mês, se quiseres continuar.</small>` : `<button type="button" class="btn ${k === 'elite' ? 'acc p9-gold' : 'acc'}" data-p9buy="${k}">Escolher ${P.n}</button>`}
+    ${cur ? '' : trial ? `<button type="button" class="btn acc" data-p9buy="pro">Escolher PRO · ${p9eur(an ? P.a : P.m)}${an ? '/ano' : '/mês'}</button><button type="button" class="btn ghost p9-tr2" data-p9trial="1">ou experimenta 7 dias grátis, sem cartão</button>` : `<button type="button" class="btn ${k === 'elite' ? 'acc p9-gold' : 'acc'}" data-p9buy="${k}">Escolher ${P.n}</button>`}
   </div>`;
 }
 function p9Render(need, ctx) {
@@ -5081,7 +5082,7 @@ p9Render = function (need, ctx) {
   const bd = document.querySelector('#p9 .p9-bd2'); if (!bd) return;
   const cards = bd.querySelector('.p9-cards');
   if (cards && !bd.querySelector('.r3, .r3-m')) cards.insertAdjacentHTML('afterend', r3Acc() ? r3Manage() : r3Demo());
-  bd.querySelectorAll('.p9-c.pro .btn, .p9-c.elite .btn').forEach((b) => { if (!b.nextElementSibling || !b.nextElementSibling.classList.contains('r3-sm')) b.insertAdjacentHTML('afterend', '<small class="r3-sm">✓ Sem fidelização · cancelas com 1 clique</small>'); });
+  bd.querySelectorAll('.p9-c.pro .btn:not(.p9-tr2), .p9-c.elite .btn').forEach((b) => { if (!b.nextElementSibling || !b.nextElementSibling.classList.contains('r3-sm')) b.insertAdjacentHTML('afterend', '<small class="r3-sm">✓ Sem fidelização · cancelas com 1 clique</small>'); });
   const q = [...bd.querySelectorAll('.p9-q')].find((d) => /cancelar/i.test(d.textContent)); if (q) q.querySelector('p').innerHTML = 'Sim, com um clique. Em Planos, toca em <b>Cancelar subscrição</b>: não há perguntas nem formulários, não voltas a pagar e mantens o acesso até ao fim do período que já pagaste.';
 };
 document.addEventListener('click', (e) => {
