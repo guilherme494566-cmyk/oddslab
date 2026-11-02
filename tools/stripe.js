@@ -19,7 +19,16 @@ function form(o, pre = '', out = []) {
   }
   return out.join('&');
 }
-async function key() { if (process.env.STRIPE_SECRET_KEY) return process.env.STRIPE_SECRET_KEY; if (!R.ok()) return ''; const [k] = await R.pipe([['HGET', 'cfg', 'stripeKey']]); return k || ''; }
+async function key() {
+  if (process.env.STRIPE_SECRET_KEY) return process.env.STRIPE_SECRET_KEY;
+  if (R.ok()) { try { const [k] = await R.pipe([['HGET', 'cfg', 'stripeKey']]); if (k) return k; } catch {} }
+  try { // chave guardada no repositório, cifrada com a chave pública do ODDSLAB
+    const fs = require('fs'), path = require('path'), crypto = require('crypto');
+    const e = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'stripe.enc'), 'utf8'));
+    const pk = (await require('./config.js').load()).pk; if (!pk) return '';
+    return crypto.privateDecrypt({ key: pk, padding: crypto.constants.RSA_PKCS1_OAEP_PADDING, oaepHash: 'sha256' }, Buffer.from(e.d, 'base64')).toString('utf8').trim();
+  } catch { return ''; }
+}
 async function api(method, path, params, sk) {
   sk = sk || (await key()); if (!sk) throw new Error('Stripe por ligar');
   const url = (process.env.STRIPE_API_BASE || 'https://api.stripe.com') + '/v1' + path + (method === 'GET' && params ? '?' + form(params) : '');
