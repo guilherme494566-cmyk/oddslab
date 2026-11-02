@@ -42,8 +42,9 @@ function send(res, code, obj) { res.statusCode = code; res.setHeader('Content-Ty
 async function body(req) { if (req.body) return typeof req.body === 'string' ? JSON.parse(req.body) : req.body; let s = ''; for await (const c of req) s += c; return s ? JSON.parse(s) : {}; }
 module.exports = async (req, res) => {
   try {
-    if (!pk()) return send(res, 503, { erro: 'Os acessos ainda estão a ser ativados.' });
     const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
+    if (q.acao === 'estado') { let chaveOk = false; if (pk()) { try { crypto.createPrivateKey(pk()); chaveOk = true; } catch {} } return send(res, 200, { chave: !!pk(), chaveValida: chaveOk, admin: !!process.env.ODDSLAB_ADMIN, base: R.ok(), nomes: Object.keys(process.env).filter((k) => /ODDSLAB|KV_REST|UPSTASH/i.test(k)) }); }
+    if (!pk()) return send(res, 503, { erro: 'Os acessos ainda estão a ser ativados.' });
     if (q.acao === 'codigo') {
       if (req.method !== 'POST') return send(res, 405, { erro: 'Usa POST.' });
       const b = await body(req), adm = process.env.ODDSLAB_ADMIN || '';
