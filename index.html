@@ -2320,6 +2320,33 @@ body.i7-on main { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px))
 .q2-own > span:first-child { font-size: 24px; } .q2-own b { display: block; font-size: 15px; } .q2-own small { display: block; font-size: 12px; color: var(--muted); } .q2-own em { font-style: normal; font-weight: 800; color: var(--acc2); white-space: nowrap; }
 .q2-priv { margin: 18px 2px 0; font-size: 11.5px; line-height: 1.45; color: var(--faint); }
 </style>
+<style id="r3css">
+.r3 { margin-top: 10px; padding: 16px; display: grid; gap: 12px; border-color: rgb(34 229 132 / .35); background: linear-gradient(150deg, rgb(34 229 132 / .08), var(--s1) 55%); }
+.r3-h { display: flex; gap: 12px; align-items: center; }
+.r3-ic { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: rgb(34 229 132 / .15); color: var(--pos); font-weight: 900; font-size: 17px; }
+.r3-h b { display: block; font-size: 17px; font-weight: 800; } .r3-h small { display: block; font-size: 12.5px; color: var(--muted); }
+.r3-ph { position: relative; height: 128px; border-radius: 16px; background: #0b0c0f; border: 1px solid var(--bd2); overflow: hidden; }
+.r3-sc { position: absolute; inset: 0; padding: 14px 16px; display: grid; align-content: center; gap: 2px; }
+.r3-sc small { font-size: 11.5px; color: var(--faint); } .r3-sc b { font-size: 16px; font-weight: 800; } .r3-sc span { font-size: 12.5px; color: var(--muted); }
+.r3-s1 { animation: r3A 6s ease-in-out infinite; }
+.r3-s2 { justify-items: center; text-align: center; opacity: 0; animation: r3B 6s ease-in-out infinite; }
+.r3-bt { position: absolute; right: 14px; bottom: 14px; font-style: normal; font-size: 12.5px; font-weight: 750; padding: 8px 12px; border-radius: 10px; border: 1px solid rgb(255 93 93 / .45); color: #ff8a8a; background: rgb(255 93 93 / .08); animation: r3Bt 6s ease-in-out infinite; }
+.r3-tap { position: absolute; right: 50px; bottom: 16px; width: 26px; height: 26px; border-radius: 50%; background: rgb(255 255 255 / .35); box-shadow: 0 0 0 4px rgb(255 255 255 / .12); opacity: 0; animation: r3Tap 6s ease-in-out infinite; }
+.r3-ok { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--pos); color: #06150d !important; font-weight: 900; font-size: 18px !important; margin-bottom: 4px; }
+@keyframes r3A { 0%, 42% { opacity: 1; transform: none; } 50%, 92% { opacity: 0; transform: translateX(-16px); } 100% { opacity: 1; transform: none; } }
+@keyframes r3B { 0%, 44% { opacity: 0; transform: translateX(16px) scale(.98); } 52%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes r3Tap { 0%, 22% { opacity: 0; transform: translate(40px, 30px); } 32% { opacity: 1; transform: none; } 38% { transform: scale(.75); } 42% { transform: scale(1); opacity: 1; } 48%, 100% { opacity: 0; } }
+@keyframes r3Bt { 0%, 36% { background: rgb(255 93 93 / .08); } 38%, 44% { background: rgb(255 93 93 / .3); transform: scale(.96); } 50%, 100% { background: rgb(255 93 93 / .08); transform: none; } }
+.r3-l { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.r3-l li { position: relative; padding-left: 22px; font-size: 13px; color: var(--muted); line-height: 1.4; } .r3-l li b { color: var(--text); }
+.r3-l li::before { content: "✓"; position: absolute; left: 0; color: var(--pos); font-weight: 900; }
+.r3-sm { display: block; text-align: center; font-size: 12px; color: var(--pos); margin-top: -2px; font-weight: 600; }
+.r3-m { margin-top: 10px; padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.r3-m small { display: block; font-size: 11.5px; color: var(--faint); } .r3-m b { display: block; font-size: 17px; font-weight: 800; } .r3-m span { font-size: 12.5px; color: var(--muted); }
+.r3-cbtn { padding: 11px 14px; border-radius: 12px; border: 1px solid rgb(255 93 93 / .45); background: rgb(255 93 93 / .08); color: #ff8a8a; font-weight: 750; font-size: 13.5px; white-space: nowrap; }
+.r3-done { font-size: 13px; font-weight: 800; color: var(--pos); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .r3 *, .r3 { animation: none !important; } .r3-s2 { opacity: 0; } }
+</style>
 <div class="mesh" aria-hidden="true"><i></i><i></i></div>
 <header>
   <div class="wrap">
@@ -5011,6 +5038,45 @@ var _q2home = p9Home; p9Home = function () { _q2home(); if (q2Dono()) { const bo
   p9Chip(); try { if (!$('pg-inicio').hidden) renderInicio(); } catch {}
   const aj = $('pg-ajuda'); if (aj && !$('q2Priv')) aj.insertAdjacentHTML('beforeend', '<p class="q2-priv" id="q2Priv">Privacidade: para melhorar a app registamos de forma anónima as páginas e jogos abertos, com um identificador aleatório guardado neste aparelho. Não pedimos nome, email nem localização exata.</p>');
 })();
+
+// ===== Cancelar num clique: demonstração para quem ainda não subscreveu + botão real para quem tem plano =====
+function r3Acc() { const a = q1Acc(); return a && !a.teste && a.plano !== 'dono' && a.plano !== 'tm' ? a : null; }
+function r3Can() { try { return localStorage.getItem('olCancel') || ''; } catch { return ''; } }
+function r3Demo() {
+  const fim = new Date(Date.now() + 30 * 864e5).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' });
+  return `<section class="r3 card" aria-label="Cancelar é num clique">
+    <div class="r3-h"><span class="r3-ic" aria-hidden="true">✓</span><div><b>Cancelas com 1 clique</b><small>Sem fidelização, sem chamadas, sem emails. É assim:</small></div></div>
+    <div class="r3-ph" aria-hidden="true">
+      <div class="r3-sc r3-s1"><small>O teu plano</small><b>PRO · 4,99 €/mês</b><span>Renova a ${fim}</span><i class="r3-bt">Cancelar subscrição</i><i class="r3-tap"></i></div>
+      <div class="r3-sc r3-s2"><span class="r3-ok">✓</span><b>Cancelado</b><span>Não voltas a pagar. Mantens o PRO até ${fim}.</span></div>
+    </div>
+    <ul class="r3-l"><li>Um clique em <b>Cancelar</b>, sem perguntas nem formulários</li><li>Mantens o acesso até ao fim do período que já pagaste</li><li>Podes voltar quando quiseres, ao mesmo preço</li></ul>
+  </section>`;
+}
+function r3Manage() {
+  const a = r3Acc(); if (!a) return '';
+  const fim = new Date(a.exp).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' }), done = r3Can() === a.c;
+  return `<section class="r3-m card" id="r3M"><div><small>O teu plano</small><b>${a.plano === 'elite' ? 'ELITE' : 'PRO'}</b><span>${done ? `Cancelado · acesso até ${fim}` : `Ativo até ${fim}`}</span></div>
+    ${done ? '<span class="r3-done">✓ Cancelado</span>' : '<button type="button" class="r3-cbtn" data-r3cancel="1">Cancelar subscrição</button>'}</section>`;
+}
+var _r3pr = p9Render;
+p9Render = function (need, ctx) {
+  _r3pr(need, ctx);
+  const bd = document.querySelector('#p9 .p9-bd2'); if (!bd) return;
+  const cards = bd.querySelector('.p9-cards');
+  if (cards && !bd.querySelector('.r3, .r3-m')) cards.insertAdjacentHTML('afterend', r3Acc() ? r3Manage() : r3Demo());
+  bd.querySelectorAll('.p9-c.pro .btn, .p9-c.elite .btn').forEach((b) => { if (!b.nextElementSibling || !b.nextElementSibling.classList.contains('r3-sm')) b.insertAdjacentHTML('afterend', '<small class="r3-sm">✓ Sem fidelização · cancelas com 1 clique</small>'); });
+  const q = [...bd.querySelectorAll('.p9-q')].find((d) => /cancelar/i.test(d.textContent)); if (q) q.querySelector('p').innerHTML = 'Sim, com um clique. Em Planos, toca em <b>Cancelar subscrição</b>: não há perguntas nem formulários, não voltas a pagar e mantens o acesso até ao fim do período que já pagaste.';
+};
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-r3cancel]'); if (!b) return;
+  const a = r3Acc(); if (!a) return;
+  try { localStorage.setItem('olCancel', a.c); } catch {}
+  try { q2('cancelar', { plano: a.plano, codigo: a.c, ate: new Date(a.exp).toLocaleDateString('pt-PT') }); q2Flush(); } catch {}
+  buzz(20);
+  const m = $('r3M'); if (m) m.outerHTML = r3Manage();
+  toast('Subscrição cancelada. Mantens o acesso até ao fim do período.');
+});
 </script>
 
 </body></html>

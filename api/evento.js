@@ -1,7 +1,7 @@
 // Regista a atividade anónima de cada aparelho (identificador aleatório guardado no aparelho).
 // POST {uid, info:{plat, std, plano}, ev:[{t, k, d}]}
 const R = require('../tools/redis.js');
-const KS = new Set(['abrir', 'pagina', 'jogo', 'bloqueado', 'planos', 'comprar', 'teste', 'codigo', 'codigo_erro', 'copiar', 'tutorial', 'instalado', 'entrada']);
+const KS = new Set(['abrir', 'pagina', 'jogo', 'bloqueado', 'planos', 'comprar', 'teste', 'codigo', 'codigo_erro', 'copiar', 'tutorial', 'instalado', 'entrada', 'cancelar']);
 const clip = (v, n = 80) => String(v == null ? '' : v).slice(0, n);
 async function body(req) { if (req.body) return typeof req.body === 'string' ? JSON.parse(req.body) : req.body; let s = ''; for await (const c of req) { s += c; if (s.length > 40000) break; } return s ? JSON.parse(s) : {}; }
 module.exports = async (req, res) => {
@@ -36,6 +36,7 @@ module.exports = async (req, res) => {
       ev.filter((e) => e.k === 'jogo' && e.d.id).forEach((e) => cmds.push(['ZINCRBY', 'jogos:' + day, '1', e.d.id.slice(0, 40)]));
       cmds.push(['EXPIRE', 'jogos:' + day, String(60 * 86400)]);
     }
+    const cn = ev.find((e) => e.k === 'cancelar'); if (cn) { cmds.push(['HSET', 'u:' + uid, 'cancelado', String(cn.t)]); if (cn.d.codigo) cmds.push(['HSET', 'code:' + cn.d.codigo, 'cancelado', String(cn.t)]); }
     const r = await R.pipe(cmds);
     if (r[0] === 1) await R.pipe([['HINCRBY', 'd:' + day, 'novos', '1']]);
     return end(204);
