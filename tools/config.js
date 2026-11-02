@@ -32,4 +32,9 @@ async function save(pem, pw) {
   await R.pipe([['HSET', 'cfg', 'pk', norm(pem), 'adminHash', hash(pw, salt), 'salt', salt, 'quando', String(Date.now())]]);
   C = null;
 }
-module.exports = { load, checkAdmin, keyMatches, save, norm };
+async function setAdmin(pw) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  await R.pipe([['HSET', 'cfg', 'adminHash', hash(pw, salt), 'salt', salt, 'senhaMudada', String(Date.now())]]);
+  C = null;
+}
+module.exports = { load, checkAdmin, keyMatches, save, norm, setAdmin };

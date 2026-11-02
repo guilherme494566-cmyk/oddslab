@@ -54,6 +54,12 @@ module.exports = async (req, res) => {
       return send(res, 200, { eventos: L.map((e) => ({ ...e, quem: M[e.u] || {} })) });
     }
     if (q.acao === 'codigos') return send(res, 200, { codigos: await codigos() });
+    if (q.acao === 'senha' && req.method === 'POST') {
+      const b = await body(req), nova = String(b.nova || '');
+      if (nova.length < 6) return send(res, 400, { erro: 'A palavra-passe tem de ter pelo menos 6 caracteres.' });
+      if (process.env.ODDSLAB_ADMIN) return send(res, 400, { erro: 'A palavra-passe está definida na Vercel (ODDSLAB_ADMIN). Muda-a lá.' });
+      await CFG.setAdmin(nova); return send(res, 200, { ok: true });
+    }
     if (q.acao === 'nome' && req.method === 'POST') {
       const b = await body(req), id = String(b.id || ''); if (!/^u_[a-z0-9]{8,16}$/.test(id)) return send(res, 400, { erro: 'id inválido' });
       await R.pipe([['HSET', 'u:' + id, 'nome', String(b.nome || '').slice(0, 60)]]); return send(res, 200, { ok: true });
