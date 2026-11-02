@@ -4837,7 +4837,7 @@ function p9Card(k) {
   const trial = an && !p9ls('p9TrialUsed') && pl === 'free';
   const feats = k === 'pro' ? ['Todas as apostas do dia (mais de 15 por dia)', 'Ficha completa de cada jogo: estatísticas e outras apostas', 'Ténis com Elo', '<b>Todas as ferramentas:</b> criador de múltiplas de futebol e ténis, comparar odds, Top 10, populares, dados e agenda', 'Múltiplas prontas todos os dias']
     : ['Tudo o que tem o PRO, ferramentas incluídas', 'Todos os jogos, incluindo os ELITE (o dobro dos jogos)', '★ Tip Master todos os dias (odd 5+)', 'Múltiplas de risco alto'];
-  return `<div class="p9-c ${k}${cur ? ' cur' : ''}">${k === 'pro' ? '<span class="p9-rib">Melhor relação preço</span>' : ''}<div class="p9-ch"><b>${P.n}</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div>
+  return `<div class="p9-c ${k}${cur ? ' cur' : ''}">${k === 'pro' ? '<span class="p9-rib">Mais escolhido</span>' : ''}<div class="p9-ch"><b>${P.n}</b>${cur ? '<span class="p9-now">O teu plano</span>' : ''}</div>
     <p class="p9-pr"><b class="m">${p9eur(price)}</b><small>${per}</small>${an ? `<em>${p9eur(P.a / 12)}/mês · poupas ${save}%</em>` : ''}</p>
     <ul>${feats.map((f) => `<li>${f}</li>`).join('')}</ul>
     ${!an && !cur && !p9ls('p9TrialUsed') && pl === 'free' ? '<button type="button" class="p9-annual" data-p9bill="a">🎁 No plano anual tens 7 dias grátis →</button>' : ''}
