@@ -5077,6 +5077,19 @@ document.addEventListener('click', (e) => {
   const m = $('r3M'); if (m) m.outerHTML = r3Manage();
   toast('Subscrição cancelada. Mantens o acesso até ao fim do período.');
 });
+
+// Ativar um código pelo link (?codigo=OL-...), sem escrever nada
+(function q3Link() {
+  let c = ''; try { c = new URLSearchParams(location.search).get('codigo') || ''; } catch {}
+  if (!c || q1Inside()) return;
+  try { history.replaceState(null, '', location.pathname); } catch {}
+  const it = $('intro'); if (it && !it.hidden) { it.hidden = true; document.body.style.overflow = ''; }
+  try { sessionStorage.setItem('i6Shown', '1'); } catch {}
+  q1Fetch(c.trim(), true).then((j) => {
+    if (j && !j.erro) { toast(j.plano === 'dono' ? '👑 Modo Dono ativo' : (j.plano === 'elite' ? 'ELITE' : j.plano === 'tm' ? 'Tip Master' : 'PRO') + ' ativo'); try { p9Chip(); renderInicio(); } catch {} }
+    else toast((j && j.erro) || 'Não foi possível ativar o código.');
+  });
+})();
 </script>
 
 </body></html>
