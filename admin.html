@@ -22,10 +22,12 @@ header.top { position: sticky; top: 0; z-index: 5; background: rgb(10 11 13 / .9
 .bar .tag { font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 99px; background: var(--acc); color: #111; }
 .bar .sp { flex: 1; }
 .bar a, .bar button.lk { color: var(--muted); font-size: 13px; text-decoration: none; border: 1px solid var(--bd); background: none; padding: 6px 10px; border-radius: 10px; }
-nav.tabs { max-width: 1100px; margin: 10px auto 0; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs { max-width: 1100px; margin: 10px auto 0; display: flex; flex-wrap: wrap; gap: 2px; }
 nav.tabs::-webkit-scrollbar { display: none; }
-nav.tabs button { flex: none; border: 0; background: none; padding: 10px 12px; color: var(--faint); font-weight: 700; border-bottom: 2px solid transparent; }
+nav.tabs button { flex: none; border: 0; background: none; padding: 9px 10px; color: var(--faint); font-weight: 700; border-bottom: 2px solid transparent; }
 nav.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--acc); }
+nav.tabs button[data-tab="criar"] { color: #15110a; background: linear-gradient(180deg, var(--acc2), var(--acc)); border-radius: 10px; border-bottom: 0; margin: 0 0 6px auto; padding: 8px 12px; }
+.fab { position: fixed; right: 16px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 6; padding: 14px 18px; border: 0; border-radius: 99px; background: linear-gradient(180deg, var(--acc2), var(--acc)); color: #15110a; font-weight: 800; font-size: 15px; box-shadow: 0 12px 30px -10px rgb(245 190 60 / .9); }
 main { max-width: 1100px; margin: 0 auto; padding: 16px 16px 80px; }
 .card { background: var(--s1); border: 1px solid var(--bd); border-radius: 16px; padding: 16px; }
 h2 { font-size: 16px; margin: 22px 0 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; } h2 small { font-size: 12px; color: var(--faint); font-weight: 500; }
@@ -160,12 +162,13 @@ function login() {
 }
 function shell() {
   $('#app').innerHTML = `<header class="top"><div class="bar"><img src="/apple-touch-icon.png" alt=""><b>ODDS<span>LAB</span></b><span class="tag">DONO</span><span class="sp"></span><a href="/">Abrir app</a><button class="lk" id="out">Sair</button></div>
-    <nav class="tabs" role="tablist">${[['resumo', 'Resumo'], ['users', 'Utilizadores'], ['vendas', 'Vendas'], ['feed', 'Atividade'], ['criar', 'Criar código']].map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${TAB === k}">${l}</button>`).join('')}</nav></header>
+    <nav class="tabs" role="tablist">${[['resumo', 'Resumo'], ['users', 'Utilizadores'], ['vendas', 'Vendas'], ['feed', 'Atividade'], ['criar', '+ Criar código']].map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${TAB === k}">${l}</button>`).join('')}</nav></header>
     <main id="main"><div class="empty">A carregar…</div></main>
+    <button class="fab" id="fab" data-tab="criar">+ Criar código</button>
     <div class="drawer" id="dr" hidden><div class="bk" data-x></div><div class="pn" id="drp"></div></div>`;
   $('#out').onclick = () => { PW = ''; try { sessionStorage.removeItem('olAdm'); } catch {} render(); };
 }
-function render() { if (!PW) return login(); if (!$('#main')) shell(); document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar })[TAB](); }
+function render() { if (!PW) return login(); if (!$('#main')) shell(); const fb = $('#fab'); if (fb) fb.hidden = TAB === 'criar'; document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar })[TAB](); }
 function setupNote(e) { return `<div class="note"><b>${esc(e.message)}</b>${e.j && e.j.semBase ? `<ol><li>Na Vercel, abre o projeto oddslab → <b>Storage</b> → <b>Create Database</b> → <b>Upstash for Redis</b> (plano grátis).</li><li>Liga-a ao projeto oddslab (Connect).</li><li>Em Deployments, faz <b>Redeploy</b>.</li></ol><p style="margin:8px 0 0;color:var(--muted)">Os códigos continuam a funcionar sem isto; só os registos e o painel precisam da base de dados.</p>` : ''}</div>`; }
 async function resumo() {
   const M = $('#main');
