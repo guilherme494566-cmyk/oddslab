@@ -51,7 +51,8 @@ module.exports = async (req, res) => {
     if (q.acao === 'codigo') {
       if (req.method !== 'POST') return send(res, 405, { erro: 'Usa POST.' });
       const b = await body(req);
-      const ok = await CFG.checkAdmin(b.senha);
+      let ok = await CFG.checkAdmin(b.senha);
+      if (!ok && b.dono) { const v = check(b.dono); ok = !v.erro && v.plano === 'dono'; }
       if (!ok) { await new Promise((r) => setTimeout(r, 800)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
       const plano = PN[b.plano] ? b.plano : 'pro', dias = Math.max(0, Math.min(3650, Number(b.dias) || 30));
       const codigo = make(plano, plano === 'tm' ? 0 : dias), v = check(codigo);
@@ -69,4 +70,4 @@ module.exports = async (req, res) => {
     return send(res, 200, { ...v, dados: paraPlano(dados(), v.plano, Date.now()) });
   } catch (e) { return send(res, 500, { erro: 'Erro no servidor.' }); }
 };
-module.exports._make = make; module.exports._check = check;
+module.exports._make = make; module.exports._check = check; module.exports._setPK = (k) => { PK = k || ''; };

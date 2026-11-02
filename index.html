@@ -5029,10 +5029,10 @@ p9Chip = function () {
   const i6 = $('i6Hc'); if (i6) i6.remove();
   let b = $('p9Hc'); if (!b) { b = document.createElement('a'); b.id = 'p9Hc'; r.insertBefore(b, r.querySelector('.hlp')); }
   if (b.tagName !== 'A') { const a = document.createElement('a'); a.id = 'p9Hc'; b.replaceWith(a); b = a; }
-  b.href = '/admin'; b.className = 'p9-hc q2-dono'; b.innerHTML = '<span aria-hidden="true">👑</span><span>Painel</span>';
+  b.href = '/admin#dono=' + encodeURIComponent((q1Acc() || {}).c || ''); b.className = 'p9-hc q2-dono'; b.innerHTML = '<span aria-hidden="true">👑</span><span>Painel</span>';
 };
 var _q2i6 = i6Can; i6Can = function () { return !q2Dono() && _q2i6(); };
-var _q2home = p9Home; p9Home = function () { _q2home(); if (q2Dono()) { const box = $('p9Home'); if (box) box.insertAdjacentHTML('afterbegin', '<a class="q2-own card" href="/admin"><span>👑</span><span><b>Modo Dono</b><small>Vês tudo, sem bloqueios. A tua atividade não conta nas estatísticas.</small></span><em>Painel ›</em></a>'); } };
+var _q2home = p9Home; p9Home = function () { _q2home(); if (q2Dono()) { const box = $('p9Home'); if (box) box.insertAdjacentHTML('afterbegin', '<a class="q2-own card" href="/admin#dono=' + encodeURIComponent((q1Acc() || {}).c || '') + '"><span>👑</span><span><b>Modo Dono</b><small>Vês tudo, sem bloqueios. A tua atividade não conta nas estatísticas.</small></span><em>Painel ›</em></a>'); } };
 (function q2Init() {
   if (Q2.on) { q2Uid(); q2('abrir', { instalada: i5Std() ? 'sim' : 'não', origem: (document.referrer || '').replace(/^https?:\/\//, '').split('/')[0].slice(0, 40), link: location.search.slice(0, 40) }); }
   p9Chip(); try { if (!$('pg-inicio').hidden) renderInicio(); } catch {}

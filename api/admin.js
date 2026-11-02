@@ -15,7 +15,9 @@ async function codigos(lim = 500) {
   return ids.map((c, i) => ({ codigo: c, ...R.hobj(r[i * 2]), aparelhos: r[i * 2 + 1] || [] }));
 }
 module.exports = async (req, res) => {
-  if (!(await CFG.checkAdmin(req.headers['x-admin']))) { await new Promise((r) => setTimeout(r, 700)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
+  let isOk = await CFG.checkAdmin(req.headers['x-admin']);
+  if (!isOk && req.headers['x-dono']) { try { const A = require('./acesso.js'); A._setPK((await CFG.load()).pk); const v = A._check(req.headers['x-dono']); isOk = !v.erro && v.plano === 'dono'; } catch {} }
+  if (!isOk) { await new Promise((r) => setTimeout(r, 700)); return send(res, 401, { erro: 'Palavra-passe errada.' }); }
   if (!R.ok()) return send(res, 503, { erro: 'Falta ligar a base de dados (Upstash Redis) na Vercel.', semBase: true });
   const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
   try {

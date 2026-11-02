@@ -100,6 +100,7 @@ table.t td { padding: 9px 8px; border-bottom: 1px solid var(--bd); vertical-alig
 <script>
 const $ = (s, r = document) => r.querySelector(s), esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let PW = ''; try { PW = sessionStorage.getItem('olAdm') || ''; } catch {}
+let DONO = ''; try { const m = location.hash.match(/dono=([0-9A-Za-z-]+)/); if (m) { DONO = decodeURIComponent(m[1]); localStorage.setItem('olDonoAdm', DONO); history.replaceState(null, '', location.pathname); } else DONO = localStorage.getItem('olDonoAdm') || ''; } catch {}
 let TAB = 'resumo', CACHE = {}, UF = 'todos', UQ = '', VT = false;
 const eur = (v) => (Number(v) || 0).toFixed(2).replace('.', ',') + ' €';
 const ago = (ms) => { ms = Number(ms); if (!ms) return '–'; const s = (Date.now() - ms) / 1000; if (s < 60) return 'agora'; if (s < 3600) return Math.floor(s / 60) + ' min'; if (s < 86400) return Math.floor(s / 3600) + ' h'; return Math.floor(s / 86400) + ' d'; };
@@ -128,8 +129,8 @@ function evTxt(e) {
   }
 }
 async function api(acao, opt = {}) {
-  const r = await fetch('/api/admin?acao=' + acao + (opt.q || ''), { method: opt.body ? 'POST' : 'GET', headers: { 'x-admin': PW, 'Content-Type': 'application/json' }, body: opt.body ? JSON.stringify(opt.body) : undefined, cache: 'no-store' });
-  const j = await r.json().catch(() => ({})); if (r.status === 401) { PW = ''; try { sessionStorage.removeItem('olAdm'); } catch {} render(); throw new Error('401'); }
+  const r = await fetch('/api/admin?acao=' + acao + (opt.q || ''), { method: opt.body ? 'POST' : 'GET', headers: { 'x-admin': PW, 'x-dono': DONO, 'Content-Type': 'application/json' }, body: opt.body ? JSON.stringify(opt.body) : undefined, cache: 'no-store' });
+  const j = await r.json().catch(() => ({})); if (r.status === 401) { PW = ''; DONO = ''; try { sessionStorage.removeItem('olAdm'); localStorage.removeItem('olDonoAdm'); } catch {} render(); throw new Error('401'); }
   if (!r.ok) { const e = new Error(j.erro || 'Erro ' + r.status); e.j = j; throw e; } return j;
 }
 
@@ -166,12 +167,12 @@ function shell() {
     <main id="main"><div class="empty">A carregar…</div></main>
     <button class="fab" id="fab" data-tab="criar">+ Criar código</button>
     <div class="drawer" id="dr" hidden><div class="bk" data-x></div><div class="pn" id="drp"></div></div>`;
-  $('#out').onclick = () => { PW = ''; try { sessionStorage.removeItem('olAdm'); } catch {} render(); };
+  $('#out').onclick = () => { PW = ''; DONO = ''; try { sessionStorage.removeItem('olAdm'); localStorage.removeItem('olDonoAdm'); } catch {} render(); };
   $('#pwB').onclick = () => { const D = $('#dr'), P = $('#drp'); D.hidden = false; P.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Mudar palavra-passe</h2><button class="btn2" data-x>Fechar</button></div>
       <div class="card" style="margin-top:14px"><label>Nova palavra-passe (mínimo 6 caracteres)</label><input class="f" id="np1" type="password" autocomplete="new-password"><label>Repete a nova palavra-passe</label><input class="f" id="np2" type="password" autocomplete="new-password"><button class="go" id="npGo">Guardar</button><p class="err" id="npEr"></p></div>`;
     $('#npGo').onclick = async () => { const a = $('#np1').value, b = $('#np2').value; $('#npEr').textContent = ''; if (a.length < 6) return ($('#npEr').textContent = 'Mínimo 6 caracteres.'); if (a !== b) return ($('#npEr').textContent = 'As palavras-passe não são iguais.'); $('#npGo').disabled = true; try { await api('senha', { body: { nova: a } }); PW = a; try { sessionStorage.setItem('olAdm', a); } catch {} $('#drp').querySelector('.card').innerHTML = '<p style="color:var(--pos);font-weight:700;margin:0">✓ Palavra-passe mudada. Usa a nova da próxima vez que entrares.</p>'; } catch (e) { $('#npEr').textContent = e.message; $('#npGo').disabled = false; } }; };
 }
-function render() { if (!PW) return login(); if (!$('#main')) shell(); const fb = $('#fab'); if (fb) fb.hidden = TAB === 'criar'; document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar })[TAB](); }
+function render() { if (!PW && !DONO) return login(); if (!$('#main')) shell(); const fb = $('#fab'); if (fb) fb.hidden = TAB === 'criar'; document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === TAB)); ({ resumo, users, vendas, feed, criar })[TAB](); }
 function setupNote(e) { return `<div class="note"><b>${esc(e.message)}</b>${e.j && e.j.semBase ? `<ol><li>Na Vercel, abre o projeto oddslab → <b>Storage</b> → <b>Create Database</b> → <b>Upstash for Redis</b> (plano grátis).</li><li>Liga-a ao projeto oddslab (Connect).</li><li>Em Deployments, faz <b>Redeploy</b>.</li></ol><p style="margin:8px 0 0;color:var(--muted)">Os códigos continuam a funcionar sem isto; só os registos e o painel precisam da base de dados.</p>` : ''}</div>`; }
 async function resumo() {
   const M = $('#main');
@@ -267,7 +268,7 @@ function criar() {
     $('#err').textContent = ''; $('#go').disabled = true;
     try {
       const dias = CP === 'dono' ? 3650 : CP === 'tm' ? 0 : CD;
-      const r = await fetch('/api/acesso?acao=codigo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha: PW, plano: CP, dias, nome: $('#cn').value, contacto: $('#cc').value, valor: $('#cv').value }) });
+      const r = await fetch('/api/acesso?acao=codigo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senha: PW, dono: DONO, plano: CP, dias, nome: $('#cn').value, contacto: $('#cc').value, valor: $('#cv').value }) });
       const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.erro || 'Erro ' + r.status);
       const nome = CP === 'tm' ? 'Tip Master de hoje' : CP === 'dono' ? 'Dono (acesso total)' : CP.toUpperCase() + ' · ' + ({ 7: '7 dias', 31: '1 mês', 92: '3 meses', 366: '1 ano' })[CD];
       $('#res').hidden = false; $('#what').textContent = nome + ($('#cn').value ? ' · ' + $('#cn').value : ''); $('#code').textContent = j.codigo;
