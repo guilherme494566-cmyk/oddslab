@@ -5445,6 +5445,15 @@ var _mxtn = renderTN; renderTN = function () {
 };
 </script>
 
+<dialog id="conviteDialog" aria-labelledby="conviteTitulo">
+  <h2 id="conviteTitulo">Convida um amigo</h2>
+  <p>Partilha o teu link. Quando o teu amigo comprar um plano, enviem o código e o comprovativo ao OddsLab. Após validação manual, cada um recebe o valor do plano comprado.</p>
+  <input id="conviteLink" aria-label="O teu link de convite" readonly>
+  <form method="dialog">
+    <button type="button" class="lnk" id="conviteCopiar">Copiar link</button>
+    <button class="lnk">Fechar</button>
+  </form>
+</dialog>
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.4/auth0-spa-js.production.js"></script>
 <script>
 (async () => {
@@ -5500,12 +5509,17 @@ var _mxtn = renderTN; renderTN = function () {
       link.searchParams.set('convite', code);
       const invite = document.getElementById('conviteAuth');
       invite.hidden = false;
-      invite.addEventListener('click', async () => {
+      const dialog = document.getElementById('conviteDialog');
+      const field = document.getElementById('conviteLink');
+      field.value = link.href;
+      invite.addEventListener('click', () => dialog.showModal());
+      document.getElementById('conviteCopiar').addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(link.href);
           toast('Link copiado. Partilha-o com o teu amigo.');
         } catch {
-          prompt('Copia o teu link de convite', link.href);
+          field.focus();
+          field.select();
         }
       });
     }
