@@ -1489,8 +1489,8 @@ b.ok { color: var(--pos); } b.wrn { color: var(--warn); }
 main h2 { font-size: 17px; font-weight: 750; letter-spacing: -.015em; margin-top: 28px; }
 main h2 small { font-weight: 500; }
 /* Olá */
-#pg-inicio .hello { margin-top: 18px; padding: 0; background: none; border: 0; overflow: visible; }
-#pg-inicio .hello::before, #pg-inicio .hello::after { display: none; }
+#pg-inicio #hello { margin-top: 18px; padding: 0; background: none; border: 0; overflow: visible; }
+#pg-inicio #hello::before, #pg-inicio #hello::after { display: none; }
 .hl2-t { font-size: 24px; font-stretch: 100%; letter-spacing: -.025em; }
 .ss { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); }
 .ss > div + div { border-left-color: var(--bd); }
@@ -5481,7 +5481,7 @@ var _mxtn = renderTN; renderTN = function () {
   const referral = current.searchParams.get('convite');
   const section = document.getElementById('conviteSecao').content.firstElementChild.cloneNode(true);
   const sectionButton = section.querySelector('button');
-  const home = document.querySelector('#pg-inicio .hello');
+  const home = document.querySelector('#pg-inicio #hello');
   if (home) home.after(section);
   sectionButton.addEventListener('click', () => { if (button.textContent === 'Entrar') button.click(); });
   if (referral && /^[a-f0-9]{24}$/.test(referral)) {
