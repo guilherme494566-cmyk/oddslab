@@ -2422,6 +2422,30 @@ body.i7-on .lg-bar { bottom: calc(146px + env(safe-area-inset-bottom, 0px)); }
   <section id="pg-inicio" class="h3">
     <div class="h3-top">
       <div class="h3-hi" id="hello"></div>
+<section class="preview-games" id="previaFutebol" aria-labelledby="previaTitulo" hidden>
+  <h2 id="previaTitulo">Prévia de sexta-feira, 6 de novembro</h2>
+  <p>Estimativas experimentais de resultado. Modelo Poisson baseado em resultados da football-data.org. Sem odds de mercado. 18+</p>
+  <div class="preview-grid">
+    <article class="preview-match card" data-preview-start="2026-11-06T19:00:00Z">
+      <time datetime="2026-11-06T19:00:00Z">Sexta, 19:00 · Lisboa</time>
+      <h3>Willem II Tilburg <span>–</span> PEC Zwolle</h3>
+      <dl><div><dt>Casa</dt><dd>22,0%</dd></div><div><dt>Empate</dt><dd>20,2%</dd></div><div><dt>Fora</dt><dd>57,8%</dd></div></dl>
+    </article>
+    <article class="preview-match card" data-preview-start="2026-11-06T20:00:00Z">
+      <time datetime="2026-11-06T20:00:00Z">Sexta, 20:00 · Lisboa</time>
+      <h3>Sevilla FC <span>–</span> Deportivo Alavés</h3>
+      <dl><div><dt>Casa</dt><dd>53,8%</dd></div><div><dt>Empate</dt><dd>23,1%</dd></div><div><dt>Fora</dt><dd>23,1%</dd></div></dl>
+    </article>
+  </div>
+</section>
+<script>
+(() => {
+  const section = document.getElementById('previaFutebol');
+  const cards = [...section.querySelectorAll('[data-preview-start]')];
+  for (const card of cards) card.hidden = Date.parse(card.dataset.previewStart) <= Date.now();
+  section.hidden = cards.every(card => card.hidden);
+})();
+</script>
       <div class="sports2 h3-sp"><button type="button" class="sp2 card" data-pg="jogos"><span class="sp2-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.2 2.3-1.2 3.7h-4l-1.2-3.7z"/></svg></span><b>Futebol</b><small id="nFut"></small></button><button type="button" class="sp2 card" data-pg="tenis"><span class="sp2-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.2 3.2 3.2 9.6 0 12.8M18.4 5.6c-3.2 3.2-3.2 9.6 0 12.8"/></svg></span><b>Ténis</b><small id="nTen"></small></button></div>
     </div>
     <div class="h3-dk">
