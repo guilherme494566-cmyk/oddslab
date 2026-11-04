@@ -5445,9 +5445,24 @@ var _mxtn = renderTN; renderTN = function () {
 };
 </script>
 
+<template id="conviteSecao">
+  <section class="ol-invite" aria-labelledby="conviteSecaoTitulo">
+    <div>
+      <small>Programa de afiliados</small>
+      <h2 id="conviteSecaoTitulo">Convida um amigo</h2>
+      <p>Quando o teu amigo comprar um plano pelo teu convite, cada um pode receber o valor do plano após validação.</p>
+    </div>
+    <button type="button" class="ol-invite-action">Obter link</button>
+  </section>
+</template>
 <dialog id="conviteDialog" aria-labelledby="conviteTitulo">
   <h2 id="conviteTitulo">Convida um amigo</h2>
-  <p>Partilha o teu link. Quando o teu amigo comprar um plano, enviem o código e o comprovativo ao OddsLab. Após validação manual, cada um recebe o valor do plano comprado.</p>
+  <p class="ol-invite-label">O teu link pessoal</p>
+  <ol>
+    <li>Copia o link e envia-o ao teu amigo.</li>
+    <li>O teu amigo abre o convite, guarda o código e compra o plano que escolher.</li>
+    <li>Enviem o código e o comprovativo ao OddsLab para validar a compra e combinar o retorno para os dois.</li>
+  </ol>
   <input id="conviteLink" aria-label="O teu link de convite" readonly>
   <form method="dialog">
     <button type="button" class="lnk" id="conviteCopiar">Copiar link</button>
@@ -5464,11 +5479,18 @@ var _mxtn = renderTN; renderTN = function () {
   button.hidden = false;
   button.disabled = true;
   const referral = current.searchParams.get('convite');
+  const section = document.getElementById('conviteSecao').content.firstElementChild.cloneNode(true);
+  const sectionButton = section.querySelector('button');
+  const home = document.querySelector('#pg-inicio .hello');
+  if (home) home.after(section);
+  sectionButton.addEventListener('click', () => { if (button.textContent === 'Entrar') button.click(); });
   if (referral && /^[a-f0-9]{24}$/.test(referral)) {
-    const notice = document.createElement('p');
-    notice.className = 'card';
-    notice.textContent = 'Convite ' + referral + '. Guarda este código. Depois de comprares um plano, envia o código e o comprovativo ao OddsLab para validação manual do retorno.';
-    document.getElementById('searchBox').after(notice);
+    section.querySelector('h2').textContent = 'Recebeste um convite';
+    section.querySelector('p').textContent = 'O teu código é ' + referral + '. Guarda-o e envia-o com o comprovativo ao OddsLab depois de comprares um plano.';
+    sectionButton.textContent = 'Copiar código';
+    const copyCode = sectionButton.cloneNode(true);
+    sectionButton.replaceWith(copyCode);
+    copyCode.addEventListener('click', () => copyText(referral, 'Código de convite copiado'));
   }
   try {
     const client = new auth0.Auth0Client({
@@ -5513,6 +5535,7 @@ var _mxtn = renderTN; renderTN = function () {
       const field = document.getElementById('conviteLink');
       field.value = link.href;
       invite.addEventListener('click', () => dialog.showModal());
+      if (sectionButton.isConnected) sectionButton.addEventListener('click', () => dialog.showModal());
       document.getElementById('conviteCopiar').addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(link.href);
