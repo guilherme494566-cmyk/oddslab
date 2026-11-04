@@ -1,0 +1,40 @@
+name: OddsLab - execução diária 08:11
+on:
+  schedule:
+    - cron: '11 8 * * *'
+      timezone: Europe/Lisbon
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oddslab-publicacao
+  cancel-in-progress: false
+
+jobs:
+  diario:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Diagnóstico seguro (sem publicação)
+        env:
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
+        run: node tools/diagnostico-diario.js
+      - name: Gerar candidatos estatísticos (sem publicação)
+        env:
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
+        run: node tools/gerar-candidatos.js
+      - name: Guardar resultados para revisão
+        uses: actions/upload-artifact@v4
+        with:
+          name: oddslab-candidatos
+          path: tmp/oddslab-candidatos.json
+          if-no-files-found: error
+          retention-days: 7
