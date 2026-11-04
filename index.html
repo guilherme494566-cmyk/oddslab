@@ -5138,9 +5138,14 @@ p9Render = function (need, ctx) {
   bd.querySelectorAll('.p9-c.pro .btn:not(.p9-tr2), .p9-c.elite .btn').forEach((b) => { if (!b.nextElementSibling || !b.nextElementSibling.classList.contains('r3-sm')) b.insertAdjacentHTML('afterend', '<small class="r3-sm">✓ Sem fidelização · cancelas com 1 clique</small>'); });
   const q = [...bd.querySelectorAll('.p9-q')].find((d) => /cancelar/i.test(d.textContent)); if (q) q.querySelector('p').innerHTML = 'Sim, com um clique. Em Planos, toca em <b>Cancelar subscrição</b>: não há perguntas nem formulários, não voltas a pagar e manténs o acesso até ao fim do período que já pagaste.';
 };
-document.addEventListener('click', (e) => {
-  const b = e.target.closest('[data-r3cancel]'); if (!b) return;
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-r3cancel]'); if (!b || b.disabled) return;
   const a = r3Acc(); if (!a) return;
+  if (a.sub) {
+    b.disabled = true;
+    try { await stPost('cancelar', { sub: a.sub, codigo: a.c }); }
+    catch (err) { b.disabled = false; toast('Não foi possível cancelar: ' + err.message); return; }
+  }
   try { localStorage.setItem('olCancel', a.c); } catch {}
   try { q2('cancelar', { plano: a.plano, codigo: a.c, ate: new Date(a.exp).toLocaleDateString('pt-PT') }); q2Flush(); } catch {}
   buzz(20);
@@ -5203,15 +5208,9 @@ window.addEventListener('click', async (e) => {
   const a = q1Acc() || (function () { try { return JSON.parse(localStorage.getItem(Q1.key) || 'null'); } catch { return null; } })();
   if (!a || !a.sub || q1Inside()) return;
   if (a.exp - Date.now() > 2 * 864e5) return;
-  try { const j = await stPost('renovar', { sub: a.sub, uid: stUid() }); await stGuardar({ ...j, sub: a.sub }); }
+  try { const j = await stPost('renovar', { sub: a.sub, codigo: a.c, uid: stUid() }); await stGuardar({ ...j, sub: a.sub }); }
   catch (err) { if (err.j && err.j.estado) { try { localStorage.removeItem(Q1.key); } catch {} } }
 })();
-// cancelar: também cancela a renovação no Stripe
-window.addEventListener('click', (e) => {
-  if (!e.target.closest('[data-r3cancel]')) return;
-  const a = q1Acc(); if (!a || !a.sub) return;
-  stPost('cancelar', { sub: a.sub }).catch((err) => toast('Não foi possível cancelar no Stripe: ' + err.message));
-}, true);
 // q1Fetch guarda o código mas perde o "sub": repõe-o
 var _stq1 = q1Fetch;
 q1Fetch = async function (code, silent) {

@@ -14,6 +14,20 @@ const okUid = (u) => (/^u_[a-z0-9]{8,16}$/.test(String(u || '')) ? u : '');
 const origin = (req) => 'https://' + (req.headers['x-forwarded-host'] || req.headers.host);
 const diasAte = (sec) => Math.max(1, Math.ceil((sec * 1000 - Date.now()) / 864e5) + 1);
 function fimPeriodo(sub) { return sub.current_period_end || (sub.items && sub.items.data && sub.items.data[0] && sub.items.data[0].current_period_end) || 0; }
+async function verificarSub(res, id, codigo) {
+  if (!/^OL-(?:[0-9A-HJKMNP-TV-Z]{4}-){4}[0-9A-HJKMNP-TV-Z]{2}$/.test(String(codigo || ''))) {
+    send(res, 403, { erro: 'Confirma o teu código de acesso.' });
+    return false;
+  }
+  if (!R.ok()) {
+    send(res, 503, { erro: 'Não foi possível confirmar a subscrição. Tenta novamente.' });
+    return false;
+  }
+  const [sub] = await R.pipe([['HGET', 'code:' + codigo, 'sub']]);
+  if (sub === id) return true;
+  send(res, 403, { erro: 'Este código não está associado à subscrição.' });
+  return false;
+}
 async function emitir(plano, dias, info) {
   A._setPK((await CFG.load()).pk);
   const codigo = A._make(plano, plano === 'tm' ? 0 : dias), v = A._check(codigo);
@@ -64,6 +78,7 @@ module.exports = async (req, res) => {
     }
     if (q.acao === 'renovar') {
       const id = String(b.sub || ''); if (!/^sub_[A-Za-z0-9]+$/.test(id)) return send(res, 400, { erro: 'Subscrição inválida.' });
+      if (!(await verificarSub(res, id, b.codigo))) return;
       const sub = await S.api('GET', '/subscriptions/' + id, { expand: ['latest_invoice', 'customer'] });
       if (!['active', 'trialing'].includes(sub.status)) return send(res, 402, { erro: 'A subscrição já não está ativa.', estado: sub.status });
       const k = (sub.metadata && sub.metadata.k) || 'pro_m', P = S.PLANOS[k] || S.PLANOS.pro_m;
@@ -74,6 +89,7 @@ module.exports = async (req, res) => {
     }
     if (q.acao === 'cancelar') {
       const id = String(b.sub || ''); if (!/^sub_[A-Za-z0-9]+$/.test(id)) return send(res, 400, { erro: 'Subscrição inválida.' });
+      if (!(await verificarSub(res, id, b.codigo))) return;
       const sub = await S.api('POST', '/subscriptions/' + id, { cancel_at_period_end: 'true' });
       return send(res, 200, { ok: true, ate: fimPeriodo(sub) * 1000 });
     }
