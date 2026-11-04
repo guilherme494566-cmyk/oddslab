@@ -1,0 +1,37 @@
+name: OddsLab - execução diária 08:11
+on:
+  schedule:
+    # GitHub cron é UTC. Lisboa: 08:11 UTC no inverno; 07:11 UTC no verão.
+    - cron: '11 7,8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: oddslab-publicacao
+  cancel-in-progress: false
+
+jobs:
+  diario:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar hora local de Lisboa
+        id: hora
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] || [ "$(TZ=Europe/Lisbon date +%H:%M)" = "08:11" ]; then
+            echo "executar=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "executar=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Diagnóstico seguro (sem publicação)
+        if: steps.hora.outputs.executar == 'true'
+        env:
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
+        run: node tools/diagnostico-diario.js
