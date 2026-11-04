@@ -1,12 +1,12 @@
 name: OddsLab - execução diária 08:11
 on:
   schedule:
-    # GitHub cron é UTC. Lisboa: 08:11 UTC no inverno; 07:11 UTC no verão.
-    - cron: '11 7,8 * * *'
+    - cron: '11 8 * * *'
+      timezone: Europe/Lisbon
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: oddslab-publicacao
@@ -15,36 +15,26 @@ concurrency:
 jobs:
   diario:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validar hora local de Lisboa
-        id: hora
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-        run: |
-          if [ "$EVENT_NAME" = "workflow_dispatch" ] || [ "$(TZ=Europe/Lisbon date +%H:%M)" = "08:11" ]; then
-            echo "executar=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "executar=false" >> "$GITHUB_OUTPUT"
-          fi
       - name: Diagnóstico seguro (sem publicação)
-        if: steps.hora.outputs.executar == 'true'
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node tools/diagnostico-diario.js
       - name: Gerar candidatos estatísticos (sem publicação)
-        if: steps.hora.outputs.executar == 'true'
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node tools/gerar-candidatos.js
       - name: Guardar resultados para revisão
-        if: always() && steps.hora.outputs.executar == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: oddslab-candidatos
           path: tmp/oddslab-candidatos.json
-          if-no-files-found: ignore
+          if-no-files-found: error
           retention-days: 7
