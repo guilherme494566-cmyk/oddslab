@@ -35,3 +35,16 @@ jobs:
         env:
           FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
         run: node tools/diagnostico-diario.js
+      - name: Gerar candidatos estatísticos (sem publicação)
+        if: steps.hora.outputs.executar == 'true'
+        env:
+          FOOTBALL_DATA_KEY: ${{ secrets.FOOTBALL_DATA_KEY }}
+        run: node tools/gerar-candidatos.js
+      - name: Guardar resultados para revisão
+        if: always() && steps.hora.outputs.executar == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: oddslab-candidatos
+          path: tmp/oddslab-candidatos.json
+          if-no-files-found: ignore
+          retention-days: 7
