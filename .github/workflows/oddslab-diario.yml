@@ -1,8 +1,5 @@
 name: OddsLab - execução diária 08:11
 on:
-  push:
-    branches: [recuperar-automacao-0811]
-    paths: ['.github/workflows/oddslab-diario.yml']
   schedule:
     - cron: '11 8 * * *'
       timezone: Europe/Lisbon
