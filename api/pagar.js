@@ -29,15 +29,7 @@ module.exports = async (req, res) => {
     const q = req.query || Object.fromEntries(new URL(req.url, 'http://x').searchParams);
     const sk = await S.key();
     if (q.acao === 'estado') {
-      let produtos = null;
-      if (sk && R.ok()) {
-        try {
-          const flag = 'stripeProd:' + sk.slice(-6), [ok] = await R.pipe([['HGET', 'cfg', flag]]);
-          if (!ok) { const M = await S.criarProdutos(sk); produtos = Object.keys(M).length; if (produtos >= 5) await R.pipe([['HSET', 'cfg', flag, String(Date.now())]]); }
-          else produtos = 5;
-        } catch (e) { produtos = 'erro: ' + e.message; }
-      }
-      return send(res, 200, { ativo: !!sk, teste: sk.startsWith('sk_test') || sk.startsWith('rk_test'), produtos });
+      return send(res, 200, { ativo: !!sk, teste: /^(sk|rk)_test_/.test(sk) });
     }
     if (!sk) return send(res, 503, { erro: 'Pagamentos por ligar.' });
     if (req.method !== 'POST') return send(res, 405, { erro: 'Usa POST.' });
