@@ -1,0 +1,42 @@
+name: Diagnóstico Telegram
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/telegram-diagnostico.yml']
+permissions:
+  contents: read
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Verificar bot e localizar canais
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        shell: python
+        run: |
+          import os, json, urllib.request
+          token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+          if not token:
+              raise SystemExit('TELEGRAM_BOT_TOKEN ausente')
+          def call(method):
+              try:
+                  with urllib.request.urlopen('https://api.telegram.org/bot' + token + '/' + method, timeout=20) as response:
+                      result = json.load(response)
+              except Exception:
+                  raise SystemExit('Falha de ligação ou token inválido. Credenciais ocultadas.')
+              if not result.get('ok'):
+                  raise SystemExit('Telegram recusou o pedido. Credenciais ocultadas.')
+              return result['result']
+          bot = call('getMe')
+          print('Bot confirmado:', bot.get('username'))
+          channels = {}
+          for update in call('getUpdates'):
+              event = update.get('my_chat_member') or update.get('channel_post') or {}
+              chat = event.get('chat', {})
+              if chat.get('type') == 'channel':
+                  channels[chat['id']] = chat.get('title', '')
+          for chat_id, title in channels.items():
+              print('Canal identificado:', chat_id, title)
+          if not channels:
+              raise SystemExit('Sem canal nos eventos disponíveis. Publica uma mensagem no canal e repete o diagnóstico.')
